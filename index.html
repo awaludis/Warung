@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12161f">
+<title>Kasir Kelontong</title>
+<link rel="manifest" href="./manifest.json">
+<style>
+  :root{
+    --ink:#12161f; --ink-2:#1c2230; --surface:#ffffff; --bg:#eef1f4;
+    --line:#dce1e8; --muted:#6a7381; --text:#1a1f29;
+    --primary:#0b7a5b; --primary-dark:#095f47;
+    --warn:#b9770a; --warn-bg:#fdf4e3; --danger:#c0392b; --danger-bg:#fbeceb;
+    --ok:#0b7a5b; --ok-bg:#e8f4ef;
+    --radius:12px; --shadow:0 1px 3px rgba(16,22,34,.08),0 6px 16px rgba(16,22,34,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text); -webkit-tap-highlight-color:transparent;
+    overscroll-behavior-y:none;
+  }
+  .num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+  button{font-family:inherit;cursor:pointer}
+  input,select{font-family:inherit;font-size:16px}
+  .hidden{display:none !important}
+
+  /* ---------- App shell ---------- */
+  #app{display:flex;flex-direction:column;height:100dvh}
+  header{
+    background:var(--ink);color:#eef1f4;display:flex;align-items:center;gap:10px;
+    padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));
+  }
+  .brand{font-weight:700;letter-spacing:.3px;font-size:16px;white-space:nowrap}
+  .brand span{color:#5fd0a8}
+  .grow{flex:1}
+  .pill{
+    font-size:12px;font-weight:600;padding:4px 9px;border-radius:999px;
+    display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
+  }
+  .pill .dot{width:8px;height:8px;border-radius:50%}
+  .pill-online{background:#0e2c23;color:#7fe0bb}
+  .pill-online .dot{background:#33d69f}
+  .pill-offline{background:#3a2b0c;color:#f0c25a}
+  .pill-offline .dot{background:#e8a91e}
+  .pill-queue{background:#3a1414;color:#f2a49b}
+  .pill-queue .dot{background:#e8564a}
+  .whoami{font-size:12px;color:#aeb7c4;text-align:right;line-height:1.25}
+  .whoami b{color:#eef1f4;display:block}
+  .iconbtn{background:transparent;border:0;color:#aeb7c4;font-size:20px;padding:4px 6px;border-radius:8px}
+  .iconbtn:hover{color:#fff;background:rgba(255,255,255,.08)}
+
+  nav{display:flex;background:var(--ink-2);border-bottom:1px solid #000}
+  nav button{
+    flex:1;background:transparent;border:0;color:#98a2b1;padding:11px 4px;font-size:12.5px;
+    font-weight:600;border-bottom:2px solid transparent;display:flex;flex-direction:column;
+    align-items:center;gap:3px;
+  }
+  nav button .ic{font-size:17px}
+  nav button.active{color:#fff;border-bottom-color:#33d69f}
+
+  main{flex:1;overflow:auto;position:relative}
+  .view{padding:14px;max-width:1100px;margin:0 auto}
+
+  /* ---------- Kasir ---------- */
+  .kasir-wrap{display:grid;gap:14px;grid-template-columns:1fr}
+  @media(min-width:820px){.kasir-wrap{grid-template-columns:1fr 380px;align-items:start}}
+  .searchbar{display:flex;gap:8px;margin-bottom:12px}
+  .searchbar input{
+    flex:1;padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius);
+    background:var(--surface);
+  }
+  .btn{
+    border:0;border-radius:var(--radius);padding:12px 16px;font-weight:700;font-size:15px;
+  }
+  .btn-primary{background:var(--primary);color:#fff}
+  .btn-primary:active{background:var(--primary-dark)}
+  .btn-ghost{background:var(--surface);border:1px solid var(--line);color:var(--text)}
+  .btn-scan{background:var(--ink-2);color:#fff;padding:12px 14px;border-radius:var(--radius);border:0;font-size:18px}
+  .btn:disabled{opacity:.5}
+
+  .prod-list{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .prod-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:11px 12px;text-align:left;display:flex;flex-direction:column;gap:2px;min-height:78px;
+  }
+  .prod-card:active{border-color:var(--primary)}
+  .prod-card .pn{font-weight:600;font-size:14px;line-height:1.25}
+  .prod-card .pp{color:var(--primary);font-weight:700;margin-top:auto}
+  .prod-card .ps{font-size:11.5px;color:var(--muted)}
+  .prod-card .ps.low{color:var(--danger)}
+  .empty{color:var(--muted);text-align:center;padding:40px 10px}
+
+  /* Cart */
+  .cart{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);display:flex;flex-direction:column;position:sticky;top:14px;
+    max-height:calc(100dvh - 190px);
+  }
+  .cart h3{margin:0;padding:12px 14px;border-bottom:1px solid var(--line);font-size:14px}
+  .cart-items{overflow:auto;flex:1;min-height:60px}
+  .ci{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--bg)}
+  .ci .cn{flex:1;min-width:0}
+  .ci .cn b{font-size:13.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ci .cn small{color:var(--muted);font-size:11.5px}
+  .stepper{display:flex;align-items:center;gap:4px}
+  .stepper button{width:28px;height:28px;border-radius:7px;border:1px solid var(--line);background:var(--bg);font-size:16px;font-weight:700}
+  .stepper span{min-width:24px;text-align:center;font-weight:600}
+  .ci .cst{width:72px;text-align:right;font-weight:600;font-size:13.5px}
+  .ci .rm{border:0;background:transparent;color:var(--danger);font-size:16px;padding:2px 4px}
+  .cart-foot{border-top:1px solid var(--line);padding:12px 14px}
+  .totrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+  .totrow .lbl{color:var(--muted);font-size:13px}
+  .totrow .amt{font-size:30px;font-weight:800;letter-spacing:-.5px}
+  .cart-foot .btn-primary{width:100%;font-size:17px;padding:14px}
+
+  /* ---------- generic table/list ---------- */
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--bg)}
+  .row:last-child{border-bottom:0}
+  .row .main{flex:1;min-width:0}
+  .row .main b{font-size:14.5px}
+  .row .main small{display:block;color:var(--muted);font-size:12px}
+  .row .rt{text-align:right;font-weight:600}
+  .tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
+  .tag-warn{background:var(--warn-bg);color:var(--warn)}
+  .tag-ok{background:var(--ok-bg);color:var(--ok)}
+  .tag-off{background:#eef1f4;color:var(--muted)}
+  .sec-title{font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:18px 2px 8px}
+  .sec-title:first-child{margin-top:0}
+
+  /* stat cards */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+  .stat .k{font-size:12px;color:var(--muted);font-weight:600}
+  .stat .v{font-size:24px;font-weight:800;margin-top:2px;letter-spacing:-.5px}
+
+  /* ---------- modal ---------- */
+  .backdrop{position:fixed;inset:0;background:rgba(9,12,18,.55);display:flex;align-items:flex-end;justify-content:center;z-index:50;padding:0}
+  @media(min-width:600px){.backdrop{align-items:center;padding:16px}}
+  .modal{
+    background:var(--surface);width:100%;max-width:480px;border-radius:18px 18px 0 0;
+    box-shadow:0 -8px 40px rgba(0,0,0,.3);max-height:92dvh;overflow:auto;
+    padding-bottom:calc(16px + env(safe-area-inset-bottom));
+  }
+  @media(min-width:600px){.modal{border-radius:18px}}
+  .modal h3{margin:0;padding:16px;border-bottom:1px solid var(--line);font-size:16px;display:flex;align-items:center}
+  .modal-body{padding:16px}
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:5px}
+  .field input,.field select{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+  .field.big input{font-size:26px;font-weight:800;text-align:right}
+  .quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+  .quick button{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:7px 12px;font-weight:600;font-size:13px}
+  .modal-foot{padding:14px 16px;display:flex;gap:10px}
+  .modal-foot .btn{flex:1}
+
+  /* receipt */
+  .receipt{font-variant-numeric:tabular-nums}
+  .receipt .rl{display:flex;justify-content:space-between;padding:3px 0;font-size:13.5px}
+  .receipt .rl.big{font-size:20px;font-weight:800;border-top:1px dashed var(--line);margin-top:8px;padding-top:10px}
+  .receipt .rl.sub{color:var(--muted);font-size:12.5px}
+  .rc-note{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:13px}
+
+  /* login */
+  .login{max-width:360px;margin:8vh auto;padding:0 16px}
+  .login .card{padding:22px}
+  .login h1{font-size:22px;margin:0 0 3px}
+  .login p.sub{color:var(--muted);margin:0 0 18px;font-size:13.5px}
+  .login .btn-primary{width:100%;margin-top:6px}
+  .login .switch{text-align:center;margin-top:14px;font-size:13.5px;color:var(--muted)}
+  .login .switch a{color:var(--primary);font-weight:600;text-decoration:none}
+  .msg{padding:10px 12px;border-radius:10px;font-size:13px;margin-bottom:12px}
+  .msg-err{background:var(--danger-bg);color:var(--danger)}
+  .msg-ok{background:var(--ok-bg);color:var(--ok)}
+
+  /* scanner */
+  #scanView{position:fixed;inset:0;background:#000;z-index:60;display:flex;flex-direction:column}
+  #scanView video{flex:1;object-fit:cover;width:100%}
+  .scan-bar{padding:14px;padding-top:calc(14px+env(safe-area-inset-top));display:flex;gap:10px;align-items:center;background:#000;color:#fff}
+  .scan-frame{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70%;max-width:320px;height:150px;border:3px solid rgba(255,255,255,.85);border-radius:14px;box-shadow:0 0 0 100vmax rgba(0,0,0,.35)}
+
+  .fab-note{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);
+    background:var(--ink);color:#fff;padding:11px 16px;border-radius:999px;font-size:13.5px;font-weight:600;
+    box-shadow:var(--shadow);z-index:40;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none}
+  .fab-note.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* segmented metode bayar */
+  .seg{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:4px;gap:4px;margin-bottom:16px}
+  .seg button{flex:1;border:0;background:transparent;padding:11px;border-radius:9px;font-weight:700;font-size:14px;color:var(--muted)}
+  .seg button.active{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(16,22,34,.12)}
+
+  /* pilih pelanggan */
+  .cust-results{margin-top:8px;display:flex;flex-direction:column;gap:6px;max-height:200px;overflow:auto}
+  .cust-opt{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;
+    background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600}
+  .cust-opt.sel{border-color:var(--primary);background:var(--ok-bg)}
+  .cust-empty{color:var(--muted);font-size:13px;padding:10px}
+
+  /* kartu status hutang */
+  .cust-card{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:6px}
+  .cust-card.over{border-color:var(--danger);background:var(--danger-bg)}
+  .cust-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:15px}
+  .cust-row{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;font-size:13.5px;color:var(--muted)}
+  .cust-row span:last-child{color:var(--text);font-weight:600}
+  .cust-row.big{font-size:15px;border-top:1px dashed var(--line);margin-top:6px;padding-top:8px}
+  .cust-row.big span:last-child{font-weight:800}
+  .cust-bar{height:7px;border-radius:4px;background:#d9dee6;overflow:hidden;margin:8px 0 4px}
+  .cust-bar>div{height:100%;border-radius:4px;transition:width .2s}
+
+  .pel-riwayat{margin-top:10px}
+  .pel-line{display:flex;justify-content:space-between;align-items:center;padding:8px 2px;border-bottom:1px solid var(--bg);font-size:13px}
+  .pel-line b{font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginScreen" class="login hidden">
+  <div class="card">
+    <h1>Kasir <span style="color:var(--primary)">Kelontong</span></h1>
+    <p class="sub" id="loginSub">Masuk untuk mulai berjualan.</p>
+    <div id="loginMsg"></div>
+    <div class="field"><label>Email</label><input id="liEmail" type="email" autocomplete="username" placeholder="nama@toko.com"></div>
+    <div class="field" id="liNamaField" style="display:none"><label>Nama kasir</label><input id="liNama" type="text" placeholder="Nama Anda"></div>
+    <div class="field"><label>Kata sandi</label><input id="liPass" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+    <button class="btn btn-primary" id="liBtn">Masuk</button>
+    <div class="switch">
+      <span id="liSwitchText">Belum punya akun?</span>
+      <a href="#" id="liSwitch">Daftar</a>
+    </div>
+    <div class="switch"><a href="#" id="liConfig" style="color:var(--muted)">Setelan koneksi</a></div>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app" class="hidden">
+  <header>
+    <div class="brand">Kasir<span>·</span>Kelontong</div>
+    <div class="grow"></div>
+    <span id="netPill" class="pill pill-online"><span class="dot"></span><span id="netTxt">Online</span></span>
+    <span id="queuePill" class="pill pill-queue hidden"><span class="dot"></span><span id="queueTxt">0 antre</span></span>
+    <div class="whoami"><b id="waName">—</b><span id="waRole">kasir</span></div>
+    <button class="iconbtn" id="logoutBtn" title="Keluar">⎋</button>
+  </header>
+
+  <nav>
+    <button data-tab="kasir" class="active"><span class="ic">🧾</span>Kasir</button>
+    <button data-tab="produk"><span class="ic">📦</span>Produk</button>
+    <button data-tab="pelanggan"><span class="ic">👤</span>Pelanggan</button>
+    <button data-tab="riwayat"><span class="ic">🕑</span>Riwayat</button>
+    <button data-tab="laporan" id="navLaporan"><span class="ic">📊</span>Laporan</button>
+  </nav>
+
+  <main>
+    <!-- KASIR -->
+    <section id="tab-kasir" class="view">
+      <div class="kasir-wrap">
+        <div>
+          <div class="searchbar">
+            <input id="prodSearch" placeholder="Cari nama / barcode…" inputmode="search">
+            <button class="btn-scan" id="scanBtn" title="Pindai barcode">📷</button>
+          </div>
+          <div id="prodList" class="prod-list"></div>
+          <div id="prodEmpty" class="empty hidden">Belum ada produk. Tambah dulu di tab <b>Produk</b>.</div>
+        </div>
+        <aside class="cart">
+          <h3>Keranjang</h3>
+          <div id="cartItems" class="cart-items"></div>
+          <div class="cart-foot">
+            <div class="totrow"><span class="lbl">Total</span><span class="amt num" id="cartTotal">Rp 0</span></div>
+            <button class="btn btn-primary" id="payBtn" disabled>Bayar</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- PRODUK -->
+    <section id="tab-produk" class="view hidden">
+      <div class="searchbar">
+        <input id="mgrSearch" placeholder="Cari produk…">
+        <button class="btn btn-primary" id="addProdBtn">+ Produk</button>
+      </div>
+      <div class="card" id="mgrList"></div>
+      <p id="mgrHint" class="empty hidden">Hanya <b>owner</b> yang bisa menambah / mengubah produk.</p>
+    </section>
+
+    <!-- PELANGGAN -->
+    <section id="tab-pelanggan" class="view hidden">
+      <div class="searchbar">
+        <input id="pelSearch" placeholder="Cari pelanggan…">
+        <button class="btn btn-primary" id="addPelBtn">+ Pelanggan</button>
+      </div>
+      <div class="card" id="pelList"></div>
+      <p id="pelHint" class="empty hidden">Hanya <b>owner</b> yang bisa menambah / mengubah data pelanggan. Kasir tetap bisa menerima pembayaran hutang.</p>
+    </section>
+
+    <!-- RIWAYAT -->
+    <section id="tab-riwayat" class="view hidden">
+      <div id="riwPerluCek"></div>
+      <div class="sec-title">Transaksi terakhir</div>
+      <div class="card" id="riwList"></div>
+    </section>
+
+    <!-- LAPORAN -->
+    <section id="tab-laporan" class="view hidden">
+      <div class="stats" id="lapStats"></div>
+      <div class="sec-title">Penjualan per hari</div>
+      <div class="card" id="lapHarian"></div>
+    </section>
+  </main>
+</div>
+
+<!-- scanner -->
+<div id="scanView" class="hidden">
+  <div class="scan-bar">
+    <button class="btn btn-ghost" id="scanClose">Tutup</button>
+    <div style="flex:1;text-align:center">Arahkan ke barcode</div>
+    <div style="width:64px"></div>
+  </div>
+  <div style="position:relative;flex:1;overflow:hidden">
+    <video id="scanVideo" playsinline muted></video>
+    <div class="scan-frame"></div>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+<div id="toast" class="fab-note"></div>
+
+<!-- Supabase JS dari CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+/* =====================================================================
+   KONFIGURASI SUPABASE
+   Isi dua nilai ini dari Supabase → Project Settings → API.
+   Aman ditaruh publik: anon key memang dirancang untuk browser, dan
+   keamanan sebenarnya dijaga oleh RLS + checkout() di server.
+   (Bisa juga diisi lewat "Setelan koneksi" di layar login — tersimpan
+   di localStorage sehingga tak perlu mengedit file ini.)
+===================================================================== */
+const DEFAULT_URL  = "";   // contoh: https://xxxx.supabase.co
+const DEFAULT_ANON = "";   // contoh: eyJhbGciOi...
+
+const cfg = {
+  url:  localStorage.getItem('sb_url')  || DEFAULT_URL,
+  anon: localStorage.getItem('sb_anon') || DEFAULT_ANON,
+};
+
+const fmtRp = n => 'Rp ' + Math.round(Number(n)||0).toLocaleString('id-ID');
+const uuid  = () => (crypto.randomUUID ? crypto.randomUUID()
+  : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
+      const r=Math.random()*16|0,v=c==='x'?r:(r&0x3|0x8);return v.toString(16);}));
+const $  = s => document.querySelector(s);
+const el = (t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+
+/* -------------------- IndexedDB kecil -------------------- */
+const DB_NAME='kasir-kelontong', DB_VER=2;
+let _db;
+function db(){
+  if(_db) return Promise.resolve(_db);
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(DB_NAME,DB_VER);
+    r.onupgradeneeded=e=>{
+      const d=e.target.result;
+      if(!d.objectStoreNames.contains('produk')) d.createObjectStore('produk',{keyPath:'id'});
+      if(!d.objectStoreNames.contains('outbox')) d.createObjectStore('outbox',{keyPath:'client_id'});
+      if(!d.objectStoreNames.contains('pelanggan')) d.createObjectStore('pelanggan',{keyPath:'id'});
+    };
+    r.onsuccess=e=>{_db=e.target.result;res(_db);};
+    r.onerror=()=>rej(r.error);
+  });
+}
+async function idbAll(store){
+  const d=await db();
+  return new Promise((res,rej)=>{const tx=d.transaction(store).objectStore(store).getAll();
+    tx.onsuccess=()=>res(tx.result||[]);tx.onerror=()=>rej(tx.error);});
+}
+async function idbPut(store,val){
+  const d=await db();
+  return new Promise((res,rej)=>{const tx=d.transaction(store,'readwrite');
+    tx.objectStore(store).put(val);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});
+}
+async function idbBulk(store,arr,clear){
+  const d=await db();
+  return new Promise((res,rej)=>{const tx=d.transaction(store,'readwrite');const os=tx.objectStore(store);
+    if(clear)os.clear();arr.forEach(v=>os.put(v));tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});
+}
+async function idbDel(store,key){
+  const d=await db();
+  return new Promise((res,rej)=>{const tx=d.transaction(store,'readwrite');
+    tx.objectStore(store).delete(key);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);});
+}
+
+/* -------------------- state -------------------- */
+let supa=null, session=null, me={nama:'',role:'kasir'};
+let produk=[];               // cache produk (dari IndexedDB / server)
+let pelanggan=[];            // cache pelanggan (untuk Bayar Nanti)
+let cart=[];                 // {id,nama,harga,qty,satuan}
+let currentTab='kasir';
+let payState={metode:'tunai',pelanggan:null};
+
+/* -------------------- toast -------------------- */
+let toastT;
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600);}
+
+/* =====================================================================
+   AUTH
+===================================================================== */
+function initSupa(){
+  if(!cfg.url||!cfg.anon) return false;
+  supa=window.supabase.createClient(cfg.url,cfg.anon,{auth:{persistSession:true,autoRefreshToken:true}});
+  return true;
+}
+
+async function boot(){
+  if(!initSupa()){ showLogin('Isi URL & anon key Supabase lewat "Setelan koneksi" dulu.'); openConfig(); return; }
+  const {data}=await supa.auth.getSession();
+  session=data.session;
+  if(session){ await afterLogin(); } else { showLogin(); }
+  supa.auth.onAuthStateChange((_e,s)=>{session=s;});
+}
+
+function showLogin(warn){
+  $('#app').classList.add('hidden');
+  $('#loginScreen').classList.remove('hidden');
+  if(warn) setLoginMsg(warn,'err');
+}
+
+let signupMode=false;
+$('#liSwitch').onclick=e=>{e.preventDefault();signupMode=!signupMode;
+  $('#liNamaField').style.display=signupMode?'block':'none';
+  $('#liBtn').textContent=signupMode?'Daftar':'Masuk';
+  $('#liSwitchText').textContent=signupMode?'Sudah punya akun?':'Belum punya akun?';
+  $('#liSwitch').textContent=signupMode?'Masuk':'Daftar';
+  $('#loginSub').textContent=signupMode?'Akun baru otomatis berperan kasir.':'Masuk untuk mulai berjualan.';
+  setLoginMsg('');
+};
+function setLoginMsg(t,kind){const m=$('#loginMsg');if(!t){m.innerHTML='';return;}
+  m.innerHTML=`<div class="msg msg-${kind==='ok'?'ok':'err'}">${t}</div>`;}
+
+$('#liBtn').onclick=async()=>{
+  const email=$('#liEmail').value.trim(), pass=$('#liPass').value;
+  if(!email||!pass){setLoginMsg('Email dan sandi wajib diisi.','err');return;}
+  $('#liBtn').disabled=true;
+  try{
+    if(signupMode){
+      const nama=$('#liNama').value.trim();
+      const {error}=await supa.auth.signUp({email,password:pass,options:{data:{nama}}});
+      if(error)throw error;
+      setLoginMsg('Akun dibuat. Silakan masuk. (Owner: set peran di SQL bila perlu.)','ok');
+      signupMode=false;$('#liSwitch').click();
+    }else{
+      const {error}=await supa.auth.signInWithPassword({email,password:pass});
+      if(error)throw error;
+      const {data}=await supa.auth.getSession();session=data.session;
+      await afterLogin();
+    }
+  }catch(err){setLoginMsg(err.message||'Gagal.','err');}
+  finally{$('#liBtn').disabled=false;}
+};
+
+async function afterLogin(){
+  $('#loginScreen').classList.add('hidden');
+  $('#app').classList.remove('hidden');
+  await loadProfile();
+  applyRoleUI();
+  await loadProdukCached();       // tampil cepat dari cache
+  refreshOnline();
+  if(navigator.onLine){ await syncProduk(); await syncPelanggan(); await flushOutbox(); }
+  renderAll();
+}
+
+async function loadProfile(){
+  try{
+    const {data}=await supa.from('profiles').select('nama,role').eq('id',session.user.id).single();
+    if(data){me.nama=data.nama||session.user.email;me.role=data.role||'kasir';}
+    else{me.nama=session.user.email;me.role='kasir';}
+  }catch{me.nama=session.user.email;me.role='kasir';}
+  $('#waName').textContent=me.nama;
+  $('#waRole').textContent=me.role;
+}
+function applyRoleUI(){
+  const owner=me.role==='owner';
+  $('#navLaporan').classList.toggle('hidden',!owner);
+  $('#addProdBtn').classList.toggle('hidden',!owner);
+  $('#mgrHint').classList.toggle('hidden',owner);
+  $('#addPelBtn').classList.toggle('hidden',!owner);
+  $('#pelHint').classList.toggle('hidden',owner);
+}
+
+$('#logoutBtn').onclick=async()=>{ await supa.auth.signOut(); location.reload(); };
+
+/* =====================================================================
+   PRODUK — cache & sync
+===================================================================== */
+async function loadProdukCached(){ produk=await idbAll('produk'); pelanggan=await idbAll('pelanggan'); }
+async function syncProduk(){
+  try{
+    const {data,error}=await supa.from('produk').select('*').eq('aktif',true).order('nama');
+    if(error)throw error;
+    produk=data;
+    await idbBulk('produk',data,true);
+  }catch(err){ /* offline: pakai cache */ }
+}
+async function syncPelanggan(){
+  try{
+    const {data,error}=await supa.from('pelanggan').select('*').eq('aktif',true).order('nama');
+    if(error)throw error;
+    pelanggan=data;
+    await idbBulk('pelanggan',data,true);
+  }catch(err){ /* offline: pakai cache */ }
+}
+
+/* =====================================================================
+   KASIR — pencarian, keranjang
+===================================================================== */
+function renderProdList(term){
+  const box=$('#prodList');box.innerHTML='';
+  term=(term||'').trim().toLowerCase();
+  let list=produk;
+  if(term) list=produk.filter(p=>p.nama.toLowerCase().includes(term)||(p.barcode||'').toLowerCase()===term);
+  $('#prodEmpty').classList.toggle('hidden',produk.length>0);
+  list.slice(0,60).forEach(p=>{
+    const low=Number(p.stok)<=0;
+    const c=el('button','prod-card');
+    c.innerHTML=`<div class="pn">${escapeHtml(p.nama)}</div>
+      <div class="ps ${low?'low':''}">Stok ${fmtNum(p.stok)} ${escapeHtml(p.satuan)}</div>
+      <div class="pp num">${fmtRp(p.harga_jual)}</div>`;
+    c.onclick=()=>addToCart(p);
+    box.appendChild(c);
+  });
+}
+function fmtNum(n){n=Number(n);return Number.isInteger(n)?n:n.toFixed(2);}
+function escapeHtml(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function addToCart(p){
+  const found=cart.find(c=>c.id===p.id);
+  if(found)found.qty++;
+  else cart.push({id:p.id,nama:p.nama,harga:Number(p.harga_jual),qty:1,satuan:p.satuan});
+  renderCart();toast(p.nama+' ditambahkan');
+}
+function renderCart(){
+  const box=$('#cartItems');box.innerHTML='';
+  if(!cart.length){box.appendChild(el('div','empty','Keranjang kosong.<br>Ketuk produk untuk menambah.'));}
+  cart.forEach(it=>{
+    const r=el('div','ci');
+    r.innerHTML=`<div class="cn"><b>${escapeHtml(it.nama)}</b><small class="num">${fmtRp(it.harga)}</small></div>
+      <div class="stepper"><button data-a="dec">–</button><span class="num">${it.qty}</span><button data-a="inc">+</button></div>
+      <div class="cst num">${fmtRp(it.harga*it.qty)}</div>
+      <button class="rm" data-a="rm">✕</button>`;
+    r.querySelector('[data-a=inc]').onclick=()=>{it.qty++;renderCart();};
+    r.querySelector('[data-a=dec]').onclick=()=>{it.qty--;if(it.qty<=0)cart=cart.filter(x=>x!==it);renderCart();};
+    r.querySelector('[data-a=rm]').onclick=()=>{cart=cart.filter(x=>x!==it);renderCart();};
+    box.appendChild(r);
+  });
+  const total=cart.reduce((s,i)=>s+i.harga*i.qty,0);
+  $('#cartTotal').textContent=fmtRp(total);
+  $('#payBtn').disabled=cart.length===0;
+}
+
+$('#prodSearch').addEventListener('input',e=>renderProdList(e.target.value));
+
+/* =====================================================================
+   BAYAR + CHECKOUT (+ outbox offline)
+===================================================================== */
+$('#payBtn').onclick=openPayModal;
+function payConfirmBtn(){ return $('#modalRoot .modal-foot .btn-primary'); }
+
+function openPayModal(){
+  const total=cart.reduce((s,i)=>s+i.harga*i.qty,0);
+  payState={metode:'tunai',pelanggan:null};
+  modal('Pembayaran',`
+    <div class="seg" id="metodeSeg">
+      <button data-m="tunai" class="active">💵 Tunai</button>
+      <button data-m="hutang">🧾 Bayar Nanti</button>
+    </div>
+
+    <div id="payTunai">
+      <div class="field big"><label>Uang diterima</label>
+        <input id="payInput" inputmode="numeric" class="num" value="${total}"></div>
+      <div class="quick" id="payQuick"></div>
+      <div class="totrow"><span class="lbl">Kembalian</span>
+        <span class="amt num" id="payKembali" style="font-size:22px;color:var(--primary)">Rp 0</span></div>
+    </div>
+
+    <div id="payHutang" class="hidden">
+      <div class="field"><label>Pelanggan</label>
+        <input id="custSearch" placeholder="Cari nama pelanggan…" autocomplete="off">
+        <div id="custResults" class="cust-results"></div>
+      </div>
+      <div id="custStatus"></div>
+    </div>
+
+    <div class="totrow" style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px">
+      <span class="lbl">Total belanja</span>
+      <span class="amt num" style="font-size:22px">${fmtRp(total)}</span></div>
+  `,[
+    {label:'Batal',cls:'btn-ghost',close:true},
+    {label:'Selesaikan',cls:'btn-primary',onClick:()=>{
+      if(payState.metode==='tunai'){
+        doCheckout(total,parseInt($('#payInput').value||'0',10),'tunai',null);
+      }else{
+        if(!payState.pelanggan){toast('Pilih pelanggan dulu.');return;}
+        doCheckout(total,0,'hutang',payState.pelanggan);
+      }
+    }}
+  ]);
+
+  // --- toggle metode ---
+  $('#metodeSeg').querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{
+      payState.metode=b.dataset.m;
+      $('#metodeSeg').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));
+      $('#payTunai').classList.toggle('hidden',payState.metode!=='tunai');
+      $('#payHutang').classList.toggle('hidden',payState.metode!=='hutang');
+      updateConfirm(total);
+      if(payState.metode==='hutang')$('#custSearch').focus();
+    };
+  });
+
+  // --- tunai: input & nominal cepat ---
+  const inp=$('#payInput');
+  const updTunai=()=>{const bayar=parseInt(inp.value||'0',10);$('#payKembali').textContent=fmtRp(Math.max(0,bayar-total));};
+  inp.addEventListener('input',()=>{updTunai();updateConfirm(total);});
+  inp.focus();inp.select();
+  const nominal=[total,Math.ceil(total/1000)*1000,Math.ceil(total/5000)*5000,Math.ceil(total/10000)*10000,Math.ceil(total/50000)*50000,100000];
+  const seen=new Set();const q=$('#payQuick');
+  nominal.forEach(n=>{if(seen.has(n)||n<total)return;seen.add(n);
+    const b=el('button',null,n===total?'Uang pas':fmtRp(n));
+    b.onclick=()=>{inp.value=n;updTunai();updateConfirm(total);};q.appendChild(b);});
+  updTunai();
+
+  // --- hutang: pencarian pelanggan ---
+  const cs=$('#custSearch');
+  cs.addEventListener('input',()=>renderCustResults(cs.value,total));
+  renderCustResults('',total);
+  updateConfirm(total);
+}
+
+function renderCustResults(term,total){
+  const box=$('#custResults');if(!box)return;box.innerHTML='';
+  term=(term||'').trim().toLowerCase();
+  let list=pelanggan.filter(p=>!term||p.nama.toLowerCase().includes(term));
+  if(!pelanggan.length){box.innerHTML='<div class="cust-empty">Belum ada pelanggan. Tambahkan di tab Pelanggan.</div>';return;}
+  list.slice(0,8).forEach(p=>{
+    const r=el('button','cust-opt'+(payState.pelanggan&&payState.pelanggan.id===p.id?' sel':''));
+    r.innerHTML=`<span>${escapeHtml(p.nama)}</span><span class="num" style="color:var(--muted)">${fmtRp(p.saldo_hutang)}</span>`;
+    r.onclick=()=>{payState.pelanggan=p;renderCustResults(term,total);renderCustStatus(total);updateConfirm(total);};
+    box.appendChild(r);
+  });
+}
+
+function renderCustStatus(total){
+  const box=$('#custStatus');if(!box)return;
+  const p=payState.pelanggan;
+  if(!p){box.innerHTML='';return;}
+  const saldo=Number(p.saldo_hutang), limit=Number(p.limit_hutang), baru=saldo+total;
+  const noLimit=limit<=0;
+  const over=!noLimit && baru>limit;
+  const sisa=noLimit?null:Math.max(0,limit-saldo);
+  const pct=noLimit?0:Math.min(100,Math.round(baru/limit*100));
+  box.innerHTML=`
+    <div class="cust-card ${over?'over':''}">
+      <div class="cust-head"><b>${escapeHtml(p.nama)}</b>${p.telp?`<span class="num">${escapeHtml(p.telp)}</span>`:''}</div>
+      <div class="cust-row"><span>Hutang berjalan</span><span class="num">${fmtRp(saldo)}</span></div>
+      <div class="cust-row"><span>Limit</span><span class="num">${noLimit?'Tanpa batas':fmtRp(limit)}</span></div>
+      ${noLimit?'':`<div class="cust-bar"><div style="width:${pct}%;background:${over?'var(--danger)':'var(--primary)'}"></div></div>`}
+      <div class="cust-row big"><span>Hutang setelah transaksi</span>
+        <span class="num" style="color:${over?'var(--danger)':'var(--text)'}">${fmtRp(baru)}</span></div>
+      ${noLimit?'':`<div class="cust-row"><span>Sisa limit sebelum transaksi</span><span class="num">${fmtRp(sisa)}</span></div>`}
+      ${over?`<div class="rc-note" style="background:var(--danger-bg);color:var(--danger);margin-top:8px">
+        ⚠ Melebihi limit sebesar ${fmtRp(baru-limit)}. Anda tetap bisa melanjutkan (keputusan kasir); transaksi akan ditandai <b>perlu dicek</b> untuk owner.</div>`:''}
+    </div>`;
+}
+
+function updateConfirm(total){
+  const btn=payConfirmBtn();if(!btn)return;
+  if(payState.metode==='tunai'){
+    btn.textContent='Selesaikan';btn.disabled=false;
+    btn.style.background='';
+  }else{
+    const p=payState.pelanggan;
+    if(!p){btn.textContent='Pilih pelanggan';btn.disabled=true;return;}
+    btn.disabled=false;
+    const over=Number(p.limit_hutang)>0 && (Number(p.saldo_hutang)+total)>Number(p.limit_hutang);
+    btn.textContent=over?'Lewati limit & catat hutang':'Catat sebagai hutang';
+    btn.style.background=over?'var(--danger)':'';
+  }
+}
+
+async function doCheckout(total,bayar,metode,cust){
+  metode=metode||'tunai';
+  if(metode==='tunai' && bayar<total){toast('Uang bayar kurang dari total.');return;}
+  if(metode==='hutang' && !cust){toast('Pilih pelanggan dulu.');return;}
+  closeModal();
+  const client_id=uuid();
+  const items=cart.map(i=>({produk_id:i.id,qty:i.qty,harga_quote:i.harga}));
+  const saldoBaru=cust?Number(cust.saldo_hutang)+total:null;
+  const snapshot={client_id,waktu:new Date().toISOString(),kasir:me.nama,metode,
+    pelanggan:cust?{id:cust.id,nama:cust.nama}:null, saldo_baru:saldoBaru,
+    items:cart.map(i=>({nama:i.nama,qty:i.qty,harga:i.harga,subtotal:i.harga*i.qty})),
+    total,bayar:metode==='hutang'?0:bayar,kembalian:metode==='hutang'?0:bayar-total};
+
+  // Optimistik: kurangi stok, dan untuk hutang naikkan saldo pelanggan di cache.
+  cart.forEach(i=>{const p=produk.find(x=>x.id===i.id);if(p)p.stok=Number(p.stok)-i.qty;});
+  await idbBulk('produk',produk,true);
+  if(metode==='hutang'){
+    const p=pelanggan.find(x=>x.id===cust.id);
+    if(p){p.saldo_hutang=Number(p.saldo_hutang)+total;await idbBulk('pelanggan',pelanggan,true);}
+  }
+
+  let result=null, queued=false;
+  if(navigator.onLine){
+    try{
+      const {data,error}=await supa.rpc('checkout',
+        {p_client_id:client_id,p_bayar:snapshot.bayar,p_offline:false,p_items:items,
+         p_metode:metode,p_pelanggan_id:cust?cust.id:null});
+      if(error)throw error;
+      result=data;
+    }catch(err){ queued=true; }
+  }else queued=true;
+
+  if(queued){
+    await idbPut('outbox',{client_id,p_bayar:snapshot.bayar,p_items:items,
+      p_metode:metode,p_pelanggan_id:cust?cust.id:null,snapshot});
+    updateQueuePill();
+  }
+  cart=[];renderCart();renderProdList($('#prodSearch').value);
+  showReceipt(snapshot,queued,result);
+  if(navigator.onLine&&queued) flushOutbox();
+}
+
+function showReceipt(snap,queued,result){
+  const perluCek=result&&result.perlu_cek;
+  const hutang=snap.metode==='hutang';
+  const rows=snap.items.map(i=>`<div class="rl"><span>${escapeHtml(i.nama)} <span class="num">×${i.qty}</span></span><span class="num">${fmtRp(i.subtotal)}</span></div>`).join('');
+  let note='';
+  if(queued) note=`<div class="rc-note" style="background:var(--warn-bg);color:var(--warn)">⏳ Tersimpan di antrean. Akan otomatis dikirim ke server saat online.</div>`;
+  else if(perluCek) note=`<div class="rc-note" style="background:var(--warn-bg);color:var(--warn)">⚠ Tercatat, tapi <b>perlu dicek</b> (${escapeHtml(result.catatan_cek||'stok/harga/limit')}). Owner bisa lihat di Riwayat.</div>`;
+  else note=`<div class="rc-note" style="background:var(--ok-bg);color:var(--ok)">✓ Transaksi tersimpan ke server.</div>`;
+  const foot = hutang
+    ? `<div class="rl big"><span>Total hutang</span><span class="num">${fmtRp(snap.total)}</span></div>
+       <div class="rl"><span>Pelanggan</span><span>${escapeHtml(snap.pelanggan?snap.pelanggan.nama:'-')}</span></div>
+       ${snap.saldo_baru!=null?`<div class="rl"><span>Total hutang berjalan</span><span class="num" style="color:var(--danger)">${fmtRp(snap.saldo_baru)}</span></div>`:''}`
+    : `<div class="rl big"><span>Total</span><span class="num">${fmtRp(snap.total)}</span></div>
+       <div class="rl"><span>Bayar</span><span class="num">${fmtRp(snap.bayar)}</span></div>
+       <div class="rl"><span>Kembali</span><span class="num">${fmtRp(snap.kembalian)}</span></div>`;
+  modal(hutang?'Struk · Bayar Nanti':'Struk',`<div class="receipt">
+    <div class="rl sub"><span>${new Date(snap.waktu).toLocaleString('id-ID')}</span><span>${escapeHtml(snap.kasir)}</span></div>
+    ${hutang?'<div class="tag tag-warn" style="display:inline-block;margin:4px 0">BAYAR NANTI / HUTANG</div>':''}
+    <div style="border-top:1px dashed var(--line);margin:8px 0"></div>
+    ${rows}
+    ${foot}
+    ${note}
+  </div>`,[{label:'Transaksi baru',cls:'btn-primary',close:true}]);
+}
+
+/* -------------------- OUTBOX: kirim antrean saat online -------------------- */
+let flushing=false;
+async function flushOutbox(){
+  if(flushing||!navigator.onLine||!supa) return;
+  flushing=true;
+  try{
+    const queue=await idbAll('outbox');
+    for(const q of queue){
+      try{
+        const {error}=await supa.rpc('checkout',
+          {p_client_id:q.client_id,p_bayar:q.p_bayar,p_offline:true,p_items:q.p_items,
+           p_metode:q.p_metode||'tunai',p_pelanggan_id:q.p_pelanggan_id||null});
+        if(error)throw error;
+        await idbDel('outbox',q.client_id);   // sukses & idempoten → hapus dari antrean
+      }catch(err){ break; } // gagal (mis. sinyal putus lagi) → hentikan, coba lagi nanti
+    }
+  }finally{
+    flushing=false;updateQueuePill();
+    if(navigator.onLine){ await syncProduk(); await syncPelanggan(); if(currentTab!=='kasir') renderAll(); else renderProdList($('#prodSearch').value); }
+  }
+}
+async function updateQueuePill(){
+  const q=await idbAll('outbox');
+  const pill=$('#queuePill');
+  if(q.length){pill.classList.remove('hidden');$('#queueTxt').textContent=q.length+' antre';}
+  else pill.classList.add('hidden');
+}
+
+/* -------------------- konektivitas -------------------- */
+function refreshOnline(){
+  const on=navigator.onLine;const pill=$('#netPill');
+  pill.className='pill '+(on?'pill-online':'pill-offline');
+  $('#netTxt').textContent=on?'Online':'Offline';
+  updateQueuePill();
+}
+window.addEventListener('online',async()=>{refreshOnline();toast('Kembali online — menyinkronkan…');await syncProduk();await syncPelanggan();await flushOutbox();});
+window.addEventListener('offline',()=>{refreshOnline();toast('Mode offline aktif.');});
+setInterval(()=>{ if(navigator.onLine) flushOutbox(); },30000); // jaring pengaman tiap 30 dtk
+
+/* =====================================================================
+   PRODUK (manajemen)
+===================================================================== */
+$('#mgrSearch').addEventListener('input',e=>renderMgr(e.target.value));
+$('#addProdBtn').onclick=()=>editProduk(null);
+
+function renderMgr(term){
+  const box=$('#mgrList');box.innerHTML='';term=(term||'').trim().toLowerCase();
+  const owner=me.role==='owner';
+  let list=produk;if(term)list=produk.filter(p=>p.nama.toLowerCase().includes(term));
+  if(!list.length){box.appendChild(el('div','empty','Tidak ada produk.'));return;}
+  list.forEach(p=>{
+    const low=Number(p.stok)<=0;
+    const r=el('div','row');
+    r.innerHTML=`<div class="main"><b>${escapeHtml(p.nama)}</b>
+      <small>Stok <span class="num ${low?'':''}" style="${low?'color:var(--danger)':''}">${fmtNum(p.stok)}</span> ${escapeHtml(p.satuan)}
+      · beli ${fmtRp(p.harga_beli)}${p.barcode?' · '+escapeHtml(p.barcode):''}</small></div>
+      <div class="rt num">${fmtRp(p.harga_jual)}</div>`;
+    if(owner){r.style.cursor='pointer';r.onclick=()=>editProduk(p);}
+    box.appendChild(r);
+  });
+}
+
+function editProduk(p){
+  if(me.role!=='owner'){toast('Hanya owner yang bisa mengubah produk.');return;}
+  const isNew=!p;p=p||{nama:'',barcode:'',satuan:'pcs',harga_beli:0,harga_jual:0,stok:0};
+  const body=`
+    <div class="field"><label>Nama produk</label><input id="fNama" value="${escapeHtml(p.nama)}"></div>
+    <div class="field"><label>Barcode (opsional)</label><input id="fBarcode" value="${escapeHtml(p.barcode||'')}"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="field"><label>Satuan</label><input id="fSatuan" value="${escapeHtml(p.satuan)}"></div>
+      <div class="field"><label>Stok</label><input id="fStok" inputmode="decimal" class="num" value="${p.stok}"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="field"><label>Harga beli</label><input id="fBeli" inputmode="numeric" class="num" value="${p.harga_beli}"></div>
+      <div class="field"><label>Harga jual</label><input id="fJual" inputmode="numeric" class="num" value="${p.harga_jual}"></div>
+    </div>`;
+  const buttons=[{label:'Batal',cls:'btn-ghost',close:true},
+    {label:isNew?'Tambah':'Simpan',cls:'btn-primary',onClick:()=>saveProduk(isNew?null:p.id)}];
+  if(!isNew)buttons.splice(1,0,{label:'Hapus',cls:'btn-ghost',onClick:()=>delProduk(p.id),style:'color:var(--danger)'});
+  modal(isNew?'Produk baru':'Ubah produk',body,buttons);
+}
+async function saveProduk(id){
+  const row={
+    nama:$('#fNama').value.trim(),
+    barcode:$('#fBarcode').value.trim()||null,
+    satuan:$('#fSatuan').value.trim()||'pcs',
+    stok:parseFloat($('#fStok').value||'0'),
+    harga_beli:parseFloat($('#fBeli').value||'0'),
+    harga_jual:parseFloat($('#fJual').value||'0'),
+  };
+  if(!row.nama){toast('Nama wajib diisi.');return;}
+  try{
+    if(id){const {error}=await supa.from('produk').update(row).eq('id',id);if(error)throw error;}
+    else{const {error}=await supa.from('produk').insert(row);if(error)throw error;}
+    closeModal();await syncProduk();renderAll();toast('Produk tersimpan.');
+  }catch(err){toast('Gagal: '+(err.message||'')); }
+}
+async function delProduk(id){
+  if(!confirm('Nonaktifkan produk ini?'))return;
+  try{const {error}=await supa.from('produk').update({aktif:false}).eq('id',id);if(error)throw error;
+    closeModal();await syncProduk();renderAll();toast('Produk dinonaktifkan.');
+  }catch(err){toast('Gagal: '+(err.message||''));}
+}
+
+/* =====================================================================
+   PELANGGAN + HUTANG
+===================================================================== */
+$('#pelSearch').addEventListener('input',e=>renderPelanggan(e.target.value));
+$('#addPelBtn').onclick=()=>editPelanggan(null);
+
+function renderPelanggan(term){
+  const box=$('#pelList');box.innerHTML='';term=(term||'').trim().toLowerCase();
+  let list=pelanggan.filter(p=>!term||p.nama.toLowerCase().includes(term));
+  if(!list.length){box.appendChild(el('div','empty','Belum ada pelanggan.'));return;}
+  // urutkan: yang punya hutang di atas
+  list.sort((a,b)=>Number(b.saldo_hutang)-Number(a.saldo_hutang));
+  list.forEach(p=>{
+    const saldo=Number(p.saldo_hutang),limit=Number(p.limit_hutang);
+    const noLimit=limit<=0, over=!noLimit&&saldo>limit;
+    const pct=noLimit?0:Math.min(100,Math.round(saldo/limit*100));
+    const r=el('div','row');r.style.cursor='pointer';
+    r.innerHTML=`<div class="main"><b>${escapeHtml(p.nama)}</b>
+      <small>${p.telp?escapeHtml(p.telp)+' · ':''}limit ${noLimit?'tanpa batas':fmtRp(limit)}</small>
+      ${noLimit?'':`<div class="cust-bar" style="margin-top:6px"><div style="width:${pct}%;background:${over?'var(--danger)':'var(--primary)'}"></div></div>`}</div>
+      <div class="rt"><small style="color:var(--muted)">hutang</small><br>
+        <span class="num" style="font-weight:700;color:${saldo>0?'var(--danger)':'var(--muted)'}">${fmtRp(saldo)}</span></div>`;
+    r.onclick=()=>openPelanggan(p.id);
+    box.appendChild(r);
+  });
+}
+
+function openPelanggan(id){
+  const p=pelanggan.find(x=>x.id===id);if(!p)return;
+  const saldo=Number(p.saldo_hutang),limit=Number(p.limit_hutang),noLimit=limit<=0;
+  const owner=me.role==='owner';
+  modal(escapeHtml(p.nama),`
+    <div class="cust-card">
+      ${p.telp?`<div class="cust-row"><span>Telepon</span><span class="num">${escapeHtml(p.telp)}</span></div>`:''}
+      <div class="cust-row"><span>Hutang berjalan</span><span class="num" style="font-weight:700;color:${saldo>0?'var(--danger)':'var(--muted)'}">${fmtRp(saldo)}</span></div>
+      <div class="cust-row"><span>Limit hutang</span><span class="num">${noLimit?'Tanpa batas':fmtRp(limit)}</span></div>
+    </div>
+    <div id="pelRiwayat" class="pel-riwayat"><div class="empty" style="padding:14px">Memuat riwayat…</div></div>
+  `,[
+    {label:'Tutup',cls:'btn-ghost',close:true},
+    ...(owner?[{label:'Ubah',cls:'btn-ghost',onClick:()=>{closeModal();editPelanggan(p);}}]:[]),
+    ...(saldo>0?[{label:'Terima bayar',cls:'btn-primary',onClick:()=>{closeModal();bayarHutangModal(p);}}]:[])
+  ]);
+  loadPelRiwayat(id);
+}
+
+async function loadPelRiwayat(id){
+  const box=$('#pelRiwayat');if(!box)return;
+  if(!navigator.onLine){box.innerHTML='<div class="empty" style="padding:14px">Riwayat butuh koneksi.</div>';return;}
+  try{
+    const {data:trx}=await supa.from('transaksi')
+      .select('id,tanggal,total,perlu_cek').eq('pelanggan_id',id).eq('metode','hutang')
+      .order('tanggal',{ascending:false}).limit(20);
+    const {data:bay}=await supa.from('pembayaran_hutang')
+      .select('tanggal,jumlah').eq('pelanggan_id',id)
+      .order('tanggal',{ascending:false}).limit(20);
+    const rows=[
+      ...(trx||[]).map(t=>({t:t.tanggal,label:'Hutang',amt:Number(t.total),neg:false,cek:t.perlu_cek})),
+      ...(bay||[]).map(b=>({t:b.tanggal,label:'Bayar',amt:Number(b.jumlah),neg:true}))
+    ].sort((a,b)=>new Date(b.t)-new Date(a.t)).slice(0,25);
+    box.innerHTML='<div class="sec-title" style="margin:6px 2px">Riwayat hutang & pembayaran</div>';
+    if(!rows.length){box.innerHTML+='<div class="empty" style="padding:10px">Belum ada.</div>';return;}
+    rows.forEach(r=>{
+      const line=el('div','pel-line');
+      line.innerHTML=`<span>${new Date(r.t).toLocaleDateString('id-ID',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}
+        <b style="color:${r.neg?'var(--primary)':'var(--danger)'}">${r.label}</b>${r.cek?' <span class="tag tag-warn">cek</span>':''}</span>
+        <span class="num">${r.neg?'−':'+'}${fmtRp(r.amt)}</span>`;
+      box.appendChild(line);
+    });
+  }catch(err){box.innerHTML='<div class="empty" style="padding:14px">Gagal memuat riwayat.</div>';}
+}
+
+function bayarHutangModal(p){
+  const saldo=Number(p.saldo_hutang);
+  modal('Terima pembayaran hutang',`
+    <div class="cust-card"><div class="cust-row"><span>${escapeHtml(p.nama)} — sisa hutang</span>
+      <span class="num" style="font-weight:700;color:var(--danger)">${fmtRp(saldo)}</span></div></div>
+    <div class="field big"><label>Jumlah dibayar</label>
+      <input id="bhInput" inputmode="numeric" class="num" value="${saldo}"></div>
+    <div class="quick" id="bhQuick"></div>
+    <div class="field"><label>Catatan (opsional)</label><input id="bhCatatan" placeholder="mis. cicilan"></div>
+    <div class="totrow"><span class="lbl">Sisa setelah bayar</span>
+      <span class="amt num" id="bhSisa" style="font-size:20px">Rp 0</span></div>
+  `,[
+    {label:'Batal',cls:'btn-ghost',close:true},
+    {label:'Simpan pembayaran',cls:'btn-primary',onClick:()=>submitBayarHutang(p.id)}
+  ]);
+  const inp=$('#bhInput');
+  const upd=()=>{const j=parseInt(inp.value||'0',10);$('#bhSisa').textContent=fmtRp(Math.max(0,saldo-j));};
+  inp.addEventListener('input',upd);inp.focus();inp.select();
+  const q=$('#bhQuick');
+  [['Lunasi',saldo],['50rb',50000],['100rb',100000]].forEach(([lbl,n])=>{
+    if(n>saldo&&lbl!=='Lunasi')return;
+    const b=el('button',null,lbl);b.onclick=()=>{inp.value=Math.min(n,saldo);upd();};q.appendChild(b);
+  });
+  upd();
+}
+
+async function submitBayarHutang(id){
+  if(!navigator.onLine){toast('Pembayaran hutang perlu koneksi internet.');return;}
+  const jumlah=parseInt($('#bhInput').value||'0',10);
+  const catatan=$('#bhCatatan').value.trim()||null;
+  if(jumlah<=0){toast('Jumlah tidak valid.');return;}
+  try{
+    const {data,error}=await supa.rpc('bayar_hutang',{p_pelanggan_id:id,p_jumlah:jumlah,p_catatan:catatan});
+    if(error)throw error;
+    closeModal();await syncPelanggan();renderPelanggan($('#pelSearch').value);
+    toast('Pembayaran tercatat. Sisa hutang '+fmtRp(data.saldo_hutang));
+  }catch(err){toast('Gagal: '+(err.message||''));}
+}
+
+function editPelanggan(p){
+  if(me.role!=='owner'){toast('Hanya owner yang bisa mengubah pelanggan.');return;}
+  const isNew=!p;p=p||{nama:'',telp:'',limit_hutang:0};
+  const body=`
+    <div class="field"><label>Nama pelanggan</label><input id="peNama" value="${escapeHtml(p.nama)}"></div>
+    <div class="field"><label>Telepon (opsional)</label><input id="peTelp" value="${escapeHtml(p.telp||'')}"></div>
+    <div class="field"><label>Limit hutang (0 = tanpa batas)</label><input id="peLimit" inputmode="numeric" class="num" value="${p.limit_hutang}"></div>
+    ${isNew?'':`<p style="font-size:12.5px;color:var(--muted)">Saldo hutang berjalan: <b>${fmtRp(p.saldo_hutang)}</b> (berubah otomatis lewat transaksi & pembayaran).</p>`}`;
+  const buttons=[{label:'Batal',cls:'btn-ghost',close:true},
+    {label:isNew?'Tambah':'Simpan',cls:'btn-primary',onClick:()=>savePelanggan(isNew?null:p.id)}];
+  if(!isNew)buttons.splice(1,0,{label:'Nonaktifkan',cls:'btn-ghost',onClick:()=>delPelanggan(p.id),style:'color:var(--danger)'});
+  modal(isNew?'Pelanggan baru':'Ubah pelanggan',body,buttons);
+}
+async function savePelanggan(id){
+  const row={nama:$('#peNama').value.trim(),telp:$('#peTelp').value.trim()||null,
+    limit_hutang:parseFloat($('#peLimit').value||'0')};
+  if(!row.nama){toast('Nama wajib diisi.');return;}
+  try{
+    if(id){const {error}=await supa.from('pelanggan').update(row).eq('id',id);if(error)throw error;}
+    else{const {error}=await supa.from('pelanggan').insert(row);if(error)throw error;}
+    closeModal();await syncPelanggan();renderPelanggan($('#pelSearch').value);toast('Pelanggan tersimpan.');
+  }catch(err){toast('Gagal: '+(err.message||''));}
+}
+async function delPelanggan(id){
+  const p=pelanggan.find(x=>x.id===id);
+  if(p&&Number(p.saldo_hutang)>0){toast('Tak bisa dinonaktifkan: masih ada hutang berjalan.');return;}
+  if(!confirm('Nonaktifkan pelanggan ini?'))return;
+  try{const {error}=await supa.from('pelanggan').update({aktif:false}).eq('id',id);if(error)throw error;
+    closeModal();await syncPelanggan();renderPelanggan($('#pelSearch').value);toast('Pelanggan dinonaktifkan.');
+  }catch(err){toast('Gagal: '+(err.message||''));}
+}
+
+/* =====================================================================
+   RIWAYAT
+===================================================================== */
+async function renderRiwayat(){
+  const perlu=$('#riwPerluCek');perlu.innerHTML='';
+  const box=$('#riwList');box.innerHTML='<div class="empty">Memuat…</div>';
+  if(!navigator.onLine){box.innerHTML='<div class="empty">Riwayat butuh koneksi. Sedang offline.</div>';return;}
+  try{
+    const {data,error}=await supa.from('transaksi')
+      .select('id,tanggal,total,bayar,kembalian,offline,perlu_cek,catatan_cek,metode,pelanggan:pelanggan_id(nama)')
+      .order('tanggal',{ascending:false}).limit(60);
+    if(error)throw error;
+
+    // Perlu dicek (owner)
+    if(me.role==='owner'){
+      const cek=data.filter(t=>t.perlu_cek);
+      if(cek.length){
+        perlu.innerHTML='<div class="sec-title">Perlu dicek</div>';
+        const c=el('div','card');
+        cek.forEach(t=>{
+          const r=el('div','row');
+          r.innerHTML=`<div class="main"><b>${fmtRp(t.total)}</b>
+            <small>${new Date(t.tanggal).toLocaleString('id-ID')}</small>
+            <small style="color:var(--warn)">${escapeHtml(t.catatan_cek||'')}</small></div>
+            <button class="tag tag-ok" style="border:0" data-id="${t.id}">Sudah dicek</button>`;
+          r.querySelector('button').onclick=async(e)=>{e.stopPropagation();
+            await supa.from('transaksi').update({perlu_cek:false}).eq('id',t.id);renderRiwayat();};
+          r.onclick=()=>openTrx(t.id);
+          c.appendChild(r);
+        });
+        perlu.appendChild(c);
+      }
+    }
+
+    box.innerHTML='';
+    if(!data.length){box.innerHTML='<div class="empty">Belum ada transaksi.</div>';return;}
+    data.forEach(t=>{
+      const r=el('div','row');r.style.cursor='pointer';
+      const hutang=t.metode==='hutang';
+      const tags=[];
+      if(hutang)tags.push('<span class="tag tag-warn">hutang</span>');
+      if(t.offline)tags.push('<span class="tag tag-off">offline</span>');
+      if(t.perlu_cek)tags.push('<span class="tag tag-warn">perlu cek</span>');
+      r.innerHTML=`<div class="main"><b class="num">${fmtRp(t.total)}</b>
+        <small>${new Date(t.tanggal).toLocaleString('id-ID')} ${tags.join(' ')}</small>
+        ${hutang&&t.pelanggan?`<small>👤 ${escapeHtml(t.pelanggan.nama)}</small>`:''}</div>
+        <div class="rt"><small style="color:var(--muted)">${hutang?'hutang':'bayar'}</small><br>
+          <span class="num">${fmtRp(hutang?t.total:t.bayar)}</span></div>`;
+      r.onclick=()=>openTrx(t.id);
+      box.appendChild(r);
+    });
+  }catch(err){box.innerHTML='<div class="empty">Gagal memuat riwayat.</div>';}
+}
+async function openTrx(id){
+  try{
+    const {data:items}=await supa.from('transaksi_item').select('*').eq('transaksi_id',id);
+    const {data:t}=await supa.from('transaksi').select('*').eq('id',id).single();
+    const rows=(items||[]).map(i=>`<div class="rl"><span>${escapeHtml(i.nama)} <span class="num">×${fmtNum(i.qty)}</span></span><span class="num">${fmtRp(i.subtotal)}</span></div>`).join('');
+    modal('Detail transaksi',`<div class="receipt">
+      <div class="rl sub"><span>${new Date(t.tanggal).toLocaleString('id-ID')}</span><span>${t.metode==='hutang'?'<span class="tag tag-warn">hutang</span> ':''}${t.offline?'<span class="tag tag-off">offline</span>':''}</span></div>
+      <div style="border-top:1px dashed var(--line);margin:8px 0"></div>
+      ${rows}
+      <div class="rl big"><span>Total</span><span class="num">${fmtRp(t.total)}</span></div>
+      <div class="rl"><span>Bayar</span><span class="num">${fmtRp(t.bayar)}</span></div>
+      <div class="rl"><span>Kembali</span><span class="num">${fmtRp(t.kembalian)}</span></div>
+      ${t.perlu_cek?`<div class="rc-note" style="background:var(--warn-bg);color:var(--warn)">⚠ ${escapeHtml(t.catatan_cek||'')}</div>`:''}
+    </div>`,[{label:'Tutup',cls:'btn-ghost',close:true}]);
+  }catch(err){toast('Gagal memuat detail.');}
+}
+
+/* =====================================================================
+   LAPORAN (owner)
+===================================================================== */
+async function renderLaporan(){
+  const stats=$('#lapStats'),harian=$('#lapHarian');
+  stats.innerHTML='';harian.innerHTML='<div class="empty">Memuat…</div>';
+  if(!navigator.onLine){harian.innerHTML='<div class="empty">Laporan butuh koneksi. Sedang offline.</div>';return;}
+  try{
+    const since=new Date(Date.now()-30*864e5).toISOString();
+    const {data:trx,error}=await supa.from('transaksi').select('id,tanggal,total').gte('tanggal',since);
+    if(error)throw error;
+    const {data:items}=await supa.from('transaksi_item')
+      .select('subtotal,modal,transaksi_id,transaksi:transaksi_id(tanggal)')
+      .gte('transaksi.tanggal',since);
+
+    const today=new Date().toDateString();
+    let omzetHari=0,trxHari=0,labaHari=0,omzetTot=0;
+    const perHari={};
+    (trx||[]).forEach(t=>{
+      omzetTot+=Number(t.total);
+      const d=new Date(t.tanggal);const key=d.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
+      perHari[key]=perHari[key]||{omzet:0,n:0,laba:0,ts:d};
+      perHari[key].omzet+=Number(t.total);perHari[key].n++;
+      if(d.toDateString()===today){omzetHari+=Number(t.total);trxHari++;}
+    });
+    (items||[]).forEach(it=>{
+      const laba=Number(it.subtotal)-Number(it.modal||0);
+      const d=it.transaksi?new Date(it.transaksi.tanggal):null;if(!d)return;
+      const key=d.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short'});
+      if(perHari[key])perHari[key].laba+=laba;
+      if(d.toDateString()===today)labaHari+=laba;
+    });
+
+    stats.innerHTML=`
+      <div class="stat"><div class="k">Omzet hari ini</div><div class="v num">${fmtRp(omzetHari)}</div></div>
+      <div class="stat"><div class="k">Transaksi hari ini</div><div class="v num">${trxHari}</div></div>
+      <div class="stat"><div class="k">Laba kotor hari ini</div><div class="v num" style="color:var(--primary)">${fmtRp(labaHari)}</div></div>
+      <div class="stat"><div class="k">Omzet 30 hari</div><div class="v num">${fmtRp(omzetTot)}</div></div>`;
+
+    const keys=Object.values(perHari).sort((a,b)=>b.ts-a.ts);
+    harian.innerHTML='';
+    if(!keys.length){harian.innerHTML='<div class="empty">Belum ada penjualan.</div>';return;}
+    Object.entries(perHari).sort((a,b)=>b[1].ts-a[1].ts).forEach(([k,v])=>{
+      const r=el('div','row');
+      r.innerHTML=`<div class="main"><b>${k}</b><small>${v.n} transaksi · laba ${fmtRp(v.laba)}</small></div>
+        <div class="rt num">${fmtRp(v.omzet)}</div>`;
+      harian.appendChild(r);
+    });
+  }catch(err){harian.innerHTML='<div class="empty">Gagal memuat laporan.</div>';}
+}
+
+/* =====================================================================
+   SCANNER (BarcodeDetector)
+===================================================================== */
+let scanStream=null,scanRAF=null,detector=null;
+$('#scanBtn').onclick=startScan;
+$('#scanClose').onclick=stopScan;
+async function startScan(){
+  if(!('BarcodeDetector'in window)){
+    toast('Perangkat tak mendukung pindai. Ketik barcode di kotak cari.');
+    $('#prodSearch').focus();return;
+  }
+  try{
+    detector=detector||new window.BarcodeDetector({formats:['ean_13','ean_8','code_128','upc_a','upc_e','code_39','qr_code']});
+    scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    const v=$('#scanVideo');v.srcObject=scanStream;await v.play();
+    $('#scanView').classList.remove('hidden');
+    const loop=async()=>{
+      if(!scanStream)return;
+      try{const codes=await detector.detect(v);
+        if(codes.length){const val=codes[0].rawValue;const p=produk.find(x=>(x.barcode||'')===val);
+          if(p){addToCart(p);stopScan();return;} else {toast('Barcode '+val+' tak dikenal.');} }
+      }catch{}
+      scanRAF=requestAnimationFrame(loop);
+    };loop();
+  }catch(err){toast('Tak bisa membuka kamera.');}
+}
+function stopScan(){
+  if(scanRAF)cancelAnimationFrame(scanRAF);scanRAF=null;
+  if(scanStream){scanStream.getTracks().forEach(t=>t.stop());scanStream=null;}
+  $('#scanView').classList.add('hidden');
+}
+
+/* =====================================================================
+   MODAL util
+===================================================================== */
+function modal(title,bodyHtml,buttons){
+  const root=$('#modalRoot');
+  const back=el('div','backdrop');
+  const m=el('div','modal');
+  m.innerHTML=`<h3>${title}</h3><div class="modal-body">${bodyHtml}</div>`;
+  const foot=el('div','modal-foot');
+  (buttons||[]).forEach(b=>{
+    const btn=el('button','btn '+(b.cls||'btn-ghost'),b.label);
+    if(b.style)btn.style.cssText+=b.style;
+    // Tombol dengan close:true selalu menutup setelah aksinya.
+    // Tanpa close: handler bertanggung jawab menutup sendiri (mis. saat sukses).
+    btn.onclick=()=>{ if(b.onClick)b.onClick(); if(b.close)closeModal(); };
+    foot.appendChild(btn);
+  });
+  m.appendChild(foot);back.appendChild(m);
+  back.onclick=e=>{if(e.target===back)closeModal();};
+  root.innerHTML='';root.appendChild(back);
+  return m;
+}
+function closeModal(){$('#modalRoot').innerHTML='';}
+
+/* =====================================================================
+   NAVIGASI TAB
+===================================================================== */
+document.querySelectorAll('nav button').forEach(b=>{
+  b.onclick=()=>{
+    const tab=b.dataset.tab;
+    if(tab==='laporan'&&me.role!=='owner'){toast('Laporan khusus owner.');return;}
+    currentTab=tab;
+    document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));
+    ['kasir','produk','pelanggan','riwayat','laporan'].forEach(t=>$('#tab-'+t).classList.toggle('hidden',t!==tab));
+    if(tab==='riwayat')renderRiwayat();
+    if(tab==='laporan')renderLaporan();
+    if(tab==='produk')renderMgr($('#mgrSearch').value);
+    if(tab==='pelanggan')renderPelanggan($('#pelSearch').value);
+  };
+});
+
+function renderAll(){
+  renderProdList($('#prodSearch').value);
+  renderCart();
+  renderMgr($('#mgrSearch').value);
+  renderPelanggan($('#pelSearch').value);
+  if(currentTab==='riwayat')renderRiwayat();
+  if(currentTab==='laporan')renderLaporan();
+}
+
+/* =====================================================================
+   SETELAN KONEKSI
+===================================================================== */
+$('#liConfig').onclick=e=>{e.preventDefault();openConfig();};
+function openConfig(){
+  modal('Setelan koneksi Supabase',`
+    <div class="field"><label>Project URL</label><input id="cfgUrl" placeholder="https://xxxx.supabase.co" value="${escapeHtml(cfg.url)}"></div>
+    <div class="field"><label>Anon key (publik)</label><input id="cfgAnon" placeholder="eyJhbGci..." value="${escapeHtml(cfg.anon)}"></div>
+    <p style="font-size:12.5px;color:var(--muted);margin:0">Aman disimpan di perangkat. Keamanan data dijaga oleh RLS di server, bukan oleh kerahasiaan key ini.</p>
+  `,[{label:'Batal',cls:'btn-ghost',close:true},
+     {label:'Simpan',cls:'btn-primary',onClick:()=>{
+        const u=$('#cfgUrl').value.trim(),a=$('#cfgAnon').value.trim();
+        if(!u||!a){toast('URL & anon key wajib.');return false;}
+        localStorage.setItem('sb_url',u);localStorage.setItem('sb_anon',a);
+        location.reload();
+     }}]);
+}
+
+/* =====================================================================
+   START
+===================================================================== */
+if('serviceWorker'in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+boot();
+</script>
+</body>
+</html>
