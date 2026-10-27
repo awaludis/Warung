@@ -1,0 +1,29 @@
+{
+  "name": "Customer PO Data Field Definition Sheet",
+  "version": "1.0",
+  "task_token": "<s_po>",
+  "fields": [
+    {"name": "po_number", "label": "PO Number", "type": "string", "required": true},
+    {"name": "po_date", "label": "PO Date", "type": "date", "required": true},
+    {"name": "customer_name", "label": "Customer Name", "type": "string", "required": true},
+    {"name": "customer_address", "label": "Customer Address", "type": "string"},
+    {"name": "delivery_date", "label": "Requested Delivery Date", "type": "date"},
+    {"name": "delivery_address", "label": "Delivery Address", "type": "string"},
+    {"name": "payment_terms", "label": "Payment Terms", "type": "string"},
+    {"name": "currency", "label": "Currency", "type": "string"},
+    {
+      "name": "items", "label": "Line Items", "type": "list",
+      "fields": [
+        {"name": "item_code", "label": "Item Code", "type": "string"},
+        {"name": "description", "label": "Description", "type": "string", "required": true},
+        {"name": "quantity", "label": "Quantity", "type": "number", "required": true},
+        {"name": "uom", "label": "UoM", "type": "string"},
+        {"name": "unit_price", "label": "Unit Price", "type": "number"},
+        {"name": "amount", "label": "Amount", "type": "number"}
+      ]
+    },
+    {"name": "subtotal", "label": "Subtotal", "type": "number"},
+    {"name": "tax_amount", "label": "Tax Amount", "type": "number"},
+    {"name": "total_amount", "label": "Total Amount", "type": "number", "required": true}
+  ]
+}

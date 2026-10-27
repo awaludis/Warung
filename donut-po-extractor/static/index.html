@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PO Extraction (Donut)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand">PO Extraction <span>Donut</span></div>
+  <nav id="tabs">
+    <button data-tab="annotate" class="active">1 · Anotasi Sampel</button>
+    <button data-tab="train">2 · Training &amp; Validasi</button>
+    <button data-tab="extract">3 · Ekstraksi PO</button>
+  </nav>
+  <div class="who">
+    <input id="userName" placeholder="Nama" aria-label="Nama pengguna">
+    <select id="userRole" aria-label="Peran">
+      <option>Data Annotator</option>
+      <option>AI Developer</option>
+      <option>Order Processing Officer</option>
+    </select>
+  </div>
+</header>
+
+<div id="modelBanner" class="banner hidden"></div>
+<div id="toast" class="toast hidden" role="status"></div>
+
+<main>
+  <!-- ============ BUC 1 ============ -->
+  <section id="tab-annotate" class="tab">
+    <div class="intro">
+      <h1>Prepare Annotated Customer PO Samples</h1>
+      <p>Unggah contoh PO pelanggan (PDF/gambar). PDF otomatis dipecah menjadi gambar per halaman.
+        Isi nilai yang benar untuk setiap field sesuai <b>PO Data Field Definition Sheet</b>, tandai selesai,
+        lalu <b>file</b> sebagai PO Ground Truth Record untuk training.</p>
+    </div>
+
+    <div class="grid two">
+      <div class="card">
+        <h2>Tambah sampel</h2>
+        <form id="sampleForm" class="stack">
+          <label>File PO (PDF / gambar)<input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp" required></label>
+          <label>Customer layout <small>(nama pelanggan / template PO)</small>
+            <input name="customer_layout" list="layoutList" required placeholder="mis. PT Sumber Makmur">
+          </label>
+          <datalist id="layoutList"></datalist>
+          <button class="primary" type="submit">Unggah &amp; konversi ke gambar</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Cakupan layout</h2>
+        <div id="coverage"></div>
+        <div class="row">
+          <input id="recordNote" placeholder="Catatan (opsional)">
+          <button id="fileRecordBtn" class="primary">File Ground Truth Record</button>
+        </div>
+        <div id="records"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Sampel</h2>
+      <div id="samples" class="samples"></div>
+    </div>
+
+    <div id="annotator" class="card hidden">
+      <div class="row between">
+        <h2 id="annotTitle">Anotasi</h2>
+        <div class="row">
+          <button id="prevPage">‹ Halaman sebelumnya</button>
+          <button id="nextPage">Halaman berikutnya ›</button>
+        </div>
+      </div>
+      <div class="annot">
+        <div class="viewer"><img id="annotImg" alt="Halaman PO"></div>
+        <form id="annotForm" class="fields"></form>
+      </div>
+      <div class="row end">
+        <span id="annotStatus" class="badge"></span>
+        <button id="saveDraft">Simpan draft</button>
+        <button id="saveComplete" class="primary">Simpan &amp; tandai selesai</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BUC 2 ============ -->
+  <section id="tab-train" class="tab hidden">
+    <div class="intro">
+      <h1>Train and Validate PO Extraction Model</h1>
+      <p>Pilih Ground Truth Record. Sampel dibagi menjadi set training dan validasi (tidak saling tumpang tindih,
+        per customer layout). Donut di-fine-tune pada set training, diuji pada set validasi, hasilnya dicatat di
+        <b>Model Validation Sheet</b>, lalu model dirilis (<b>Model Release Record</b>).</p>
+    </div>
+    <div class="grid two">
+      <div class="card">
+        <h2>Training baru</h2>
+        <form id="runForm" class="stack">
+          <label>Ground Truth Record<select name="record_id" id="recordSelect" required></select></label>
+          <div class="grid three">
+            <label>Rasio validasi<input name="validation_ratio" type="number" step="0.05" min="0.05" max="0.9" value="0.2"></label>
+            <label>Epoch<input name="epochs" type="number" min="1" value="30"></label>
+            <label>Learning rate<input name="learning_rate" type="number" step="any" value="0.00003"></label>
+            <label>Batch size<input name="batch_size" type="number" min="1" value="1"></label>
+            <label>Tinggi gambar<input name="image_height" type="number" placeholder="1280"></label>
+            <label>Lebar gambar<input name="image_width" type="number" placeholder="960"></label>
+          </div>
+          <label>Base model<input name="base_model" id="baseModel" placeholder="naver-clova-ix/donut-base"></label>
+          <label class="check"><input type="checkbox" name="auto_validate" checked> Validasi otomatis setelah training</label>
+          <button class="primary" type="submit">Bagi data &amp; mulai training</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>Model rilis</h2>
+        <div id="releases"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Training run</h2>
+      <div id="runs"></div>
+    </div>
+    <div id="runDetail" class="card hidden"></div>
+  </section>
+
+  <!-- ============ BUC 3 ============ -->
+  <section id="tab-extract" class="tab hidden">
+    <div class="intro">
+      <h1>Extract Customer PO Data to JSON</h1>
+      <p>Unggah PO pelanggan (PDF/gambar). Donut membaca setiap halaman langsung dari gambarnya (tanpa OCR terpisah)
+        dan menghasilkan JSON sesuai PO Data Field Definition Sheet. Periksa, koreksi bila perlu, lalu simpan.</p>
+    </div>
+    <div class="card">
+      <form id="extractForm" class="row wrap">
+        <input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff,.bmp,.webp" required>
+        <input name="customer_layout" list="trainedLayouts" placeholder="Customer layout (disarankan)">
+        <datalist id="trainedLayouts"></datalist>
+        <button class="primary" type="submit">Ekstrak</button>
+      </form>
+    </div>
+    <div id="extractResult" class="card hidden"></div>
+    <div class="card">
+      <h2>Structured PO Data Record</h2>
+      <div id="extractions"></div>
+    </div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
