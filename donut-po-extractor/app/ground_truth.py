@@ -120,6 +120,9 @@ def save_entry(entry_id: str, values: dict, complete: bool, user: str = "") -> d
     clean = fd.validate_annotation(values)  # rule: only defined fields, defined structure
     if complete:
         missing = fd.missing_required(clean)
+        if len(get_sample(entry["sample_id"])["pages"]) > 1:
+            # in a multi-page PO the header and totals sit on different pages: only line-item rules apply per page
+            missing = [m for m in missing if "[" in m]
         if missing:
             raise BusinessRuleError(f"Required fields are empty: {', '.join(missing)}")
     entry.update(

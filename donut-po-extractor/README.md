@@ -65,6 +65,12 @@ released_by* di setiap record).
 Saat training pertama kali, base model `naver-clova-ix/donut-base` (~800 MB) diunduh dari Hugging Face.
 Untuk server tanpa internet, unduh dulu lalu set `DONUT_PO_BASE_MODEL=/path/ke/donut-base`.
 
+## Dokumen latihan
+
+`practice_docs/` berisi 57 PO fiktif dari 3 layout pelanggan (+1 layout tak dikenal untuk uji) dengan kunci jawaban.
+Impor cepat sebagai ground truth: `python -m app.cli import-samples practice_docs/training`.
+Lihat [`practice_docs/README.md`](practice_docs/README.md).
+
 ## Alur kerja
 
 ### BUC 1 — Anotasi sampel (Data Annotator)

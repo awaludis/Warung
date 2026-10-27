@@ -1,6 +1,7 @@
 """Command line for long jobs (e.g. training on a GPU server without the web UI).
 
   python -m app.cli records
+  python -m app.cli import-samples practice_docs/training [--draft]
   python -m app.cli train --record GTR-... [--epochs 30] [--release]
   python -m app.cli validate --run RUN-...
   python -m app.cli release --run RUN-... [--min-accuracy 0.9]
@@ -22,6 +23,9 @@ def main(argv=None):
     ap.add_argument("--user", default="cli")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("records")
+    im = sub.add_parser("import-samples", help="load PO files + answer_key.json as ground truth entries")
+    im.add_argument("folder", type=Path)
+    im.add_argument("--draft", action="store_true", help="import values as drafts to review in the UI")
     t = sub.add_parser("train")
     t.add_argument("--record", required=True)
     for k in INT_PARAMS:
@@ -44,6 +48,8 @@ def main(argv=None):
 
     if a.cmd == "records":
         print(json.dumps(ground_truth.list_records(), indent=2))
+    elif a.cmd == "import-samples":
+        import_samples(a.folder, not a.draft, a.user)
     elif a.cmd == "train":
         keys = INT_PARAMS + ("learning_rate", "validation_ratio", "base_model")
         params = {k: getattr(a, k) for k in keys if getattr(a, k) is not None}
@@ -66,6 +72,23 @@ def main(argv=None):
         for w in res["warnings"]:
             print("WARNING:", w)
         print(json.dumps(res["data"], indent=2, ensure_ascii=False))
+
+
+def import_samples(folder: Path, complete: bool, user: str) -> None:
+    """Upload every document listed in answer_key.json and record its answers (BUC 1 shortcut for practice)."""
+    key = json.loads((folder / "answer_key.json").read_text(encoding="utf-8"))
+    pages = 0
+    for doc in key:
+        path = folder / doc["file"]
+        sample = ground_truth.create_sample(path.name, path.read_bytes(), doc["customer_layout"], user)
+        if len(sample["pages"]) != len(doc["pages"]):
+            raise SystemExit(f"{doc['file']}: {len(sample['pages'])} pages but answer key has {len(doc['pages'])}")
+        for pg, values in zip(sample["pages"], doc["pages"]):
+            ground_truth.save_entry(pg["entry_id"], values, complete, user)
+            pages += 1
+    print(f"Imported {len(key)} documents / {pages} pages as {'completed' if complete else 'draft'} entries")
+    for layout, row in ground_truth.coverage()["layouts"].items():
+        print(f"  {layout}: {row['completed']} completed, {row['draft']} draft")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,3065 @@
+[
+  {
+    "file": "sumber_makmur/SMS-PO-2026-03-0101.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/03/0101",
+        "po_date": "06/03/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "13/03/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "30 hari",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "60",
+            "unit_price": "19.900",
+            "amount": "1.194.000",
+            "item_code": "SUS-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "40",
+            "unit_price": "5.500",
+            "amount": "220.000",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "20",
+            "unit_price": "14.800",
+            "amount": "296.000",
+            "item_code": "PST-190",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "1.710.000",
+        "tax_amount": "188.100",
+        "total_amount": "1.898.100"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-02-0102.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/02/0102",
+        "po_date": "15/02/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "18/02/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "45 hari",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "100",
+            "unit_price": "12.500",
+            "amount": "1.250.000",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "25",
+            "unit_price": "11.200",
+            "amount": "280.000",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          },
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "20",
+            "unit_price": "72.500",
+            "amount": "1.450.000",
+            "item_code": "BRS-005",
+            "uom": "SAK"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "30",
+            "unit_price": "5.500",
+            "amount": "165.000",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "24",
+            "unit_price": "48.000",
+            "amount": "1.152.000",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "25",
+            "unit_price": "19.900",
+            "amount": "497.500",
+            "item_code": "SUS-001",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "4.794.500",
+        "tax_amount": "527.395",
+        "total_amount": "5.321.895"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-07-0103.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/07/0103",
+        "po_date": "16/07/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "30/07/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "COD",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "24",
+            "unit_price": "48.000",
+            "amount": "1.152.000",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "40",
+            "unit_price": "34.000",
+            "amount": "1.360.000",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "12",
+            "unit_price": "23.500",
+            "amount": "282.000",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "2.794.000",
+        "tax_amount": "307.340",
+        "total_amount": "3.101.340"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-06-0104.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/06/0104",
+        "po_date": "12/06/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "15/06/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "COD",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "40",
+            "unit_price": "21.000",
+            "amount": "840.000",
+            "item_code": "KCP-520",
+            "uom": "BTL"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "10",
+            "unit_price": "11.200",
+            "amount": "112.000",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "30",
+            "unit_price": "5.500",
+            "amount": "165.000",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "50",
+            "unit_price": "16.500",
+            "amount": "825.000",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "60",
+            "unit_price": "112.000",
+            "amount": "6.720.000",
+            "item_code": "MIE-040",
+            "uom": "KRT"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "40",
+            "unit_price": "23.500",
+            "amount": "940.000",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "30",
+            "unit_price": "4.200",
+            "amount": "126.000",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "9.728.000",
+        "tax_amount": "1.070.080",
+        "total_amount": "10.798.080"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-05-0105.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/05/0105",
+        "po_date": "17/05/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "27/05/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "COD",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "100",
+            "unit_price": "16.000",
+            "amount": "1.600.000",
+            "item_code": "TSU-250",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "10",
+            "unit_price": "26.500",
+            "amount": "265.000",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          },
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "60",
+            "unit_price": "72.500",
+            "amount": "4.350.000",
+            "item_code": "BRS-005",
+            "uom": "SAK"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "30",
+            "unit_price": "23.500",
+            "amount": "705.000",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "40",
+            "unit_price": "12.500",
+            "amount": "500.000",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "12",
+            "unit_price": "13.500",
+            "amount": "162.000",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "40",
+            "unit_price": "34.000",
+            "amount": "1.360.000",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "20",
+            "unit_price": "14.800",
+            "amount": "296.000",
+            "item_code": "PST-190",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "10",
+            "unit_price": "4.200",
+            "amount": "42.000",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "9.280.000",
+        "tax_amount": "1.020.800",
+        "total_amount": "10.300.800"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-08-0106.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/08/0106",
+        "po_date": "26/08/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "05/09/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "45 hari",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "50",
+            "unit_price": "26.500",
+            "amount": "1.325.000",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "40",
+            "unit_price": "13.500",
+            "amount": "540.000",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "30",
+            "unit_price": "23.500",
+            "amount": "705.000",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "30",
+            "unit_price": "4.200",
+            "amount": "126.000",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "20",
+            "unit_price": "16.000",
+            "amount": "320.000",
+            "item_code": "TSU-250",
+            "uom": "PCS"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "24",
+            "unit_price": "48.000",
+            "amount": "1.152.000",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          }
+        ],
+        "subtotal": "4.168.000",
+        "tax_amount": "458.480",
+        "total_amount": "4.626.480"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-01-0107.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/01/0107",
+        "po_date": "09/01/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "12/01/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "COD",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "20",
+            "unit_price": "11.200",
+            "amount": "224.000",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "24",
+            "unit_price": "16.000",
+            "amount": "384.000",
+            "item_code": "TSU-250",
+            "uom": "PCS"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "40",
+            "unit_price": "14.800",
+            "amount": "592.000",
+            "item_code": "PST-190",
+            "uom": "PCS"
+          },
+          {
+            "description": "Teh Celup isi 25",
+            "quantity": "40",
+            "unit_price": "7.800",
+            "amount": "312.000",
+            "item_code": "TEH-025",
+            "uom": "BOX"
+          }
+        ],
+        "subtotal": "1.512.000",
+        "tax_amount": "166.320",
+        "total_amount": "1.678.320"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-09-0108.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/09/0108",
+        "po_date": "16/09/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "26/09/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "45 hari",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "40",
+            "unit_price": "23.500",
+            "amount": "940.000",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "10",
+            "unit_price": "48.000",
+            "amount": "480.000",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          }
+        ],
+        "subtotal": "1.420.000",
+        "tax_amount": "156.200",
+        "total_amount": "1.576.200"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-09-0109.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/09/0109",
+        "po_date": "25/09/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "02/10/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "COD",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Teh Celup isi 25",
+            "quantity": "20",
+            "unit_price": "7.800",
+            "amount": "156.000",
+            "item_code": "TEH-025",
+            "uom": "BOX"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "30",
+            "unit_price": "5.500",
+            "amount": "165.000",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "12",
+            "unit_price": "14.800",
+            "amount": "177.600",
+            "item_code": "PST-190",
+            "uom": "PCS"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "40",
+            "unit_price": "16.500",
+            "amount": "660.000",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "5",
+            "unit_price": "48.000",
+            "amount": "240.000",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          },
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "10",
+            "unit_price": "18.750",
+            "amount": "187.500",
+            "item_code": "KOP-200",
+            "uom": "PCS"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "5",
+            "unit_price": "19.900",
+            "amount": "99.500",
+            "item_code": "SUS-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "40",
+            "unit_price": "26.500",
+            "amount": "1.060.000",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "60",
+            "unit_price": "11.200",
+            "amount": "672.000",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "3.417.600",
+        "tax_amount": "375.936",
+        "total_amount": "3.793.536"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-02-0110.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/02/0110",
+        "po_date": "16/02/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "02/03/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "30 hari",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "24",
+            "unit_price": "19.900",
+            "amount": "477.600",
+            "item_code": "SUS-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "100",
+            "unit_price": "12.500",
+            "amount": "1.250.000",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "100",
+            "unit_price": "16.500",
+            "amount": "1.650.000",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "25",
+            "unit_price": "13.500",
+            "amount": "337.500",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "12",
+            "unit_price": "4.200",
+            "amount": "50.400",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "3.765.500",
+        "tax_amount": "414.205",
+        "total_amount": "4.179.705"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-06-0111.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/06/0111",
+        "po_date": "14/06/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "28/06/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "45 hari",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "10",
+            "unit_price": "18.750",
+            "amount": "187.500",
+            "item_code": "KOP-200",
+            "uom": "PCS"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "30",
+            "unit_price": "19.900",
+            "amount": "597.000",
+            "item_code": "SUS-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "100",
+            "unit_price": "14.800",
+            "amount": "1.480.000",
+            "item_code": "PST-190",
+            "uom": "PCS"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "12",
+            "unit_price": "23.500",
+            "amount": "282.000",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "12",
+            "unit_price": "34.000",
+            "amount": "408.000",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "60",
+            "unit_price": "11.200",
+            "amount": "672.000",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          },
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "24",
+            "unit_price": "21.000",
+            "amount": "504.000",
+            "item_code": "KCP-520",
+            "uom": "BTL"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "50",
+            "unit_price": "4.200",
+            "amount": "210.000",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "30",
+            "unit_price": "26.500",
+            "amount": "795.000",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          }
+        ],
+        "subtotal": "5.135.500",
+        "tax_amount": "564.905",
+        "total_amount": "5.700.405"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-03-0112.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/03/0112",
+        "po_date": "22/03/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "05/04/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "30 hari",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "5",
+            "unit_price": "13.500",
+            "amount": "67.500",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          },
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "25",
+            "unit_price": "72.500",
+            "amount": "1.812.500",
+            "item_code": "BRS-005",
+            "uom": "SAK"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "100",
+            "unit_price": "12.500",
+            "amount": "1.250.000",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "25",
+            "unit_price": "112.000",
+            "amount": "2.800.000",
+            "item_code": "MIE-040",
+            "uom": "KRT"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "5",
+            "unit_price": "16.500",
+            "amount": "82.500",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "6.012.500",
+        "tax_amount": "661.375",
+        "total_amount": "6.673.875"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-09-0113.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/09/0113",
+        "po_date": "23/09/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "03/10/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "45 hari",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "60",
+            "unit_price": "23.500",
+            "amount": "1.410.000",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "60",
+            "unit_price": "11.200",
+            "amount": "672.000",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "12",
+            "unit_price": "48.000",
+            "amount": "576.000",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "12",
+            "unit_price": "16.000",
+            "amount": "192.000",
+            "item_code": "TSU-250",
+            "uom": "PCS"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "60",
+            "unit_price": "16.500",
+            "amount": "990.000",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "50",
+            "unit_price": "19.900",
+            "amount": "995.000",
+            "item_code": "SUS-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "20",
+            "unit_price": "13.500",
+            "amount": "270.000",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          }
+        ],
+        "subtotal": "5.105.000",
+        "tax_amount": "561.550",
+        "total_amount": "5.666.550"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-06-0114.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/06/0114",
+        "po_date": "26/06/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "06/07/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "45 hari",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "12",
+            "unit_price": "34.000",
+            "amount": "408.000",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "5",
+            "unit_price": "13.500",
+            "amount": "67.500",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "100",
+            "unit_price": "16.500",
+            "amount": "1.650.000",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "50",
+            "unit_price": "12.500",
+            "amount": "625.000",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "5",
+            "unit_price": "48.000",
+            "amount": "240.000",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          }
+        ],
+        "subtotal": "2.990.500",
+        "tax_amount": "328.955",
+        "total_amount": "3.319.455"
+      }
+    ]
+  },
+  {
+    "file": "sumber_makmur/SMS-PO-2026-04-0115.pdf",
+    "customer_layout": "PT Sumber Makmur Sejahtera",
+    "pages": [
+      {
+        "po_number": "SMS/PO/2026/04/0115",
+        "po_date": "11/04/2026",
+        "customer_name": "PT Sumber Makmur Sejahtera",
+        "customer_address": "Jl. Merdeka No. 45, Bandung 40111",
+        "delivery_date": "21/04/2026",
+        "delivery_address": "Gudang SMS, Jl. Soekarno-Hatta No. 210, Bandung",
+        "payment_terms": "30 hari",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "20",
+            "unit_price": "18.750",
+            "amount": "375.000",
+            "item_code": "KOP-200",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "50",
+            "unit_price": "16.000",
+            "amount": "800.000",
+            "item_code": "TSU-250",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "1.175.000",
+        "tax_amount": "129.250",
+        "total_amount": "1.304.250"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2603101.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2603101",
+        "po_date": "28 Mar 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "02 Apr 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 30",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "25",
+            "unit_price": "4,200.00",
+            "amount": "105,000.00",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "12",
+            "unit_price": "5,500.00",
+            "amount": "66,000.00",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "24",
+            "unit_price": "16,000.00",
+            "amount": "384,000.00",
+            "item_code": "TSU-250",
+            "uom": "PCS"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "40",
+            "unit_price": "14,800.00",
+            "amount": "592,000.00",
+            "item_code": "PST-190",
+            "uom": "PCS"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "40",
+            "unit_price": "16,500.00",
+            "amount": "660,000.00",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "30",
+            "unit_price": "112,000.00",
+            "amount": "3,360,000.00",
+            "item_code": "MIE-040",
+            "uom": "KRT"
+          },
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "24",
+            "unit_price": "18,750.00",
+            "amount": "450,000.00",
+            "item_code": "KOP-200",
+            "uom": "PCS"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "40",
+            "unit_price": "34,000.00",
+            "amount": "1,360,000.00",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "6,977,000.00",
+        "tax_amount": "767,470.00",
+        "total_amount": "7,744,470.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2606102.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2606102",
+        "po_date": "20 Jun 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "04 Jul 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 30",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "40",
+            "unit_price": "11,200.00",
+            "amount": "448,000.00",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "100",
+            "unit_price": "12,500.00",
+            "amount": "1,250,000.00",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "25",
+            "unit_price": "4,200.00",
+            "amount": "105,000.00",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "30",
+            "unit_price": "5,500.00",
+            "amount": "165,000.00",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "50",
+            "unit_price": "16,500.00",
+            "amount": "825,000.00",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "100",
+            "unit_price": "16,000.00",
+            "amount": "1,600,000.00",
+            "item_code": "TSU-250",
+            "uom": "PCS"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "12",
+            "unit_price": "13,500.00",
+            "amount": "162,000.00",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          },
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "5",
+            "unit_price": "72,500.00",
+            "amount": "362,500.00",
+            "item_code": "BRS-005",
+            "uom": "SAK"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "25",
+            "unit_price": "26,500.00",
+            "amount": "662,500.00",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          }
+        ],
+        "subtotal": "5,580,000.00",
+        "tax_amount": "613,800.00",
+        "total_amount": "6,193,800.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2607103.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2607103",
+        "po_date": "04 Jul 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "18 Jul 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 30",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "60",
+            "unit_price": "12,500.00",
+            "amount": "750,000.00",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "24",
+            "unit_price": "4,200.00",
+            "amount": "100,800.00",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "100",
+            "unit_price": "112,000.00",
+            "amount": "11,200,000.00",
+            "item_code": "MIE-040",
+            "uom": "KRT"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "50",
+            "unit_price": "23,500.00",
+            "amount": "1,175,000.00",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "12",
+            "unit_price": "18,750.00",
+            "amount": "225,000.00",
+            "item_code": "KOP-200",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "13,450,800.00",
+        "tax_amount": "1,479,588.00",
+        "total_amount": "14,930,388.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2602104.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2602104",
+        "po_date": "23 Feb 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "05 Mar 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 60",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Teh Celup isi 25",
+            "quantity": "12",
+            "unit_price": "7,800.00",
+            "amount": "93,600.00",
+            "item_code": "TEH-025",
+            "uom": "BOX"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "24",
+            "unit_price": "12,500.00",
+            "amount": "300,000.00",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "24",
+            "unit_price": "16,500.00",
+            "amount": "396,000.00",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "10",
+            "unit_price": "13,500.00",
+            "amount": "135,000.00",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "5",
+            "unit_price": "26,500.00",
+            "amount": "132,500.00",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          },
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "30",
+            "unit_price": "21,000.00",
+            "amount": "630,000.00",
+            "item_code": "KCP-520",
+            "uom": "BTL"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "24",
+            "unit_price": "34,000.00",
+            "amount": "816,000.00",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "30",
+            "unit_price": "48,000.00",
+            "amount": "1,440,000.00",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "5",
+            "unit_price": "14,800.00",
+            "amount": "74,000.00",
+            "item_code": "PST-190",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "5",
+            "unit_price": "4,200.00",
+            "amount": "21,000.00",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "10",
+            "unit_price": "5,500.00",
+            "amount": "55,000.00",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "20",
+            "unit_price": "11,200.00",
+            "amount": "224,000.00",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          }
+        ]
+      },
+      {
+        "po_number": "BJA-2602104",
+        "items": [
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "5",
+            "unit_price": "18,750.00",
+            "amount": "93,750.00",
+            "item_code": "KOP-200",
+            "uom": "PCS"
+          },
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "24",
+            "unit_price": "72,500.00",
+            "amount": "1,740,000.00",
+            "item_code": "BRS-005",
+            "uom": "SAK"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "10",
+            "unit_price": "112,000.00",
+            "amount": "1,120,000.00",
+            "item_code": "MIE-040",
+            "uom": "KRT"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "10",
+            "unit_price": "23,500.00",
+            "amount": "235,000.00",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "7,505,850.00",
+        "tax_amount": "825,644.00",
+        "total_amount": "8,331,494.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2607105.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2607105",
+        "po_date": "03 Jul 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "10 Jul 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 60",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "100",
+            "unit_price": "16,500.00",
+            "amount": "1,650,000.00",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "25",
+            "unit_price": "13,500.00",
+            "amount": "337,500.00",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "50",
+            "unit_price": "48,000.00",
+            "amount": "2,400,000.00",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "100",
+            "unit_price": "23,500.00",
+            "amount": "2,350,000.00",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "24",
+            "unit_price": "12,500.00",
+            "amount": "300,000.00",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "30",
+            "unit_price": "11,200.00",
+            "amount": "336,000.00",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "24",
+            "unit_price": "19,900.00",
+            "amount": "477,600.00",
+            "item_code": "SUS-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "25",
+            "unit_price": "112,000.00",
+            "amount": "2,800,000.00",
+            "item_code": "MIE-040",
+            "uom": "KRT"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "5",
+            "unit_price": "26,500.00",
+            "amount": "132,500.00",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          }
+        ],
+        "subtotal": "10,783,600.00",
+        "tax_amount": "1,186,196.00",
+        "total_amount": "11,969,796.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2608106.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2608106",
+        "po_date": "16 Aug 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "19 Aug 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 60",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "25",
+            "unit_price": "48,000.00",
+            "amount": "1,200,000.00",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "60",
+            "unit_price": "23,500.00",
+            "amount": "1,410,000.00",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "5",
+            "unit_price": "12,500.00",
+            "amount": "62,500.00",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "50",
+            "unit_price": "18,750.00",
+            "amount": "937,500.00",
+            "item_code": "KOP-200",
+            "uom": "PCS"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "25",
+            "unit_price": "13,500.00",
+            "amount": "337,500.00",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "20",
+            "unit_price": "112,000.00",
+            "amount": "2,240,000.00",
+            "item_code": "MIE-040",
+            "uom": "KRT"
+          }
+        ],
+        "subtotal": "6,187,500.00",
+        "tax_amount": "680,625.00",
+        "total_amount": "6,868,125.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2602107.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2602107",
+        "po_date": "02 Feb 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "05 Feb 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 60",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "50",
+            "unit_price": "12,500.00",
+            "amount": "625,000.00",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "25",
+            "unit_price": "26,500.00",
+            "amount": "662,500.00",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "60",
+            "unit_price": "16,500.00",
+            "amount": "990,000.00",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "100",
+            "unit_price": "34,000.00",
+            "amount": "3,400,000.00",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "5,677,500.00",
+        "tax_amount": "624,525.00",
+        "total_amount": "6,302,025.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2601108.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2601108",
+        "po_date": "19 Jan 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "29 Jan 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 30",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "12",
+            "unit_price": "18,750.00",
+            "amount": "225,000.00",
+            "item_code": "KOP-200",
+            "uom": "PCS"
+          },
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "20",
+            "unit_price": "21,000.00",
+            "amount": "420,000.00",
+            "item_code": "KCP-520",
+            "uom": "BTL"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "5",
+            "unit_price": "5,500.00",
+            "amount": "27,500.00",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "5",
+            "unit_price": "112,000.00",
+            "amount": "560,000.00",
+            "item_code": "MIE-040",
+            "uom": "KRT"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "24",
+            "unit_price": "11,200.00",
+            "amount": "268,800.00",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "50",
+            "unit_price": "12,500.00",
+            "amount": "625,000.00",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "40",
+            "unit_price": "14,800.00",
+            "amount": "592,000.00",
+            "item_code": "PST-190",
+            "uom": "PCS"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "30",
+            "unit_price": "48,000.00",
+            "amount": "1,440,000.00",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "24",
+            "unit_price": "13,500.00",
+            "amount": "324,000.00",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "25",
+            "unit_price": "34,000.00",
+            "amount": "850,000.00",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "12",
+            "unit_price": "4,200.00",
+            "amount": "50,400.00",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "100",
+            "unit_price": "26,500.00",
+            "amount": "2,650,000.00",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          }
+        ]
+      },
+      {
+        "po_number": "BJA-2601108",
+        "items": [
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "60",
+            "unit_price": "72,500.00",
+            "amount": "4,350,000.00",
+            "item_code": "BRS-005",
+            "uom": "SAK"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "10",
+            "unit_price": "16,000.00",
+            "amount": "160,000.00",
+            "item_code": "TSU-250",
+            "uom": "PCS"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "12",
+            "unit_price": "23,500.00",
+            "amount": "282,000.00",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "50",
+            "unit_price": "16,500.00",
+            "amount": "825,000.00",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "13,649,700.00",
+        "tax_amount": "1,501,467.00",
+        "total_amount": "15,151,167.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2609109.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2609109",
+        "po_date": "25 Sep 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "02 Oct 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 60",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "20",
+            "unit_price": "16,000.00",
+            "amount": "320,000.00",
+            "item_code": "TSU-250",
+            "uom": "PCS"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "40",
+            "unit_price": "48,000.00",
+            "amount": "1,920,000.00",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "5",
+            "unit_price": "16,500.00",
+            "amount": "82,500.00",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "20",
+            "unit_price": "26,500.00",
+            "amount": "530,000.00",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "100",
+            "unit_price": "5,500.00",
+            "amount": "550,000.00",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "50",
+            "unit_price": "72,500.00",
+            "amount": "3,625,000.00",
+            "item_code": "BRS-005",
+            "uom": "SAK"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "12",
+            "unit_price": "11,200.00",
+            "amount": "134,400.00",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "7,161,900.00",
+        "tax_amount": "787,809.00",
+        "total_amount": "7,949,709.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2607110.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2607110",
+        "po_date": "28 Jul 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "04 Aug 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 60",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "25",
+            "unit_price": "26,500.00",
+            "amount": "662,500.00",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "25",
+            "unit_price": "4,200.00",
+            "amount": "105,000.00",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "40",
+            "unit_price": "48,000.00",
+            "amount": "1,920,000.00",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "100",
+            "unit_price": "5,500.00",
+            "amount": "550,000.00",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "40",
+            "unit_price": "12,500.00",
+            "amount": "500,000.00",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "3,737,500.00",
+        "tax_amount": "411,125.00",
+        "total_amount": "4,148,625.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2609111.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2609111",
+        "po_date": "04 Sep 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "18 Sep 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 30",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "25",
+            "unit_price": "112,000.00",
+            "amount": "2,800,000.00",
+            "item_code": "MIE-040",
+            "uom": "KRT"
+          },
+          {
+            "description": "Teh Celup isi 25",
+            "quantity": "50",
+            "unit_price": "7,800.00",
+            "amount": "390,000.00",
+            "item_code": "TEH-025",
+            "uom": "BOX"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "30",
+            "unit_price": "5,500.00",
+            "amount": "165,000.00",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "5",
+            "unit_price": "34,000.00",
+            "amount": "170,000.00",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "100",
+            "unit_price": "19,900.00",
+            "amount": "1,990,000.00",
+            "item_code": "SUS-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "12",
+            "unit_price": "72,500.00",
+            "amount": "870,000.00",
+            "item_code": "BRS-005",
+            "uom": "SAK"
+          }
+        ],
+        "subtotal": "6,385,000.00",
+        "tax_amount": "702,350.00",
+        "total_amount": "7,087,350.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2607112.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2607112",
+        "po_date": "14 Jul 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "28 Jul 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 45",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "10",
+            "unit_price": "4,200.00",
+            "amount": "42,000.00",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          },
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "10",
+            "unit_price": "18,750.00",
+            "amount": "187,500.00",
+            "item_code": "KOP-200",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "12",
+            "unit_price": "12,500.00",
+            "amount": "150,000.00",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "30",
+            "unit_price": "11,200.00",
+            "amount": "336,000.00",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          },
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "25",
+            "unit_price": "72,500.00",
+            "amount": "1,812,500.00",
+            "item_code": "BRS-005",
+            "uom": "SAK"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "50",
+            "unit_price": "26,500.00",
+            "amount": "1,325,000.00",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "24",
+            "unit_price": "14,800.00",
+            "amount": "355,200.00",
+            "item_code": "PST-190",
+            "uom": "PCS"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "24",
+            "unit_price": "23,500.00",
+            "amount": "564,000.00",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "5",
+            "unit_price": "16,000.00",
+            "amount": "80,000.00",
+            "item_code": "TSU-250",
+            "uom": "PCS"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "60",
+            "unit_price": "5,500.00",
+            "amount": "330,000.00",
+            "item_code": "GRM-500",
+            "uom": "PCS"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "100",
+            "unit_price": "112,000.00",
+            "amount": "11,200,000.00",
+            "item_code": "MIE-040",
+            "uom": "KRT"
+          },
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "20",
+            "unit_price": "21,000.00",
+            "amount": "420,000.00",
+            "item_code": "KCP-520",
+            "uom": "BTL"
+          }
+        ]
+      },
+      {
+        "po_number": "BJA-2607112",
+        "items": [
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "12",
+            "unit_price": "48,000.00",
+            "amount": "576,000.00",
+            "item_code": "AIR-600",
+            "uom": "DUS"
+          },
+          {
+            "description": "Teh Celup isi 25",
+            "quantity": "24",
+            "unit_price": "7,800.00",
+            "amount": "187,200.00",
+            "item_code": "TEH-025",
+            "uom": "BOX"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "24",
+            "unit_price": "16,500.00",
+            "amount": "396,000.00",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "50",
+            "unit_price": "34,000.00",
+            "amount": "1,700,000.00",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "19,661,400.00",
+        "tax_amount": "2,162,754.00",
+        "total_amount": "21,824,154.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2607113.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2607113",
+        "po_date": "06 Jul 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "11 Jul 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 30",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "50",
+            "unit_price": "112,000.00",
+            "amount": "5,600,000.00",
+            "item_code": "MIE-040",
+            "uom": "KRT"
+          },
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "5",
+            "unit_price": "72,500.00",
+            "amount": "362,500.00",
+            "item_code": "BRS-005",
+            "uom": "SAK"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "12",
+            "unit_price": "14,800.00",
+            "amount": "177,600.00",
+            "item_code": "PST-190",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "25",
+            "unit_price": "26,500.00",
+            "amount": "662,500.00",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          },
+          {
+            "description": "Teh Celup isi 25",
+            "quantity": "50",
+            "unit_price": "7,800.00",
+            "amount": "390,000.00",
+            "item_code": "TEH-025",
+            "uom": "BOX"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "12",
+            "unit_price": "13,500.00",
+            "amount": "162,000.00",
+            "item_code": "SAO-340",
+            "uom": "BTL"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "12",
+            "unit_price": "4,200.00",
+            "amount": "50,400.00",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "5",
+            "unit_price": "34,000.00",
+            "amount": "170,000.00",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "7,575,000.00",
+        "tax_amount": "833,250.00",
+        "total_amount": "8,408,250.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2609114.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2609114",
+        "po_date": "25 Sep 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "28 Sep 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 60",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "60",
+            "unit_price": "34,000.00",
+            "amount": "2,040,000.00",
+            "item_code": "MYG-002",
+            "uom": "PCS"
+          },
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "20",
+            "unit_price": "21,000.00",
+            "amount": "420,000.00",
+            "item_code": "KCP-520",
+            "uom": "BTL"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "12",
+            "unit_price": "23,500.00",
+            "amount": "282,000.00",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "10",
+            "unit_price": "12,500.00",
+            "amount": "125,000.00",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "25",
+            "unit_price": "4,200.00",
+            "amount": "105,000.00",
+            "item_code": "SBN-090",
+            "uom": "PCS"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "40",
+            "unit_price": "26,500.00",
+            "amount": "1,060,000.00",
+            "item_code": "SRP-400",
+            "uom": "BTL"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "10",
+            "unit_price": "14,800.00",
+            "amount": "148,000.00",
+            "item_code": "PST-190",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "4,180,000.00",
+        "tax_amount": "459,800.00",
+        "total_amount": "4,639,800.00"
+      }
+    ]
+  },
+  {
+    "file": "berkah_jaya/BJA-2602115.pdf",
+    "customer_layout": "CV Berkah Jaya Abadi",
+    "pages": [
+      {
+        "po_number": "BJA-2602115",
+        "po_date": "11 Feb 2026",
+        "customer_name": "CV Berkah Jaya Abadi",
+        "customer_address": "Jl. Pahlawan No. 17, Semarang 50241",
+        "delivery_date": "21 Feb 2026",
+        "delivery_address": "Toko BJA Cabang Ungaran, Jl. Diponegoro No. 5, Ungaran",
+        "payment_terms": "Net 60",
+        "currency": "IDR",
+        "items": [
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "50",
+            "unit_price": "23,500.00",
+            "amount": "1,175,000.00",
+            "item_code": "DTG-800",
+            "uom": "PCS"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "50",
+            "unit_price": "12,500.00",
+            "amount": "625,000.00",
+            "item_code": "TPG-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "20",
+            "unit_price": "21,000.00",
+            "amount": "420,000.00",
+            "item_code": "KCP-520",
+            "uom": "BTL"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "25",
+            "unit_price": "19,900.00",
+            "amount": "497,500.00",
+            "item_code": "SUS-001",
+            "uom": "PCS"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "100",
+            "unit_price": "11,200.00",
+            "amount": "1,120,000.00",
+            "item_code": "BSK-300",
+            "uom": "PCS"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "40",
+            "unit_price": "16,500.00",
+            "amount": "660,000.00",
+            "item_code": "GLP-001",
+            "uom": "PCS"
+          }
+        ],
+        "subtotal": "4,497,500.00",
+        "tax_amount": "494,725.00",
+        "total_amount": "4,992,225.00"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00101.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00101",
+        "po_date": "2026-06-30",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tempo 14 hari",
+        "items": [
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "24",
+            "unit_price": "Rp 34.000",
+            "amount": "Rp 816.000"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "100",
+            "unit_price": "Rp 14.800",
+            "amount": "Rp 1.480.000"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "20",
+            "unit_price": "Rp 23.500",
+            "amount": "Rp 470.000"
+          }
+        ],
+        "total_amount": "Rp 2.766.000"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00102.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00102",
+        "po_date": "2026-09-21",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tempo 14 hari",
+        "items": [
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "20",
+            "unit_price": "Rp 48.000",
+            "amount": "Rp 960.000"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "25",
+            "unit_price": "Rp 14.800",
+            "amount": "Rp 370.000"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "25",
+            "unit_price": "Rp 13.500",
+            "amount": "Rp 337.500"
+          },
+          {
+            "description": "Teh Celup isi 25",
+            "quantity": "30",
+            "unit_price": "Rp 7.800",
+            "amount": "Rp 234.000"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "60",
+            "unit_price": "Rp 34.000",
+            "amount": "Rp 2.040.000"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "30",
+            "unit_price": "Rp 12.500",
+            "amount": "Rp 375.000"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "20",
+            "unit_price": "Rp 19.900",
+            "amount": "Rp 398.000"
+          }
+        ],
+        "total_amount": "Rp 4.714.500"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00103.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00103",
+        "po_date": "2026-03-11",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tunai",
+        "items": [
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "24",
+            "unit_price": "Rp 48.000",
+            "amount": "Rp 1.152.000"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "12",
+            "unit_price": "Rp 12.500",
+            "amount": "Rp 150.000"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "50",
+            "unit_price": "Rp 26.500",
+            "amount": "Rp 1.325.000"
+          },
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "100",
+            "unit_price": "Rp 18.750",
+            "amount": "Rp 1.875.000"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "24",
+            "unit_price": "Rp 5.500",
+            "amount": "Rp 132.000"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "20",
+            "unit_price": "Rp 19.900",
+            "amount": "Rp 398.000"
+          }
+        ],
+        "total_amount": "Rp 5.032.000"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00104.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00104",
+        "po_date": "2026-03-09",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tunai",
+        "items": [
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "25",
+            "unit_price": "Rp 11.200",
+            "amount": "Rp 280.000"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "100",
+            "unit_price": "Rp 13.500",
+            "amount": "Rp 1.350.000"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "30",
+            "unit_price": "Rp 16.000",
+            "amount": "Rp 480.000"
+          },
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "25",
+            "unit_price": "Rp 72.500",
+            "amount": "Rp 1.812.500"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "10",
+            "unit_price": "Rp 4.200",
+            "amount": "Rp 42.000"
+          },
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "100",
+            "unit_price": "Rp 21.000",
+            "amount": "Rp 2.100.000"
+          }
+        ],
+        "total_amount": "Rp 6.064.500"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00105.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00105",
+        "po_date": "2026-09-26",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tunai",
+        "items": [
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "24",
+            "unit_price": "Rp 21.000",
+            "amount": "Rp 504.000"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "50",
+            "unit_price": "Rp 48.000",
+            "amount": "Rp 2.400.000"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "24",
+            "unit_price": "Rp 16.500",
+            "amount": "Rp 396.000"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "12",
+            "unit_price": "Rp 11.200",
+            "amount": "Rp 134.400"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "25",
+            "unit_price": "Rp 112.000",
+            "amount": "Rp 2.800.000"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "60",
+            "unit_price": "Rp 26.500",
+            "amount": "Rp 1.590.000"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "100",
+            "unit_price": "Rp 34.000",
+            "amount": "Rp 3.400.000"
+          },
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "60",
+            "unit_price": "Rp 72.500",
+            "amount": "Rp 4.350.000"
+          }
+        ],
+        "total_amount": "Rp 15.574.400"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00106.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00106",
+        "po_date": "2026-09-05",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tunai",
+        "items": [
+          {
+            "description": "Beras Premium 5 kg",
+            "quantity": "25",
+            "unit_price": "Rp 72.500",
+            "amount": "Rp 1.812.500"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "5",
+            "unit_price": "Rp 16.500",
+            "amount": "Rp 82.500"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "20",
+            "unit_price": "Rp 19.900",
+            "amount": "Rp 398.000"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "40",
+            "unit_price": "Rp 48.000",
+            "amount": "Rp 1.920.000"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "50",
+            "unit_price": "Rp 16.000",
+            "amount": "Rp 800.000"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "24",
+            "unit_price": "Rp 11.200",
+            "amount": "Rp 268.800"
+          },
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "60",
+            "unit_price": "Rp 18.750",
+            "amount": "Rp 1.125.000"
+          }
+        ],
+        "total_amount": "Rp 6.406.800"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00107.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00107",
+        "po_date": "2026-04-11",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tunai",
+        "items": [
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "25",
+            "unit_price": "Rp 12.500",
+            "amount": "Rp 312.500"
+          },
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "20",
+            "unit_price": "Rp 18.750",
+            "amount": "Rp 375.000"
+          }
+        ],
+        "total_amount": "Rp 687.500"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00108.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00108",
+        "po_date": "2026-04-02",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tunai",
+        "items": [
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "10",
+            "unit_price": "Rp 5.500",
+            "amount": "Rp 55.000"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "5",
+            "unit_price": "Rp 16.000",
+            "amount": "Rp 80.000"
+          },
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "24",
+            "unit_price": "Rp 18.750",
+            "amount": "Rp 450.000"
+          }
+        ],
+        "total_amount": "Rp 585.000"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00109.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00109",
+        "po_date": "2026-09-24",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tunai",
+        "items": [
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "24",
+            "unit_price": "Rp 48.000",
+            "amount": "Rp 1.152.000"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "5",
+            "unit_price": "Rp 26.500",
+            "amount": "Rp 132.500"
+          },
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "100",
+            "unit_price": "Rp 21.000",
+            "amount": "Rp 2.100.000"
+          },
+          {
+            "description": "Teh Celup isi 25",
+            "quantity": "40",
+            "unit_price": "Rp 7.800",
+            "amount": "Rp 312.000"
+          },
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "12",
+            "unit_price": "Rp 23.500",
+            "amount": "Rp 282.000"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "5",
+            "unit_price": "Rp 19.900",
+            "amount": "Rp 99.500"
+          },
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "40",
+            "unit_price": "Rp 18.750",
+            "amount": "Rp 750.000"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "25",
+            "unit_price": "Rp 13.500",
+            "amount": "Rp 337.500"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "24",
+            "unit_price": "Rp 11.200",
+            "amount": "Rp 268.800"
+          }
+        ],
+        "total_amount": "Rp 5.434.300"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00110.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00110",
+        "po_date": "2026-05-25",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tunai",
+        "items": [
+          {
+            "description": "Deterjen Bubuk 800 g",
+            "quantity": "100",
+            "unit_price": "Rp 23.500",
+            "amount": "Rp 2.350.000"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "50",
+            "unit_price": "Rp 112.000",
+            "amount": "Rp 5.600.000"
+          },
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "100",
+            "unit_price": "Rp 16.500",
+            "amount": "Rp 1.650.000"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "50",
+            "unit_price": "Rp 5.500",
+            "amount": "Rp 275.000"
+          },
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "24",
+            "unit_price": "Rp 16.000",
+            "amount": "Rp 384.000"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "40",
+            "unit_price": "Rp 14.800",
+            "amount": "Rp 592.000"
+          },
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "60",
+            "unit_price": "Rp 21.000",
+            "amount": "Rp 1.260.000"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "10",
+            "unit_price": "Rp 48.000",
+            "amount": "Rp 480.000"
+          }
+        ],
+        "total_amount": "Rp 12.591.000"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00111.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00111",
+        "po_date": "2026-06-27",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tempo 14 hari",
+        "items": [
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "50",
+            "unit_price": "Rp 34.000",
+            "amount": "Rp 1.700.000"
+          },
+          {
+            "description": "Teh Celup isi 25",
+            "quantity": "50",
+            "unit_price": "Rp 7.800",
+            "amount": "Rp 390.000"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "30",
+            "unit_price": "Rp 4.200",
+            "amount": "Rp 126.000"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "100",
+            "unit_price": "Rp 5.500",
+            "amount": "Rp 550.000"
+          }
+        ],
+        "total_amount": "Rp 2.766.000"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00112.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00112",
+        "po_date": "2026-04-24",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tempo 14 hari",
+        "items": [
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "24",
+            "unit_price": "Rp 19.900",
+            "amount": "Rp 477.600"
+          },
+          {
+            "description": "Mie Instan Goreng (karton 40)",
+            "quantity": "40",
+            "unit_price": "Rp 112.000",
+            "amount": "Rp 4.480.000"
+          },
+          {
+            "description": "Garam Beryodium 500 g",
+            "quantity": "12",
+            "unit_price": "Rp 5.500",
+            "amount": "Rp 66.000"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "50",
+            "unit_price": "Rp 4.200",
+            "amount": "Rp 210.000"
+          },
+          {
+            "description": "Pasta Gigi 190 g",
+            "quantity": "100",
+            "unit_price": "Rp 14.800",
+            "amount": "Rp 1.480.000"
+          },
+          {
+            "description": "Biskuit Kelapa 300 g",
+            "quantity": "25",
+            "unit_price": "Rp 11.200",
+            "amount": "Rp 280.000"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "25",
+            "unit_price": "Rp 34.000",
+            "amount": "Rp 850.000"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "100",
+            "unit_price": "Rp 13.500",
+            "amount": "Rp 1.350.000"
+          },
+          {
+            "description": "Tepung Terigu 1 kg",
+            "quantity": "30",
+            "unit_price": "Rp 12.500",
+            "amount": "Rp 375.000"
+          }
+        ],
+        "total_amount": "Rp 9.568.600"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00113.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00113",
+        "po_date": "2026-03-24",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tunai",
+        "items": [
+          {
+            "description": "Gula Pasir 1 kg",
+            "quantity": "24",
+            "unit_price": "Rp 16.500",
+            "amount": "Rp 396.000"
+          },
+          {
+            "description": "Sirup Rasa Jeruk 460 ml",
+            "quantity": "12",
+            "unit_price": "Rp 26.500",
+            "amount": "Rp 318.000"
+          },
+          {
+            "description": "Sabun Mandi 90 g",
+            "quantity": "12",
+            "unit_price": "Rp 4.200",
+            "amount": "Rp 50.400"
+          },
+          {
+            "description": "Saus Sambal 340 ml",
+            "quantity": "24",
+            "unit_price": "Rp 13.500",
+            "amount": "Rp 324.000"
+          }
+        ],
+        "total_amount": "Rp 1.088.400"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00114.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00114",
+        "po_date": "2026-04-01",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tunai",
+        "items": [
+          {
+            "description": "Teh Celup isi 25",
+            "quantity": "30",
+            "unit_price": "Rp 7.800",
+            "amount": "Rp 234.000"
+          },
+          {
+            "description": "Kopi Bubuk 200 g",
+            "quantity": "100",
+            "unit_price": "Rp 18.750",
+            "amount": "Rp 1.875.000"
+          }
+        ],
+        "total_amount": "Rp 2.109.000"
+      }
+    ]
+  },
+  {
+    "file": "kopkar_sentosa/KKS-00115.jpg",
+    "customer_layout": "Koperasi Karyawan Sentosa",
+    "pages": [
+      {
+        "po_number": "KKS-00115",
+        "po_date": "2026-01-19",
+        "customer_name": "Koperasi Karyawan Sentosa",
+        "customer_address": "Kawasan Industri Jababeka Blok C-3, Cikarang",
+        "payment_terms": "Tempo 14 hari",
+        "items": [
+          {
+            "description": "Tisu Wajah 250 lembar",
+            "quantity": "30",
+            "unit_price": "Rp 16.000",
+            "amount": "Rp 480.000"
+          },
+          {
+            "description": "Kecap Manis 520 ml",
+            "quantity": "12",
+            "unit_price": "Rp 21.000",
+            "amount": "Rp 252.000"
+          },
+          {
+            "description": "Minyak Goreng 2 L",
+            "quantity": "25",
+            "unit_price": "Rp 34.000",
+            "amount": "Rp 850.000"
+          },
+          {
+            "description": "Susu UHT 1 L",
+            "quantity": "12",
+            "unit_price": "Rp 19.900",
+            "amount": "Rp 238.800"
+          },
+          {
+            "description": "Air Mineral 600 ml (dus 24)",
+            "quantity": "50",
+            "unit_price": "Rp 48.000",
+            "amount": "Rp 2.400.000"
+          }
+        ],
+        "total_amount": "Rp 4.220.800"
+      }
+    ]
+  }
+]
