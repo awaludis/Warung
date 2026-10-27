@@ -13,6 +13,7 @@ Business rules:
 from __future__ import annotations
 
 import csv
+import os
 import random
 import threading
 import traceback
@@ -55,10 +56,23 @@ def run_dir(run_id: str) -> Path:
 
 def get_run(run_id: str) -> dict:
     run = read_json(run_dir(run_id) / "run.json")
-    if run["status"] in _BUSY and run_id not in _jobs:  # server restarted mid-job
+    if run["status"] in _BUSY and not _job_alive(run_id, run.get("pid")):  # app restarted mid-job
         run.update(status=FAILED, error="Interrupted (application restarted)")
         _save(run)
     return run
+
+
+def _job_alive(run_id: str, pid: int | None) -> bool:
+    """A job may run in this process (web app) or another one (CLI) sharing the data folder."""
+    if pid is None or pid == os.getpid():
+        return run_id in _jobs
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
 
 
 def _save(run: dict) -> None:
@@ -172,7 +186,7 @@ def start_training(run_id: str, user: str = "", blocking: bool = False) -> dict:
         if any(j["thread"].is_alive() for j in _jobs.values()):
             raise BusinessRuleError("Another training / validation job is running. Wait for it to finish.")
         stop = threading.Event()
-        _update(run_id, status=TRAINING, started_at=now_iso(), started_by=user, progress=0.0, error=None)
+        _update(run_id, status=TRAINING, started_at=now_iso(), started_by=user, progress=0.0, error=None, pid=os.getpid())
         t = threading.Thread(target=_train_job, args=(run_id, stop, user), daemon=True)
         _jobs[run_id] = {"thread": t, "stop": stop}
     t.start()
@@ -285,7 +299,7 @@ def validate(run_id: str, user: str = "", blocking: bool = True) -> dict:
                 raise BusinessRuleError("Another job is running.")
             t = threading.Thread(target=_validate_job, args=(run_id, user), daemon=True)
             _jobs[run_id] = {"thread": t, "stop": threading.Event()}
-        _update(run_id, status=VALIDATING)
+        _update(run_id, status=VALIDATING, pid=os.getpid())
         t.start()
         return get_run(run_id)
     return _validate(run_id, user)
@@ -309,7 +323,7 @@ def _validate(run_id: str, user: str, extractor_factory: Callable | None = None)
     overlap = set(run["split"]["train"]) & set(run["split"]["validation"])
     if overlap:  # business rule: validation never uses training samples
         raise BusinessRuleError(f"Validation set contains training samples: {sorted(overlap)}")
-    _update(run_id, status=VALIDATING)
+    _update(run_id, status=VALIDATING, pid=os.getpid())
     _log(run_id, f"Validating on {len(run['split']['validation'])} pages")
     fd = load_definition()
     extractor = (extractor_factory or DonutExtractor)(run_dir(run_id) / "model")

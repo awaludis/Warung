@@ -39,6 +39,15 @@ data/models/releases/<REL-id>.json        Model Release Record (current.json = m
 data/extractions/<EXT-id>/                PO yang diekstrak, halaman, extraction.json, po_data.json
 ```
 
+## Menjalankan di Google Colab (tanpa install, GPU gratis)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/awaludis/Warung/blob/claude/sharp-wright-7pybmh/donut-po-extractor/colab/Donut_PO_Extractor.ipynb)
+
+Buka [`colab/Donut_PO_Extractor.ipynb`](colab/Donut_PO_Extractor.ipynb) di Colab, pilih **Runtime → Change runtime
+type → T4 GPU**, lalu jalankan sel dari atas. Notebook menyimpan data di Google Drive dan memberi link untuk membuka UI.
+Jika repository private, link di atas tidak bisa dibuka langsung: di Colab pilih **File → Open notebook → GitHub**
+(login GitHub) atau unggah file `.ipynb`-nya, dan simpan token GitHub di Colab Secrets sebagai `GITHUB_TOKEN`.
+
 ## Instalasi & menjalankan
 
 Python 3.10+ dibutuhkan. GPU (CUDA) sangat disarankan untuk training; inferensi bisa di CPU.
