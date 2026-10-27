@@ -173,6 +173,18 @@ async function saveEntry(complete, btn) {
 }
 $("#saveDraft").onclick = (e) => saveEntry(false, e.target);
 $("#saveComplete").onclick = (e) => saveEntry(true, e.target);
+$("#importPractice").onclick = (e) => {
+  if (!confirm("Impor 45 dokumen latihan beserta kunci jawabannya? Proses ±1 menit.")) return;
+  const btn = e.target;
+  guard(btn, async () => {
+    btn.textContent = "Mengimpor…";
+    try {
+      const r = await api("/practice/import", { method: "POST", body: { draft: $("#practiceDraft").checked } });
+      toast(`${r.documents} dokumen / ${r.pages} halaman diimpor. Lanjut: File Ground Truth Record.`);
+      loadAnnotate();
+    } finally { btn.textContent = "Impor dokumen latihan"; }
+  });
+};
 $("#fileRecordBtn").onclick = (e) => guard(e.target, async () => {
   const r = await api("/gt-records", { method: "POST", body: { note: $("#recordNote").value } });
   toast(`PO Ground Truth Record ${r.record_id} di-file (${r.entry_count} halaman).`);
@@ -314,5 +326,9 @@ function showExtraction(x) {
 
 // ---------- boot ----------
 (async () => {
-  try { state.fd = await api("/field-definition"); await loadAnnotate(); } catch (e) { toast(e.message, true); }
+  try {
+    state.fd = await api("/field-definition");
+    if ((await api("/practice")).available) $("#practiceBox").classList.remove("hidden");
+    await loadAnnotate();
+  } catch (e) { toast(e.message, true); }
 })();

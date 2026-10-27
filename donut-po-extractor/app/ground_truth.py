@@ -214,3 +214,30 @@ def get_record(record_id: str) -> dict:
 
 def record_dir(record_id: str) -> Path:
     return config.paths()["gt_records"] / safe_id(record_id)
+
+
+# ---------------- practice documents ----------------
+PRACTICE_DIR = config.ROOT_DIR / "practice_docs" / "training"
+
+
+def import_answer_key(folder: Path | None = None, complete: bool = True, user: str = "") -> dict:
+    """Load every document listed in answer_key.json with its correct values (practice shortcut for BUC 1)."""
+    folder = Path(folder or PRACTICE_DIR)
+    key_file = folder / "answer_key.json"
+    if not key_file.exists():
+        raise BusinessRuleError(f"answer_key.json not found in {folder}")
+    key = json.loads(key_file.read_text(encoding="utf-8"))
+    existing = {(s["filename"], s["customer_layout"]) for s in list_samples()}
+    dupes = [d["file"] for d in key if (Path(d["file"]).name, d["customer_layout"]) in existing]
+    if dupes:
+        raise BusinessRuleError(f"{len(dupes)} of these documents were already imported (e.g. {dupes[0]}). Delete them first.")
+    pages = 0
+    for doc in key:
+        path = folder / doc["file"]
+        sample = create_sample(path.name, path.read_bytes(), doc["customer_layout"], user)
+        if len(sample["pages"]) != len(doc["pages"]):
+            raise BusinessRuleError(f"{doc['file']}: {len(sample['pages'])} pages but the answer key has {len(doc['pages'])}")
+        for pg, values in zip(sample["pages"], doc["pages"]):
+            save_entry(pg["entry_id"], values, complete, user)
+            pages += 1
+    return {"documents": len(key), "pages": pages, "status": COMPLETED if complete else DRAFT, "coverage": coverage()}

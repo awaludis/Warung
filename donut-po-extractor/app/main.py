@@ -90,6 +90,16 @@ def save_entry(entry_id: str, body: dict = Body(...), x_user: str | None = Heade
     return ground_truth.save_entry(entry_id, body.get("values") or {}, bool(body.get("complete")), _user(x_user))
 
 
+@app.get("/api/practice")
+def practice_available():
+    return {"available": (ground_truth.PRACTICE_DIR / "answer_key.json").exists()}
+
+
+@app.post("/api/practice/import")
+def practice_import(body: dict = Body(default={}), x_user: str | None = Header(None)):
+    return ground_truth.import_answer_key(None, not body.get("draft"), _user(x_user))
+
+
 @app.get("/api/coverage")
 def coverage():
     return ground_truth.coverage()

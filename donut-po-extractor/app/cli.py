@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 
 from . import extraction, ground_truth, training
+from .storage import BusinessRuleError
 
 INT_PARAMS = ("epochs", "batch_size", "grad_accum", "image_height", "image_width", "max_length", "seed")
 
@@ -49,7 +50,10 @@ def main(argv=None):
     if a.cmd == "records":
         print(json.dumps(ground_truth.list_records(), indent=2))
     elif a.cmd == "import-samples":
-        import_samples(a.folder, not a.draft, a.user)
+        try:
+            import_samples(a.folder, not a.draft, a.user)
+        except BusinessRuleError as exc:
+            raise SystemExit(f"ERROR: {exc}")
     elif a.cmd == "train":
         keys = INT_PARAMS + ("learning_rate", "validation_ratio", "base_model")
         params = {k: getattr(a, k) for k in keys if getattr(a, k) is not None}
@@ -75,21 +79,10 @@ def main(argv=None):
 
 
 def import_samples(folder: Path, complete: bool, user: str) -> None:
-    """Upload every document listed in answer_key.json and record its answers (BUC 1 shortcut for practice)."""
-    key = json.loads((folder / "answer_key.json").read_text(encoding="utf-8"))
-    pages = 0
-    for doc in key:
-        path = folder / doc["file"]
-        sample = ground_truth.create_sample(path.name, path.read_bytes(), doc["customer_layout"], user)
-        if len(sample["pages"]) != len(doc["pages"]):
-            raise SystemExit(f"{doc['file']}: {len(sample['pages'])} pages but answer key has {len(doc['pages'])}")
-        for pg, values in zip(sample["pages"], doc["pages"]):
-            ground_truth.save_entry(pg["entry_id"], values, complete, user)
-            pages += 1
-    print(f"Imported {len(key)} documents / {pages} pages as {'completed' if complete else 'draft'} entries")
-    for layout, row in ground_truth.coverage()["layouts"].items():
+    res = ground_truth.import_answer_key(folder, complete, user)
+    print(f"Imported {res['documents']} documents / {res['pages']} pages as {res['status']} entries")
+    for layout, row in res["coverage"]["layouts"].items():
         print(f"  {layout}: {row['completed']} completed, {row['draft']} draft")
-
 
 if __name__ == "__main__":
     main()

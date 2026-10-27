@@ -28,3 +28,19 @@ def test_multi_page_po_pages_can_be_completed():
     # page 1: header + items, no total; page 2: items + total only
     ground_truth.save_entry(s["pages"][0]["entry_id"], {"po_number": "1", "items": [{"description": "A", "quantity": "1"}]}, True)
     ground_truth.save_entry(s["pages"][1]["entry_id"], {"items": [{"description": "B", "quantity": "2"}], "total_amount": "3"}, True)
+
+
+def test_practice_import_api_refuses_duplicates(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from app.main import app
+
+    out = tmp_path / "docs"
+    generate(out, per_layout_train=2, per_layout_test=1, seed=3)
+    monkeypatch.setattr(ground_truth, "PRACTICE_DIR", out / "training")
+    c = TestClient(app)
+    assert c.get("/api/practice").json()["available"]
+    r = c.post("/api/practice/import", json={})
+    assert r.status_code == 200 and r.json()["documents"] == 6
+    r = c.post("/api/practice/import", json={})
+    assert r.status_code == 422 and "already imported" in r.json()["detail"]
