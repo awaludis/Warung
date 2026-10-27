@@ -221,6 +221,7 @@ $("#runForm").addEventListener("submit", (e) => {
     for (const k of ["epochs", "batch_size", "image_height", "image_width"]) if (fd.get(k)) params[k] = parseInt(fd.get(k), 10);
     if (fd.get("base_model")) params.base_model = fd.get("base_model");
     params.auto_validate = !!fd.get("auto_validate");
+    params.gradient_checkpointing = !!fd.get("gradient_checkpointing");
     const run = await api("/runs", { method: "POST", body: { record_id: fd.get("record_id"), params } });
     toast(`Run ${run.run_id}: ${run.split.train.length} halaman training / ${run.split.validation.length} validasi.`);
     await loadTrain(); showRun(run.run_id);
@@ -267,12 +268,14 @@ async function showRun(runId, scroll = true) {
 }
 function sheetHtml(s) {
   const layouts = Object.keys(s.per_layout);
-  const rows = Object.entries(s.per_field).map(([k, c]) => `<tr><td>${esc(k)}</td><td class="num">${pct(c.accuracy)} <small class="muted">${c.correct}/${c.total}</small></td>${layouts.map((l) => { const x = s.per_layout[l].fields[k]; return `<td class="num">${x ? pct(x.accuracy) : "–"}</td>`; }).join("")}</tr>`).join("");
+  const cell = (c) => (c && c.total ? `${pct(c.accuracy)} <small class="muted">~${pct(c.similarity)}</small>` : "–");
+  const rows = Object.entries(s.per_field).map(([k, c]) => `<tr><td>${esc(k)}</td><td class="num">${cell(c)} <small class="muted">${c.correct}/${c.total}</small></td>${layouts.map((l) => `<td class="num">${cell(s.per_layout[l].fields[k])}</td>`).join("")}</tr>`).join("");
   const mism = s.details.filter((d) => !d.exact_match);
   return `<h2>Model Validation Sheet</h2>
-    <p>Halaman validasi: <b>${s.validation_pages}</b> · Akurasi field: <b>${pct(s.overall.field_accuracy)}</b> · Exact match dokumen: <b>${pct(s.overall.document_exact_match)}</b> · ${esc(s.validated_at)} oleh ${esc(s.validated_by)}</p>
+    <p>Halaman validasi: <b>${s.validation_pages}</b> · Akurasi field (persis sama): <b>${pct(s.overall.field_accuracy)}</b> · Kemiripan karakter: <b>${pct(s.overall.similarity)}</b> · Exact match dokumen: <b>${pct(s.overall.document_exact_match)}</b> · ${esc(s.validated_at)} oleh ${esc(s.validated_by)}</p>
+    <p class="muted">Angka kecil "~" = kemiripan karakter rata-rata: tinggi tetapi akurasi rendah berarti model hampir benar (salah 1–2 karakter) — biasanya membaik dengan lebih banyak data / epoch.</p>
     <div class="scroll"><table><tr><th>Field</th><th class="num">Semua layout</th>${layouts.map((l) => `<th class="num">${esc(l)}</th>`).join("")}</tr>
-    <tr><td><b>Total</b></td><td class="num"><b>${pct(s.overall.field_accuracy)}</b></td>${layouts.map((l) => `<td class="num"><b>${pct(s.per_layout[l].field_accuracy)}</b></td>`).join("")}</tr>${rows}</table></div>
+    <tr><td><b>Total</b></td><td class="num"><b>${pct(s.overall.field_accuracy)}</b> <small class="muted">~${pct(s.overall.similarity)}</small></td>${layouts.map((l) => `<td class="num"><b>${pct(s.per_layout[l].field_accuracy)}</b> <small class="muted">~${pct(s.per_layout[l].similarity)}</small></td>`).join("")}</tr>${rows}</table></div>
     ${mism.length ? `<details style="margin-top:10px"><summary>${mism.length} halaman dengan selisih</summary><div class="scroll"><table><tr><th>Entry</th><th>Layout</th><th>Field berbeda</th></tr>${mism.map((d) => `<tr><td>${esc(d.entry_id)}</td><td>${esc(d.customer_layout)}</td><td>${d.mismatched_fields.map(esc).join(", ")}</td></tr>`).join("")}</table></div></details>` : ""}`;
 }
 

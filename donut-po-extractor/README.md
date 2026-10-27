@@ -134,6 +134,15 @@ dilatih ulang — aplikasi menegakkan ini otomatis.
 
 ## Tips akurasi
 
+Validation Sheet menampilkan dua angka per field: **akurasi** (nilai persis sama) dan **~kemiripan karakter**.
+Kemiripan tinggi tetapi akurasi rendah berarti model sudah hampir benar (salah 1–2 karakter); kemiripan rendah berarti
+model belum belajar field itu. Log training memberi peringatan bila data terlalu sedikit, loss akhir masih tinggi,
+atau output terpotong (`max_length`).
+
+* Buat dokumen latihan tambahan: `python tools/generate_practice_docs.py --out practice_docs_large --per-layout 50 --start 2001 --seed 7`
+  lalu `python -m app.cli import-samples practice_docs_large/training`.
+* Untuk teks kecil di kertas A4, coba ukuran gambar 1920×1440 dengan *gradient checkpointing*.
+
 * Siapkan minimal ±20–50 halaman per layout pelanggan untuk hasil yang andal; 2 halaman hanya batas teknis.
 * Tulis nilai ground truth persis seperti di dokumen (format tanggal/angka) — Donut belajar menyalin teks.
 * Gunakan GPU ≥16 GB untuk ukuran 1280×960; turunkan ukuran gambar atau naikkan `grad_accum` bila memori kurang.

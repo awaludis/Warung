@@ -45,6 +45,7 @@ DEFAULT_PARAMS = {
     "image_width": None,
     "max_length": None,
     "base_model": None,
+    "gradient_checkpointing": False,
     "auto_validate": True,
 }
 
@@ -217,6 +218,7 @@ def _train_job(run_id: str, stop: threading.Event, user: str) -> None:
             image_size=size,
             max_length=p.get("max_length"),
             seed=int(p["seed"]),
+            gradient_checkpointing=bool(p.get("gradient_checkpointing")),
             log=lambda m: _log(run_id, m),
             progress=lambda x: _update(run_id, progress=round(x, 3)),
             stop_event=stop,
@@ -261,32 +263,70 @@ def values_match(expected: Any, predicted: Any, ftype: str) -> bool:
     return _norm_text(expected) == _norm_text(predicted)
 
 
+def _empty(v: Any) -> bool:
+    return v is None or (isinstance(v, str) and not v.strip())
+
+
+def similarity(expected: Any, predicted: Any) -> float:
+    """1 - normalised edit distance between the two values as text (1.0 = identical)."""
+    a, b = _norm_text(expected), _norm_text(predicted)
+    if a == b:
+        return 1.0
+    if not a or not b:
+        return 0.0
+    prev = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        cur = [i]
+        for j, cb in enumerate(b, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (ca != cb)))
+        prev = cur
+    return max(0.0, 1 - prev[-1] / max(len(a), len(b)))
+
+
+def _score(expected: Any, predicted: Any, ftype: str) -> dict:
+    """Pairs where both sides are empty are not counted (the field is simply not on this page)."""
+    if _empty(expected) and _empty(predicted):
+        return {"correct": 0, "total": 0, "sim": 0.0}
+    ok = values_match(expected, predicted, ftype)
+    return {"correct": int(ok), "total": 1, "sim": 1.0 if ok else similarity(expected, predicted)}
+
+
+def _add(into: dict, c: dict) -> None:
+    for k in ("correct", "total", "sim"):
+        into[k] = into.get(k, 0) + c[k]
+
+
 def compare(fd: FieldDefinition, expected: dict, predicted: dict) -> dict[str, dict]:
-    """Per field path -> {"correct": n, "total": n}. List sub-fields are compared row by row."""
+    """Per field path -> {"correct", "total", "sim"}. List sub-fields are compared row by row."""
     result: dict[str, dict] = {}
     for f in fd.fields:
         if f.is_list:
             exp_rows, pred_rows = expected.get(f.name) or [], predicted.get(f.name) or []
             rows = max(len(exp_rows), len(pred_rows))
             for s in f.fields:
-                key = f"{f.name}.{s.name}"
-                ok = sum(
-                    values_match(
+                acc = {"correct": 0, "total": 0, "sim": 0.0}
+                for i in range(rows):
+                    _add(acc, _score(
                         exp_rows[i].get(s.name) if i < len(exp_rows) else None,
                         pred_rows[i].get(s.name) if i < len(pred_rows) else None,
                         s.type,
-                    )
-                    for i in range(rows)
-                )
-                result[key] = {"correct": ok, "total": rows}
-            result[f"{f.name}.row_count"] = {"correct": int(len(exp_rows) == len(pred_rows)), "total": 1}
+                    ))
+                result[f"{f.name}.{s.name}"] = acc
+            same = int(len(exp_rows) == len(pred_rows))
+            result[f"{f.name}.row_count"] = {"correct": same, "total": 1, "sim": float(same)}
         else:
-            result[f.name] = {"correct": int(values_match(expected.get(f.name), predicted.get(f.name), f.type)), "total": 1}
+            result[f.name] = _score(expected.get(f.name), predicted.get(f.name), f.type)
     return result
 
 
-def _acc(c: dict) -> float | None:
-    return round(c["correct"] / c["total"], 4) if c["total"] else None
+def _stats(c: dict) -> dict:
+    t = c.get("total", 0)
+    return {
+        "correct": c.get("correct", 0),
+        "total": t,
+        "accuracy": round(c["correct"] / t, 4) if t else None,
+        "similarity": round(c.get("sim", 0) / t, 4) if t else None,
+    }
 
 
 def validate(run_id: str, user: str = "", blocking: bool = True) -> dict:
@@ -328,8 +368,8 @@ def _validate(run_id: str, user: str, extractor_factory: Callable | None = None)
     fd = load_definition()
     extractor = (extractor_factory or DonutExtractor)(run_dir(run_id) / "model")
 
-    per_field: dict[str, dict] = defaultdict(lambda: {"correct": 0, "total": 0})
-    per_layout: dict[str, dict] = defaultdict(lambda: defaultdict(lambda: {"correct": 0, "total": 0}))
+    per_field: dict[str, dict] = defaultdict(dict)
+    per_layout: dict[str, dict] = defaultdict(lambda: defaultdict(dict))
     layout_docs: dict[str, dict] = defaultdict(lambda: {"exact": 0, "total": 0})
     details = []
     for entry, item in _items(run, "validation"):
@@ -340,9 +380,8 @@ def _validate(run_id: str, user: str, extractor_factory: Callable | None = None)
         exact = all(c["correct"] == c["total"] for c in cmp.values())
         layout = entry["customer_layout"]
         for k, c in cmp.items():
-            for bucket in (per_field[k], per_layout[layout][k]):
-                bucket["correct"] += c["correct"]
-                bucket["total"] += c["total"]
+            _add(per_field[k], c)
+            _add(per_layout[layout][k], c)
         layout_docs[layout]["exact"] += int(exact)
         layout_docs[layout]["total"] += 1
         details.append(
@@ -358,8 +397,11 @@ def _validate(run_id: str, user: str, extractor_factory: Callable | None = None)
         )
 
     def summary(counts: dict) -> dict:
-        tot = {"correct": sum(c["correct"] for c in counts.values()), "total": sum(c["total"] for c in counts.values())}
-        return {"field_accuracy": _acc(tot), **tot}
+        tot: dict = {}
+        for c in counts.values():
+            _add(tot, c)
+        st = _stats(tot)
+        return {"field_accuracy": st["accuracy"], "similarity": st["similarity"], "correct": st["correct"], "total": st["total"]}
 
     docs_total = sum(d["total"] for d in layout_docs.values())
     sheet = {
@@ -375,13 +417,13 @@ def _validate(run_id: str, user: str, extractor_factory: Callable | None = None)
             **summary(per_field),
             "document_exact_match": round(sum(d["exact"] for d in layout_docs.values()) / docs_total, 4) if docs_total else None,
         },
-        "per_field": {k: {**c, "accuracy": _acc(c)} for k, c in per_field.items()},
+        "per_field": {k: _stats(c) for k, c in per_field.items()},
         "per_layout": {
             layout: {
                 **summary(counts),
                 "pages": layout_docs[layout]["total"],
                 "document_exact_match": round(layout_docs[layout]["exact"] / layout_docs[layout]["total"], 4),
-                "fields": {k: {**c, "accuracy": _acc(c)} for k, c in counts.items()},
+                "fields": {k: _stats(c) for k, c in counts.items()},
             }
             for layout, counts in per_layout.items()
         },
@@ -390,7 +432,11 @@ def _validate(run_id: str, user: str, extractor_factory: Callable | None = None)
     d = run_dir(run_id)
     write_json(d / "validation_sheet.json", sheet)
     _write_sheet_csv(d / "validation_sheet.csv", sheet)
-    _log(run_id, f"Validation recorded: field accuracy {sheet['overall']['field_accuracy']}")
+    _log(run_id, f"Validation recorded: field accuracy {sheet['overall']['field_accuracy']}, "
+                 f"character similarity {sheet['overall']['similarity']}")
+    weakest = sorted((c["accuracy"], k) for k, c in sheet["per_field"].items() if c["accuracy"] is not None)[:3]
+    if weakest:
+        _log(run_id, "Weakest fields: " + ", ".join(f"{k} {a:.0%}" for a, k in weakest))
     _update(run_id, status=VALIDATED, validated_at=sheet["validated_at"], validation_summary=sheet["overall"], error=None)
     return sheet
 
@@ -398,12 +444,12 @@ def _validate(run_id: str, user: str, extractor_factory: Callable | None = None)
 def _write_sheet_csv(path: Path, sheet: dict) -> None:
     with open(path, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["customer_layout", "field", "correct", "total", "accuracy"])
+        w.writerow(["customer_layout", "field", "correct", "total", "accuracy", "similarity"])
         for k, c in sheet["per_field"].items():
-            w.writerow(["(all layouts)", k, c["correct"], c["total"], c["accuracy"]])
+            w.writerow(["(all layouts)", k, c["correct"], c["total"], c["accuracy"], c["similarity"]])
         for layout, data in sheet["per_layout"].items():
             for k, c in data["fields"].items():
-                w.writerow([layout, k, c["correct"], c["total"], c["accuracy"]])
+                w.writerow([layout, k, c["correct"], c["total"], c["accuracy"], c["similarity"]])
 
 
 def get_validation_sheet(run_id: str) -> dict:

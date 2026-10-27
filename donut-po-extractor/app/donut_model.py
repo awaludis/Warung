@@ -109,6 +109,7 @@ def train(
     image_size: tuple[int, int] | None = None,
     max_length: int | None = None,
     seed: int = 42,
+    gradient_checkpointing: bool = False,
     log: Callable[[str], None] = print,
     progress: Callable[[float], None] | None = None,
     stop_event: threading.Event | None = None,
@@ -127,18 +128,39 @@ def train(
     processor, model = build_for_training(base_model, fd, image_size, max_length)
     device = pick_device()
     model.to(device)
-    log(f"Device: {device}; training pages: {len(items)}; epochs: {epochs}")
+    log(f"Device: {device}; training pages: {len(items)}; epochs: {epochs}; image size: {image_size}")
+    if device == "cpu":
+        log("WARNING: training on CPU is very slow; use a GPU (e.g. Colab T4).")
+    if len(items) < 60:
+        log(f"WARNING: only {len(items)} training pages. Donut usually needs 50+ pages per customer layout "
+            "for reliable results; expect low validation accuracy.")
+    if gradient_checkpointing:
+        model.gradient_checkpointing_enable()
+        log("Gradient checkpointing on (less GPU memory, slower)")
+
+    tok = processor.tokenizer
+    lengths = [len(tok(fd.to_token_sequence(it.values) + tok.eos_token, add_special_tokens=False).input_ids) for it in items]
+    truncated = sum(n > max_length for n in lengths)
+    log(f"Target length: max {max(lengths)} tokens, limit {max_length}")
+    if truncated:
+        log(f"WARNING: {truncated} pages are longer than max_length={max_length} and will be cut; raise max_length.")
 
     ds = _Dataset(items, processor, fd, max_length)
     pad_id = processor.tokenizer.pad_token_id
     loader = DataLoader(ds, batch_size=batch_size, shuffle=True, collate_fn=lambda b: _collate(b, pad_id))
     optim = torch.optim.AdamW(model.parameters(), lr=learning_rate)
     total_steps = max(1, epochs * math.ceil(len(loader) / grad_accum))
-    sched = torch.optim.lr_scheduler.LambdaLR(optim, lambda s: max(0.0, 1 - s / total_steps))
+    warmup = max(1, int(total_steps * 0.05))
+    # short warm-up (the new field tokens start from random embeddings), then linear decay
+    sched = torch.optim.lr_scheduler.LambdaLR(
+        optim, lambda s: (s + 1) / warmup if s < warmup else max(0.0, (total_steps - s) / max(1, total_steps - warmup))
+    )
+    log(f"Optimizer steps: {total_steps} (warm-up {warmup})")
     use_amp = device == "cuda"
     scaler = torch.amp.GradScaler("cuda") if use_amp else None
 
     model.train()
+    epoch_loss = None
     for epoch in range(1, epochs + 1):
         running, n = 0.0, 0
         for i, (pixel_values, labels) in enumerate(loader, 1):
@@ -161,10 +183,14 @@ def train(
                 sched.step()
             running += loss.item() * grad_accum
             n += 1
-        log(f"epoch {epoch}/{epochs} loss {running / max(n, 1):.4f}")
+        epoch_loss = running / max(n, 1)
+        log(f"epoch {epoch}/{epochs} loss {epoch_loss:.4f}")
         if progress:
             progress(epoch / epochs)
 
+    if epoch_loss is not None and epoch_loss > 0.3:
+        log(f"WARNING: final training loss {epoch_loss:.3f} is still high (model has not learned the training set yet). "
+            "Train more epochs or with a higher learning rate (e.g. 5e-5).")
     out_dir.mkdir(parents=True, exist_ok=True)
     model.save_pretrained(out_dir)
     processor.save_pretrained(out_dir)

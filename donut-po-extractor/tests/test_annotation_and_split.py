@@ -79,7 +79,15 @@ def test_compare_counts_rows(monkeypatch):
     exp = fd.normalize_output({"po_number": "PO-1", "items": [{"description": "A", "quantity": "2"}, {"description": "B", "quantity": "1"}]})
     pred = fd.normalize_output({"po_number": "po-1", "items": [{"description": "A", "quantity": "2.0"}]})
     c = training.compare(fd, exp, pred)
-    assert c["po_number"] == {"correct": 1, "total": 1}
-    assert c["items.description"] == {"correct": 1, "total": 2}
-    assert c["items.quantity"] == {"correct": 1, "total": 2}
+    pick = lambda d: {k: d[k] for k in ("correct", "total")}  # noqa: E731
+    assert pick(c["po_number"]) == {"correct": 1, "total": 1}
+    assert pick(c["items.description"]) == {"correct": 1, "total": 2}
+    assert pick(c["items.quantity"]) == {"correct": 1, "total": 2}
     assert c["items.row_count"]["correct"] == 0
+    assert c["po_date"]["total"] == 0  # empty on both sides: not counted
+
+
+def test_similarity():
+    assert training.similarity("PT Sinar", "pt sinar") == 1.0
+    assert 0.8 < training.similarity("Gula Pasir 1 kg", "Gula Pasr 1 kg") < 1.0
+    assert training.similarity("abc", None) == 0.0

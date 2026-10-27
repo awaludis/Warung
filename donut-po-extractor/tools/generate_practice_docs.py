@@ -1,6 +1,7 @@
 """Generate fictional customer purchase orders for practice (training + extraction test).
 
-    python tools/generate_practice_docs.py [output_dir]      # default: practice_docs/
+    python tools/generate_practice_docs.py                       # practice_docs/ (15 per layout)
+    python tools/generate_practice_docs.py --out practice_docs_large --per-layout 60 --start 2001 --seed 7
 
 Creates 3 customer layouts with different designs, languages, date and number formats:
   * PT Sumber Makmur Sejahtera  — Indonesian, bordered table, dd/mm/yyyy, 1.234.500     (PDF)
@@ -329,7 +330,7 @@ def build(po: dict, rng: random.Random) -> tuple[bytes, str, list[dict]]:
     return pdf, ".pdf", pages
 
 
-def generate(out: Path, per_layout_train: int = 15, per_layout_test: int = 3, seed: int = 2026) -> None:
+def generate(out: Path, per_layout_train: int = 15, per_layout_test: int = 3, seed: int = 2026, start: int = 101) -> None:
     rng = random.Random(seed)
     for split, layouts, count in (("training", LAYOUTS, per_layout_train), ("extraction_test", {**LAYOUTS, **UNKNOWN}, per_layout_test)):
         key = []
@@ -337,7 +338,7 @@ def generate(out: Path, per_layout_train: int = 15, per_layout_test: int = 3, se
             folder = out / split / cfg["slug"]
             folder.mkdir(parents=True, exist_ok=True)
             for i in range(count):
-                seq = (100 if split == "training" else 900) + i + 1
+                seq = (start if split == "training" else start + 800) + i
                 # every 4th Berkah Jaya PO is long enough to need 2 pages
                 n_items = rng.randint(14, 18) if cfg["style"] == "B" and i % 4 == 3 else None
                 po = make_po(rng, layout, cfg, seq, n_items)
@@ -350,4 +351,13 @@ def generate(out: Path, per_layout_train: int = 15, per_layout_test: int = 3, se
 
 
 if __name__ == "__main__":
-    generate(Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent / "practice_docs")
+    import argparse
+
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--out", type=Path, default=Path(__file__).resolve().parent.parent / "practice_docs")
+    ap.add_argument("--per-layout", type=int, default=15, help="training documents per customer layout")
+    ap.add_argument("--test-per-layout", type=int, default=3)
+    ap.add_argument("--seed", type=int, default=2026)
+    ap.add_argument("--start", type=int, default=101, help="first PO sequence number (use a new range for extra sets)")
+    a = ap.parse_args()
+    generate(a.out, a.per_layout, a.test_per_layout, a.seed, a.start)
