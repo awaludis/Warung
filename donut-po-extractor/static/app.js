@@ -311,6 +311,9 @@ function showExtraction(x) {
       <small class="muted">${esc(x.extraction_id)} · model ${esc(x.release_id)}</small></div>
     ${x.warnings.length ? `<ul class="warnings">${x.warnings.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>` : ""}
     <div class="thumbs">${x.pages.map((p) => `<a href="/api/extractions/${esc(x.extraction_id)}/${esc(p.image)}" target="_blank"><img src="/api/extractions/${esc(x.extraction_id)}/${esc(p.image)}" alt="Halaman ${p.page}"></a>`).join("")}</div>
+    <details style="margin-top:10px"><summary>Output mentah model per halaman (untuk diagnosis)</summary>
+      ${x.pages.map((p) => `<p class="muted">Halaman ${p.page}</p><pre class="log">${esc(p.raw_sequence || "(kosong — model tidak menghasilkan apa pun)")}</pre>`).join("")}
+    </details>
     <label style="margin-top:12px">Structured PO data (JSON) — dapat dikoreksi sebelum disimpan
       <textarea id="poJson" rows="22" spellcheck="false">${esc(JSON.stringify(x.data, null, 2))}</textarea></label>
     <div class="row end">
