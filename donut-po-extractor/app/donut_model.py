@@ -156,6 +156,9 @@ def train(
         optim, lambda s: (s + 1) / warmup if s < warmup else max(0.0, (total_steps - s) / max(1, total_steps - warmup))
     )
     log(f"Optimizer steps: {total_steps} (warm-up {warmup})")
+    if total_steps < 3000:
+        log(f"WARNING: only {total_steps} optimizer steps. Donut usually needs several thousand steps to learn "
+            "a new document type: add more pages or epochs.")
     use_amp = device == "cuda"
     scaler = torch.amp.GradScaler("cuda") if use_amp else None
 
