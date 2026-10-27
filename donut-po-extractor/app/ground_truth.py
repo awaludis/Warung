@@ -230,7 +230,10 @@ def import_answer_key(folder: Path | None = None, complete: bool = True, user: s
     existing = {(s["filename"], s["customer_layout"]) for s in list_samples()}
     dupes = [d["file"] for d in key if (Path(d["file"]).name, d["customer_layout"]) in existing]
     if dupes:
-        raise BusinessRuleError(f"{len(dupes)} of these documents were already imported (e.g. {dupes[0]}). Delete them first.")
+        raise BusinessRuleError(
+            f"{len(dupes)} of these documents were already imported (e.g. {dupes[0]}), so nothing was imported again. "
+            "Your existing samples are fine; there is no need to delete anything."
+        )
     pages = 0
     for doc in key:
         path = folder / doc["file"]
