@@ -99,3 +99,18 @@ def test_full_flow(tiny_settings):
     assert status["retraining_required"] and "PT Baru" in status["reasons"][0]
 
     assert c.get("/").status_code == 200
+
+
+def test_trained_model_generates_learned_fields(tiny_settings, tmp_path):
+    """Regression: the loss must not shift labels twice, otherwise generation never emits field tags."""
+    from app import donut_model
+
+    fd = load_definition()
+    img = tmp_path / "po.png"
+    img.write_bytes(png_bytes(po_image(["PO-001"])))
+    values = fd.validate_annotation({"po_number": "PO-001", "total_amount": "125"})
+    out = donut_model.train([donut_model.TrainItem(img, values)], fd, tmp_path / "m", epochs=200, learning_rate=2e-3,
+                            log=lambda s: None)
+    raw, seq = donut_model.DonutExtractor(out, device="cpu").read_page(img)
+    assert seq.startswith("<s_po_number>"), seq
+    assert fd.normalize_output(raw)["po_number"] == "PO-001", seq

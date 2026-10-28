@@ -65,6 +65,9 @@ def build_for_training(base_model: str, fd: FieldDefinition, image_size: tuple[i
     model.config.pad_token_id = tok.pad_token_id
     model.config.decoder_start_token_id = tok.convert_tokens_to_ids(fd.task_token)
     model.config.eos_token_id = tok.eos_token_id
+    gc = model.generation_config
+    gc.decoder_start_token_id = model.config.decoder_start_token_id
+    gc.pad_token_id, gc.eos_token_id = tok.pad_token_id, tok.eos_token_id
     return processor, model
 
 
@@ -94,6 +97,23 @@ def _collate(batch, pad_id: int):
     for i, (_, ids) in enumerate(batch):
         labels[i, : len(ids)] = ids
     return pixel_values, labels
+
+
+def seq2seq_loss(model, pixel_values, labels):
+    """Cross-entropy of the decoder outputs against the labels.
+
+    Computed here instead of `model(..., labels=labels).loss`: in some transformers releases (e.g. 4.57)
+    VisionEncoderDecoderModel uses a causal-LM loss that shifts the labels a second time, which trains
+    Donut to predict two tokens ahead and makes generation fail.
+    """
+    torch = _torch()
+    from transformers.models.vision_encoder_decoder.modeling_vision_encoder_decoder import shift_tokens_right
+
+    decoder_input_ids = shift_tokens_right(labels, model.config.pad_token_id, model.config.decoder_start_token_id)
+    logits = model(pixel_values=pixel_values, decoder_input_ids=decoder_input_ids).logits
+    return torch.nn.functional.cross_entropy(
+        logits.float().reshape(-1, logits.size(-1)), labels.reshape(-1), ignore_index=-100
+    )
 
 
 def train(
@@ -171,7 +191,7 @@ def train(
                 raise InterruptedError("Training cancelled")
             pixel_values, labels = pixel_values.to(device), labels.to(device)
             with torch.autocast(device_type="cuda", enabled=use_amp):
-                loss = model(pixel_values=pixel_values, labels=labels).loss / grad_accum
+                loss = seq2seq_loss(model, pixel_values, labels) / grad_accum
             (scaler.scale(loss) if scaler else loss).backward()
             if i % grad_accum == 0 or i == len(loader):
                 if scaler:
