@@ -24,6 +24,7 @@ def main(argv=None):
     ap.add_argument("--user", default="cli")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("records")
+    sub.add_parser("doctor", help="check the data folder (e.g. after copying a model from Colab)")
     im = sub.add_parser("import-samples", help="load PO files + answer_key.json as ground truth entries")
     im.add_argument("folder", type=Path)
     im.add_argument("--draft", action="store_true", help="import values as drafts to review in the UI")
@@ -47,7 +48,9 @@ def main(argv=None):
     e.add_argument("--save", action="store_true")
     a = ap.parse_args(argv)
 
-    if a.cmd == "records":
+    if a.cmd == "doctor":
+        doctor()
+    elif a.cmd == "records":
         print(json.dumps(ground_truth.list_records(), indent=2))
     elif a.cmd == "import-samples":
         try:
@@ -83,6 +86,33 @@ def import_samples(folder: Path, complete: bool, user: str) -> None:
     print(f"Imported {res['documents']} documents / {res['pages']} pages as {res['status']} entries")
     for layout, row in res["coverage"]["layouts"].items():
         print(f"  {layout}: {row['completed']} completed, {row['draft']} draft")
+
+
+def doctor() -> None:
+    """Explain what the app finds in the data folder and spot files copied to the wrong place."""
+    from . import config
+
+    p = config.paths()
+    data = p["runs"].parent.parent
+    print(f"Data folder: {data}")
+    rel = training.current_release()
+    if rel:
+        mdir = training.released_model_dir(rel)
+        ok = (mdir / "config.json").exists()
+        print(f"Released model: {rel['release_id']} -> {mdir} [{'OK' if ok else 'MODEL FILES MISSING'}]")
+    else:
+        print(f"No release record in {p['releases']}")
+    found = [f for pat in ("REL-*.json", "current.json", "run.json") for f in data.rglob(pat)]
+    misplaced = [f for f in found if f.parent not in (p["releases"],) and f.parent.parent != p["runs"]]
+    for f in misplaced:
+        target = p["releases"] if f.name != "run.json" else p["runs"] / f.parent.name
+        print(f"MISPLACED: {f}\n   move its folder contents to: {target}")
+    if not found:
+        print("No release or run files anywhere under the data folder. Copy models/releases and "
+              "models/runs/<RUN>/ from the Colab data folder (Google Drive: donut-po-data).")
+    elif not misplaced and rel:
+        print("Everything looks fine.")
+
 
 if __name__ == "__main__":
     main()

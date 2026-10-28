@@ -499,7 +499,9 @@ def current_release() -> dict | None:
         cur = read_json(rel_dir / "current.json")
         return read_json(rel_dir / f"{safe_id(cur['release_id'])}.json")
     except NotFoundError:
-        return None
+        # current.json missing (e.g. only the release record was copied): use the newest release record
+        records = sorted(rel_dir.glob("REL-*.json"))
+        return read_json(records[-1]) if records else None
 
 
 def list_releases() -> list[dict]:
@@ -515,8 +517,12 @@ def model_status() -> dict:
     fd = load_definition()
     rel = current_release()
     reasons = []
+    model_missing = False
     if rel is None:
         reasons.append("No model has been released yet.")
+    elif not (released_model_dir(rel) / "config.json").exists():
+        model_missing = True
+        reasons.append(f"Model files of {rel['release_id']} not found at {released_model_dir(rel)}.")
     else:
         if rel["field_definition_hash"] != fd.hash:
             reasons.append("The PO Data Field Definition Sheet changed after the model was trained.")
@@ -524,4 +530,9 @@ def model_status() -> dict:
         new_layouts = sorted({e["customer_layout"] for e in ground_truth.list_entries()} - known)
         if new_layouts:
             reasons.append(f"New customer layouts not in the released model: {', '.join(new_layouts)}.")
-    return {"release": rel, "retraining_required": bool(rel) and bool(reasons), "reasons": reasons}
+    return {
+        "release": rel,
+        "model_missing": model_missing,
+        "retraining_required": bool(rel) and not model_missing and bool(reasons),
+        "reasons": reasons,
+    }

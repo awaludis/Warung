@@ -48,7 +48,14 @@ def field_definition():
 
 @app.get("/api/status")
 def status():
-    return {"model": training.model_status(), "coverage": ground_truth.coverage(), "base_model": config.BASE_MODEL}
+    p = config.paths()
+    return {
+        "model": training.model_status(),
+        "coverage": ground_truth.coverage(),
+        "base_model": config.BASE_MODEL,
+        "data_dir": str(p["runs"].parent.parent),
+        "releases_dir": str(p["releases"]),
+    }
 
 
 # ---------------- BUC 1: annotation ----------------

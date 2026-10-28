@@ -44,6 +44,11 @@ def extract(filename: str, content: bytes, customer_layout: str = "", user: str 
             "The PO Data Field Definition Sheet changed after the released model was trained. "
             "The model must be retrained before extraction (BUC 2)."
         )
+    if not (training.released_model_dir(rel) / "config.json").exists():
+        raise BusinessRuleError(
+            f"Model files of {rel['release_id']} were not found at {training.released_model_dir(rel)}. "
+            "Copy the released run folder (models/runs/<RUN>/) into the data folder."
+        )
     extractor, rel = get_extractor()
 
     extraction_id = new_id("EXT")

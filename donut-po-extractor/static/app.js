@@ -56,7 +56,8 @@ async function loadStatus() {
   const s = await api("/status");
   const b = $("#modelBanner");
   const rel = s.model.release;
-  if (!rel) { b.className = "banner"; b.textContent = "Belum ada model yang dirilis. Lengkapi anotasi (BUC 1) lalu training & rilis model (BUC 2)."; }
+  if (!rel) { b.className = "banner"; b.textContent = `Belum ada model yang dirilis. Lengkapi anotasi (BUC 1) lalu training & rilis model (BUC 2). Jika memindahkan model dari Colab: aplikasi mencari catatan rilis di ${s.releases_dir}`; }
+  else if (s.model.model_missing) { b.className = "banner"; b.textContent = `Model ${rel.release_id} tercatat, tetapi file modelnya tidak ditemukan: ${s.model.reasons.join(" ")}`; }
   else if (s.model.retraining_required) { b.className = "banner"; b.textContent = `Model ${rel.release_id} perlu retraining: ${s.model.reasons.join(" ")}`; }
   else { b.className = "banner ok"; b.textContent = `Model aktif: ${rel.release_id} · akurasi field ${pct(rel.validation_summary.field_accuracy)} · layout: ${rel.trained_layouts.join(", ")}`; }
   $("#baseModel").placeholder = s.base_model;
