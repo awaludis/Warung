@@ -23,8 +23,14 @@ async function api(path, opts = {}) {
   const headers = { "X-User": currentUser(), ...(opts.headers || {}) };
   let body = opts.body;
   if (body && !(body instanceof FormData)) { headers["Content-Type"] = "application/json"; body = JSON.stringify(body); }
-  const res = await fetch("/api" + path, { method: opts.method || "GET", headers, body });
-  const data = res.headers.get("content-type")?.includes("json") ? await res.json() : await res.text();
+  let res;
+  try { res = await fetch("/api" + path, { method: opts.method || "GET", headers, body }); }
+  catch (_) { throw new Error("Tidak bisa menghubungi server aplikasi. Di Colab, jalankan ulang sel yang menyalakan aplikasi."); }
+  const isJson = res.headers.get("content-type")?.includes("json");
+  if (!res.ok && !isJson && [404, 502, 503, 504].includes(res.status)) {
+    throw new Error(`Server aplikasi tidak menjawab (HTTP ${res.status}) — kemungkinan server berhenti atau runtime Colab terputus. Jalankan ulang sel yang menyalakan aplikasi, lalu muat ulang halaman. Data di Google Drive tetap aman.`);
+  }
+  const data = isJson ? await res.json() : await res.text();
   if (!res.ok) throw new Error(typeof data === "object" ? (typeof data.detail === "string" ? data.detail : JSON.stringify(data.detail)) : data);
   return data;
 }
