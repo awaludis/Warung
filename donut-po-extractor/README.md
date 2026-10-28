@@ -48,7 +48,31 @@ type → T4 GPU**, lalu jalankan sel dari atas. Notebook menyimpan data di Googl
 Jika repository private, link di atas tidak bisa dibuka langsung: di Colab pilih **File → Open notebook → GitHub**
 (login GitHub) atau unggah file `.ipynb`-nya, dan simpan token GitHub di Colab Secrets sebagai `GITHUB_TOKEN`.
 
-## Instalasi & menjalankan
+## Instalasi di laptop (tanpa Colab)
+
+1. Install **Python 3.11 atau 3.12** (python.org; di Windows centang *Add python.exe to PATH*) dan **Git**.
+2. Ambil kode:
+   ```bash
+   git clone -b claude/sharp-wright-7pybmh https://github.com/awaludis/Warung.git
+   ```
+3. Jalankan **`start_windows.bat`** (klik dua kali) atau **`./start_mac_linux.sh`** di folder `donut-po-extractor`.
+   Jalan pertama memasang library (10–20 menit, ±3 GB); berikutnya langsung menyala dan browser terbuka di
+   `http://localhost:8000`.
+
+**Memindahkan model hasil training Colab.** Unduh dari Google Drive folder `donut-po-data`, lalu letakkan isinya di
+`donut-po-extractor/data/` (atau set `DONUT_PO_DATA_DIR` ke folder tersebut). Yang dibutuhkan:
+
+```
+data/models/releases/            (semua file: Model Release Record + current.json)
+data/models/runs/<RUN-yang-dirilis>/   (seluruh folder, termasuk subfolder model/ ±800 MB)
+data/ground_truth/               (opsional: sampel & record, untuk anotasi / training ulang)
+data/extractions/                (opsional: riwayat ekstraksi)
+```
+
+Di laptop tanpa GPU, ekstraksi berjalan di CPU (beberapa detik per halaman). Training di CPU sangat lambat —
+lakukan training di Colab/GPU, lalu pindahkan folder run + releases seperti di atas.
+
+## Instalasi & menjalankan (manual)
 
 Python 3.10+ dibutuhkan. GPU (CUDA) sangat disarankan untuk training; inferensi bisa di CPU.
 
