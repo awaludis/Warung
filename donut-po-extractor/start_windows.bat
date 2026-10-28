@@ -18,6 +18,9 @@ if not exist ".venv\Scripts\python.exe" (
   echo [2/2] Memasang library, mohon tunggu...
   ".venv\Scripts\python.exe" -m pip install --upgrade pip || goto :error
   ".venv\Scripts\python.exe" -m pip install -r requirements.txt || goto :error
+) else (
+  echo Memeriksa library...
+  ".venv\Scripts\python.exe" -m pip install -q --disable-pip-version-check -r requirements.txt || goto :error
 )
 
 if "%DONUT_PO_DATA_DIR%"=="" set "DONUT_PO_DATA_DIR=%~dp0data"

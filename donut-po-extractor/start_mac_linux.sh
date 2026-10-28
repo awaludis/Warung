@@ -15,6 +15,9 @@ if [ ! -x .venv/bin/python ]; then
   echo "[2/2] Memasang library, mohon tunggu..."
   .venv/bin/python -m pip install --upgrade pip
   .venv/bin/python -m pip install -r requirements.txt
+else
+  echo "Memeriksa library..."
+  .venv/bin/python -m pip install -q --disable-pip-version-check -r requirements.txt
 fi
 
 export DONUT_PO_DATA_DIR=${DONUT_PO_DATA_DIR:-"$PWD/data"}
