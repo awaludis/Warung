@@ -68,7 +68,15 @@
     </div>
 
     <div class="card">
-      <h2>Sampel</h2>
+      <div class="row between">
+        <h2>Sampel <small class="muted" id="sampleCount"></small></h2>
+        <div class="row wrap" id="bulkBar">
+          <label class="check"><input type="checkbox" id="selectAll"> Pilih semua</label>
+          <button id="deleteSelected" class="danger" disabled>Hapus terpilih</button>
+          <button id="deleteAll" class="danger">Hapus semua</button>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:0">Menghapus sampel tidak memengaruhi Ground Truth Record yang sudah di-file maupun model yang sudah dilatih.</p>
       <div id="samples" class="samples"></div>
     </div>
 

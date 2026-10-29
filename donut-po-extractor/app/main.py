@@ -76,6 +76,13 @@ def sample(sample_id: str):
     return ground_truth.get_sample(sample_id)
 
 
+@app.post("/api/samples/delete")
+def delete_samples(body: dict = Body(...)):
+    """Body: {"sample_ids": [...]} or {"all": true}."""
+    n = ground_truth.delete_samples(body.get("sample_ids") or [], bool(body.get("all")))
+    return {"deleted": n}
+
+
 @app.delete("/api/samples/{sample_id}")
 def delete_sample(sample_id: str):
     ground_truth.delete_sample(sample_id)

@@ -95,6 +95,22 @@ def delete_sample(sample_id: str) -> None:
     shutil.rmtree(p["samples"] / s["sample_id"])
 
 
+def delete_samples(sample_ids: list[str] | None = None, delete_all: bool = False) -> int:
+    """Delete several samples (or all of them) with their ground truth entries.
+
+    Filed PO Ground Truth Records keep their own copies, so records and trained models are not affected.
+    """
+    if delete_all:
+        sample_ids = [f.parent.name for f in config.paths()["samples"].glob("*/sample.json")]
+    if not sample_ids:
+        raise BusinessRuleError("No samples selected.")
+    for sid in dict.fromkeys(sample_ids):
+        get_sample(sid)  # validate every id before deleting anything
+    for sid in dict.fromkeys(sample_ids):
+        delete_sample(sid)
+    return len(dict.fromkeys(sample_ids))
+
+
 def image_path(rel: str) -> Path:
     base = config.paths()["samples"].resolve()
     full = (base / rel).resolve()

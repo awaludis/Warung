@@ -2,7 +2,7 @@
 const $ = (s, el = document) => el.querySelector(s);
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const pct = (v) => (v === null || v === undefined ? "–" : (v * 100).toFixed(1) + "%");
-const state = { fd: null, samples: [], entry: null, sample: null, pollTimer: null, extraction: null };
+const state = { picked: new Set(), fd: null, samples: [], entry: null, sample: null, pollTimer: null, extraction: null };
 
 // ---------- user / api ----------
 function currentUser() {
@@ -77,12 +77,16 @@ async function loadAnnotate() {
   $("#records").innerHTML = records.length ? `<h2 style="margin-top:14px">PO Ground Truth Record (filed)</h2><table><tr><th>Record</th><th>Filed</th><th class="num">Halaman</th><th>Layout</th></tr>${records.map((r) =>
     `<tr><td>${esc(r.record_id)}</td><td>${esc(r.filed_at)}<br><small class="muted">${esc(r.filed_by)}</small></td><td class="num">${r.entry_count}</td><td>${Object.entries(r.layouts).map(([l, n]) => `${esc(l)} (${n})`).join(", ")}</td></tr>`).join("")}</table>` : "";
   $("#samples").innerHTML = samples.length ? samples.map((s) => `
-    <div class="sample">
+    <div class="sample${state.picked.has(s.sample_id) ? " picked" : ""}">
+      <input type="checkbox" class="pick" data-pick="${esc(s.sample_id)}" ${state.picked.has(s.sample_id) ? "checked" : ""} aria-label="Pilih sampel ${esc(s.filename)}">
       <div class="meta"><b>${esc(s.filename)}</b> <span class="badge">${esc(s.customer_layout)}</span>
         <small>${esc(s.sample_id)} · ${s.completed_pages}/${s.pages.length} halaman selesai</small></div>
       ${s.pages.map((p) => `<button class="small page-btn${p.status === "completed" ? " completed" : ""}${state.entry?.entry_id === p.entry_id ? " current" : ""}" data-entry="${esc(p.entry_id)}" data-sample="${esc(s.sample_id)}">Hal. ${p.page}</button>`).join("")}
       <button class="small" data-del="${esc(s.sample_id)}" title="Hapus sampel">Hapus</button>
     </div>`).join("") : '<p class="muted">Unggah sampel PO untuk mulai anotasi.</p>';
+  const ids = new Set(samples.map((x) => x.sample_id));
+  state.picked.forEach((id) => { if (!ids.has(id)) state.picked.delete(id); });
+  updateBulkBar();
   loadStatus();
 }
 
@@ -101,6 +105,50 @@ $("#sampleForm").addEventListener("submit", (e) => {
   });
 });
 
+function updateBulkBar() {
+  const n = state.picked.size, total = state.samples.length;
+  $("#sampleCount").textContent = total ? `(${total} sampel${n ? `, ${n} dipilih` : ""})` : "";
+  $("#bulkBar").classList.toggle("hidden", !total);
+  $("#deleteSelected").disabled = !n;
+  $("#deleteSelected").textContent = n ? `Hapus terpilih (${n})` : "Hapus terpilih";
+  $("#selectAll").checked = total > 0 && n === total;
+  $("#selectAll").indeterminate = n > 0 && n < total;
+}
+$("#samples").addEventListener("change", (e) => {
+  const c = e.target.closest("[data-pick]"); if (!c) return;
+  if (c.checked) state.picked.add(c.dataset.pick); else state.picked.delete(c.dataset.pick);
+  c.closest(".sample").classList.toggle("picked", c.checked);
+  updateBulkBar();
+});
+$("#selectAll").addEventListener("change", (e) => {
+  state.picked = new Set(e.target.checked ? state.samples.map((s) => s.sample_id) : []);
+  document.querySelectorAll("[data-pick]").forEach((c) => { c.checked = e.target.checked; c.closest(".sample").classList.toggle("picked", e.target.checked); });
+  updateBulkBar();
+});
+async function bulkDelete(btn, body, label) {
+  await guard(btn, async () => {
+    const r = await api("/samples/delete", { method: "POST", body });
+    if (state.sample && (body.all || body.sample_ids.includes(state.sample.sample_id))) {
+      $("#annotator").classList.add("hidden"); state.entry = null; state.sample = null;
+    }
+    state.picked.clear();
+    toast(`${r.deleted} sampel ${label}.`);
+    loadAnnotate();
+  });
+}
+$("#deleteSelected").onclick = (e) => {
+  const ids = [...state.picked];
+  if (ids.length && confirm(`Hapus ${ids.length} sampel terpilih beserta anotasinya? Tindakan ini tidak bisa dibatalkan.`)) {
+    bulkDelete(e.target, { sample_ids: ids }, "terpilih dihapus");
+  }
+};
+$("#deleteAll").onclick = (e) => {
+  const n = state.samples.length;
+  if (!n) return;
+  const answer = prompt(`Hapus SEMUA ${n} sampel beserta anotasinya? Tindakan ini tidak bisa dibatalkan.\nKetik HAPUS untuk melanjutkan.`);
+  if (answer !== null && answer.trim().toUpperCase() === "HAPUS") bulkDelete(e.target, { all: true }, "dihapus");
+  else if (answer !== null) toast("Dibatalkan: ketik HAPUS untuk menghapus semua sampel.", true);
+};
 $("#samples").addEventListener("click", (e) => {
   const b = e.target.closest("button"); if (!b) return;
   if (b.dataset.entry) openEntry(b.dataset.entry, b.dataset.sample);

@@ -91,3 +91,22 @@ def test_similarity():
     assert training.similarity("PT Sinar", "pt sinar") == 1.0
     assert 0.8 < training.similarity("Gula Pasir 1 kg", "Gula Pasr 1 kg") < 1.0
     assert training.similarity("abc", None) == 0.0
+
+
+def test_bulk_delete_samples_keeps_filed_records():
+    from fastapi.testclient import TestClient
+
+    from app.main import app
+
+    _annotated("Toko Maju", 3)
+    rec = ground_truth.file_record()
+    ids = [s["sample_id"] for s in ground_truth.list_samples()]
+    c = TestClient(app)
+    r = c.post("/api/samples/delete", json={"sample_ids": ids[:2]})
+    assert r.json() == {"deleted": 2} and len(ground_truth.list_samples()) == 1
+    assert c.post("/api/samples/delete", json={"sample_ids": ["SMP-nope"]}).status_code == 404
+    assert len(ground_truth.list_samples()) == 1  # nothing deleted when an id is invalid
+    assert c.post("/api/samples/delete", json={}).status_code == 422
+    assert c.post("/api/samples/delete", json={"all": True}).json() == {"deleted": 1}
+    assert ground_truth.list_samples() == [] and ground_truth.list_entries() == []
+    assert ground_truth.get_record(rec["record_id"])["entry_count"] == 3  # filed record untouched

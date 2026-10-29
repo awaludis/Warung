@@ -67,3 +67,7 @@ pre.log { background: var(--surface-2); border: 1px solid var(--line); padding: 
 .thumbs { display: flex; gap: 8px; overflow-x: auto; } .thumbs img { height: 220px; border: 1px solid var(--line); border-radius: 6px; }
 .warnings { margin: 8px 0; padding-left: 18px; color: var(--warn); }
 .muted { color: var(--muted); }
+button.danger { color: var(--danger); border-color: var(--danger); background: transparent; }
+button.danger:not(:disabled):hover { background: var(--danger-bg); }
+.sample input.pick { width: 18px; height: 18px; margin: 0 4px 0 0; }
+.sample.picked { border-color: var(--danger); background: var(--danger-bg); }
