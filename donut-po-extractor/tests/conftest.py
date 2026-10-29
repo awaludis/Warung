@@ -1,4 +1,5 @@
 import io
+import shutil
 import string
 from pathlib import Path
 
@@ -70,7 +71,11 @@ def tiny_donut(tmp_path_factory) -> Path:
         input=str(corpus), model_prefix=str(d / "spm"), vocab_size=120, character_coverage=1.0, model_type="unigram",
         hard_vocab_limit=False,
     )
-    tok = XLMRobertaTokenizer(vocab_file=str(d / "spm.model"))
+    # load through from_pretrained so it works with transformers 4.x and 5.x
+    tok_dir = d / "tok"
+    tok_dir.mkdir()
+    shutil.copy(d / "spm.model", tok_dir / "sentencepiece.bpe.model")
+    tok = XLMRobertaTokenizer.from_pretrained(tok_dir)
     proc = DonutProcessor(
         image_processor=DonutImageProcessor(size={"height": 64, "width": 48}, do_align_long_axis=False), tokenizer=tok
     )

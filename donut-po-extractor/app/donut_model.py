@@ -56,7 +56,7 @@ def build_for_training(base_model: str, fd: FieldDefinition, image_size: tuple[i
     tok = processor.tokenizer
     new_tokens = [t for t in fd.special_tokens() if t not in tok.get_vocab()]
     if new_tokens:
-        tok.add_special_tokens({"additional_special_tokens": new_tokens}, replace_additional_special_tokens=False)
+        tok.add_tokens(new_tokens, special_tokens=True)  # same call in transformers 4.x and 5.x
         model.decoder.resize_token_embeddings(len(tok))
 
     processor.image_processor.size = {"height": image_size[0], "width": image_size[1]}
@@ -144,7 +144,9 @@ def train(
     image_size = tuple(image_size or (config.IMAGE_HEIGHT, config.IMAGE_WIDTH))
     max_length = max_length or config.MAX_TARGET_LENGTH
 
-    log(f"Loading base model {base_model}")
+    import transformers
+
+    log(f"Loading base model {base_model} (transformers {transformers.__version__}, torch {torch.__version__})")
     processor, model = build_for_training(base_model, fd, image_size, max_length)
     device = pick_device()
     model.to(device)
