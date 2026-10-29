@@ -129,6 +129,20 @@ def records():
     return ground_truth.list_records()
 
 
+@app.get("/api/gt-records/{record_id}/documents")
+def record_documents(record_id: str, validation_ratio: float = 0.2, seed: int = 42):
+    return training.record_documents(record_id, validation_ratio, seed)
+
+
+@app.get("/api/gt-records/{record_id}/images/{name}")
+def record_image(record_id: str, name: str):
+    base = (ground_truth.record_dir(record_id) / "images").resolve()
+    full = (base / name).resolve()
+    if full.parent != base or not full.exists():
+        raise NotFoundError("image not found")
+    return FileResponse(full)
+
+
 @app.get("/api/gt-records/{record_id}")
 def record(record_id: str):
     return ground_truth.get_record(record_id)
@@ -142,7 +156,7 @@ def runs():
 
 @app.post("/api/runs")
 def create_run(body: dict = Body(...), x_user: str | None = Header(None)):
-    run = training.create_run(body["record_id"], body.get("params") or {}, _user(x_user))
+    run = training.create_run(body["record_id"], body.get("params") or {}, _user(x_user), body.get("validation_docs"))
     if body.get("start", True):
         run = training.start_training(run["run_id"], _user(x_user))
     return run

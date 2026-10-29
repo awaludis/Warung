@@ -113,8 +113,25 @@
         <h2>Training baru</h2>
         <form id="runForm" class="stack">
           <label>Ground Truth Record<select name="record_id" id="recordSelect" required></select></label>
+          <fieldset class="split">
+            <legend>Pembagian data training / uji</legend>
+            <label class="check"><input type="radio" name="split_mode" value="random" checked> Dipilihkan aplikasi (acak, disarankan)</label>
+            <div id="randomOpts" class="grid three indent">
+              <label>Rasio uji<input name="validation_ratio" type="number" step="0.05" min="0.05" max="0.9" value="0.2"></label>
+              <label>Seed acak<input name="seed" type="number" min="0" value="42"></label>
+            </div>
+            <label class="check"><input type="radio" name="split_mode" value="manual"> Pilih manual dokumen uji</label>
+            <div id="manualBox" class="hidden indent">
+              <div class="row wrap">
+                <button type="button" class="small" id="manualSuggest">Isi dengan saran acak</button>
+                <button type="button" class="small" id="manualClear">Kosongkan pilihan</button>
+                <input id="manualFilter" placeholder="Cari dokumen / layout" style="max-width:220px">
+              </div>
+              <div id="manualSummary" style="margin:8px 0"></div>
+              <div id="manualDocs" class="doclist"></div>
+            </div>
+          </fieldset>
           <div class="grid three">
-            <label>Rasio validasi<input name="validation_ratio" type="number" step="0.05" min="0.05" max="0.9" value="0.2"></label>
             <label>Epoch<input name="epochs" type="number" min="1" value="30"></label>
             <label>Learning rate<input name="learning_rate" type="number" step="any" value="0.00003"></label>
             <label>Batch size<input name="batch_size" type="number" min="1" value="1"></label>

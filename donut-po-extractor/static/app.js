@@ -251,8 +251,10 @@ $("#fileRecordBtn").onclick = (e) => guard(e.target, async () => {
 const STATUS_BADGE = { created: "", training: "warn", trained: "", validating: "warn", validated: "ok", failed: "bad", cancelled: "bad" };
 async function loadTrain() {
   const [records, runs, releases] = await Promise.all([api("/gt-records"), api("/runs"), api("/releases")]);
+  const keepRecord = $("#recordSelect").value;
   $("#recordSelect").innerHTML = records.length ? records.map((r) => `<option value="${esc(r.record_id)}">${esc(r.record_id)} · ${r.entry_count} halaman · ${Object.keys(r.layouts).length} layout</option>`).join("")
     : '<option value="">Belum ada record — selesaikan BUC 1</option>';
+  if (keepRecord && records.some((r) => r.record_id === keepRecord)) $("#recordSelect").value = keepRecord;
   $("#runs").innerHTML = runs.length ? `<div class="scroll"><table><tr><th>Run</th><th>Record</th><th>Status</th><th>Progres</th><th class="num">Akurasi field</th><th class="num">Exact match</th><th></th></tr>${runs.map((r) => `
     <tr><td>${esc(r.run_id)}<br><small class="muted">${esc(r.created_by)}</small></td><td>${esc(r.record_id)}</td>
     <td><span class="badge ${STATUS_BADGE[r.status] || ""}">${esc(r.status)}</span>${r.released ? ' <span class="badge ok">released</span>' : ""}</td>
@@ -268,16 +270,72 @@ async function loadTrain() {
     state.pollTimer = setTimeout(() => { if (!$("#tab-train").classList.contains("hidden")) { loadTrain(); if (state.runId) showRun(state.runId, false); } }, 3000);
   }
 }
+// ---------- manual train / validation split ----------
+state.manual = { recordId: null, docs: [], val: new Set() };
+const splitMode = () => $("#runForm").querySelector("[name=split_mode]:checked").value;
+async function loadManualDocs(force = false) {
+  const rid = $("#recordSelect").value;
+  if (!rid) { $("#manualDocs").innerHTML = '<p class="muted" style="padding:8px">Pilih record dulu.</p>'; return; }
+  if (!force && state.manual.recordId === rid) return renderManual();
+  const ratio = $("#runForm").validation_ratio.value || 0.2, seed = $("#runForm").seed.value || 42;
+  const docs = await api(`/gt-records/${encodeURIComponent(rid)}/documents?validation_ratio=${ratio}&seed=${seed}`);
+  state.manual = { recordId: rid, docs, val: new Set(docs.filter((d) => d.suggested === "validation").map((d) => d.doc_id)) };
+  renderManual();
+}
+function manualCounts() {
+  const by = {};
+  for (const d of state.manual.docs) {
+    const c = (by[d.customer_layout] ??= { train: 0, val: 0, docs: 0 });
+    c.docs += 1;
+    if (state.manual.val.has(d.doc_id)) c.val += d.pages; else c.train += d.pages;
+  }
+  return by;
+}
+function renderManual() {
+  const m = state.manual, q = ($("#manualFilter").value || "").toLowerCase();
+  const by = manualCounts();
+  $("#manualSummary").innerHTML = Object.entries(by).map(([l, c]) => {
+    const bad = !c.train ? "semua untuk uji" : !c.val ? "belum ada uji" : "";
+    return `<span class="badge ${bad ? "bad" : "ok"}" title="${esc(bad)}">${esc(l)}: ${c.train} training · ${c.val} uji${bad ? " — " + esc(bad) : ""}</span>`;
+  }).join(" ");
+  const rows = m.docs.filter((d) => !q || `${d.source_file} ${d.customer_layout}`.toLowerCase().includes(q));
+  $("#manualDocs").innerHTML = `<table><tr><th>Uji?</th><th>Dokumen</th><th>Customer layout</th><th class="num">Hal.</th><th></th></tr>${rows.map((d) => `
+    <tr class="${m.val.has(d.doc_id) ? "val" : ""}"><td><input type="checkbox" data-doc="${esc(d.doc_id)}" ${m.val.has(d.doc_id) ? "checked" : ""} aria-label="Jadikan ${esc(d.source_file)} dokumen uji"></td>
+    <td>${esc(d.source_file)}</td><td>${esc(d.customer_layout)}</td><td class="num">${d.pages}</td>
+    <td><a href="/api/gt-records/${encodeURIComponent(m.recordId)}/images/${encodeURIComponent(d.entry_ids[0])}.png" target="_blank">lihat</a></td></tr>`).join("")}</table>`;
+}
+function toggleSplitMode() {
+  const manual = splitMode() === "manual";
+  $("#manualBox").classList.toggle("hidden", !manual);
+  $("#randomOpts").classList.toggle("hidden", manual);
+  if (manual) guard(null, () => loadManualDocs());
+}
+$("#runForm").querySelectorAll("[name=split_mode]").forEach((r) => r.addEventListener("change", toggleSplitMode));
+$("#recordSelect").addEventListener("change", () => { if (splitMode() === "manual") guard(null, () => loadManualDocs()); });
+$("#manualDocs").addEventListener("change", (e) => {
+  const c = e.target.closest("[data-doc]"); if (!c) return;
+  if (c.checked) state.manual.val.add(c.dataset.doc); else state.manual.val.delete(c.dataset.doc);
+  renderManual();
+});
+$("#manualSuggest").onclick = () => guard(null, () => loadManualDocs(true));
+$("#manualClear").onclick = () => { state.manual.val.clear(); renderManual(); };
+$("#manualFilter").addEventListener("input", renderManual);
+
 $("#runForm").addEventListener("submit", (e) => {
   e.preventDefault();
   guard(e.submitter, async () => {
     const fd = new FormData(e.target), params = {};
     for (const k of ["validation_ratio", "learning_rate"]) params[k] = parseFloat(fd.get(k));
-    for (const k of ["epochs", "batch_size", "image_height", "image_width"]) if (fd.get(k)) params[k] = parseInt(fd.get(k), 10);
+    for (const k of ["epochs", "batch_size", "image_height", "image_width", "seed"]) if (fd.get(k)) params[k] = parseInt(fd.get(k), 10);
     if (fd.get("base_model")) params.base_model = fd.get("base_model");
     params.auto_validate = !!fd.get("auto_validate");
     params.gradient_checkpointing = !!fd.get("gradient_checkpointing");
-    const run = await api("/runs", { method: "POST", body: { record_id: fd.get("record_id"), params } });
+    const body = { record_id: fd.get("record_id"), params };
+    if (splitMode() === "manual") {
+      if (state.manual.recordId !== body.record_id) await loadManualDocs();
+      body.validation_docs = [...state.manual.val];
+    }
+    const run = await api("/runs", { method: "POST", body });
     toast(`Run ${run.run_id}: ${run.split.train.length} halaman training / ${run.split.validation.length} validasi.`);
     await loadTrain(); showRun(run.run_id);
   });
@@ -304,7 +362,7 @@ async function showRun(runId, scroll = true) {
     ${run.error ? `<p class="badge bad">${esc(run.error)}</p>` : ""}
     ${run.split_details?.length ? `<details style="margin:8px 0"><summary>Pembagian data: ${run.split.train.length} halaman training · ${run.split.validation.length} halaman validasi (dokumen mana dipakai untuk apa)</summary>
       <div class="scroll"><table><tr><th>Set</th><th>Customer layout</th><th>Dokumen</th><th class="num">Hal.</th></tr>${run.split_details.map((d) => `<tr><td><span class="badge ${d.set === "validation" ? "warn" : ""}">${d.set === "validation" ? "validasi (uji)" : "training"}</span></td><td>${esc(d.customer_layout)}</td><td>${esc(d.source_file)}</td><td class="num">${d.page ?? ""}</td></tr>`).join("")}</table></div>
-      <p class="muted">Pembagian dilakukan acak per customer layout (seed ${esc(run.params.seed)}); halaman validasi tidak pernah dipakai untuk training.</p></details>` : ""}
+      <p class="muted">${run.params.split_mode === "manual" ? "Dokumen uji dipilih manual" : `Pembagian dilakukan acak per customer layout (seed ${esc(run.params.seed)})`}; halaman validasi tidak pernah dipakai untuk training.</p></details>` : ""}
     ${sheet ? sheetHtml(sheet) : ""}
     ${sheet && !run.released ? `<div class="row wrap end"><input id="relNote" placeholder="Catatan rilis"><input id="relMin" type="number" step="0.01" min="0" max="1" placeholder="Min. akurasi (opsional, 0–1)" style="max-width:220px"><button class="primary" data-act="release">Rilis model</button></div>` : ""}
     <h2 style="margin-top:14px">Log</h2><pre class="log">${esc(run.log || "")}</pre>`;

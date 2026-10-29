@@ -45,6 +45,7 @@ DEFAULT_PARAMS = {
     "image_width": None,
     "max_length": None,
     "base_model": None,
+    "split_mode": "random",
     "gradient_checkpointing": False,
     "auto_validate": True,
 }
@@ -156,7 +157,62 @@ def split_entries(entries: list[dict], validation_ratio: float, seed: int) -> tu
     return train, val
 
 
-def create_run(record_id: str, params: dict | None = None, user: str = "") -> dict:
+def doc_key(entry_id: str) -> str:
+    """Entries are named <sample_id>-P<page>; the sample id identifies the document."""
+    return entry_id.rsplit("-P", 1)[0]
+
+
+def record_documents(record_id: str, validation_ratio: float = 0.2, seed: int = 42) -> list[dict]:
+    """Documents of a ground truth record with the split the random mode would suggest."""
+    record = ground_truth.get_record(record_id)
+    try:
+        _, suggested_val = split_entries(record["entries"], validation_ratio, seed)
+    except BusinessRuleError:
+        suggested_val = []
+    suggested_val = set(suggested_val)
+    docs: dict[str, dict] = {}
+    for e in record["entries"]:
+        k = doc_key(e["entry_id"])
+        d = docs.setdefault(k, {
+            "doc_id": k,
+            "source_file": e.get("source_file") or _sample_name(k),
+            "customer_layout": e["customer_layout"],
+            "entry_ids": [],
+            "pages": 0,
+            "suggested": "training",
+        })
+        d["entry_ids"].append(e["entry_id"])
+        d["pages"] += 1
+        if e["entry_id"] in suggested_val:
+            d["suggested"] = "validation"
+    return sorted(docs.values(), key=lambda d: (d["customer_layout"], d["source_file"]))
+
+
+def manual_split(entries: list[dict], validation_docs: list[str]) -> tuple[list[str], list[str]]:
+    """Validation set chosen by the AI Developer, per document (all pages of a document go together)."""
+    chosen = set(validation_docs or [])
+    known = {doc_key(e["entry_id"]) for e in entries}
+    unknown = sorted(chosen - known)
+    if unknown:
+        raise BusinessRuleError(f"Dokumen tidak ada di record ini: {', '.join(unknown)}")
+    train = [e["entry_id"] for e in entries if doc_key(e["entry_id"]) not in chosen]
+    val = [e["entry_id"] for e in entries if doc_key(e["entry_id"]) in chosen]
+    by_layout: dict[str, dict] = defaultdict(lambda: {"train": 0, "validation": 0})
+    for e in entries:
+        by_layout[e["customer_layout"]]["validation" if doc_key(e["entry_id"]) in chosen else "train"] += 1
+    problems = []
+    for layout, c in sorted(by_layout.items()):
+        if not c["train"]:
+            problems.append(f"'{layout}': semua dokumen dipilih untuk uji, minimal 1 dokumen harus untuk training")
+        elif not c["validation"]:
+            problems.append(f"'{layout}': belum ada dokumen uji (pilih minimal 1)")
+    if problems:
+        raise BusinessRuleError("Pembagian manual belum valid. " + "; ".join(problems))
+    return train, val
+
+
+def create_run(record_id: str, params: dict | None = None, user: str = "",
+               validation_docs: list[str] | None = None) -> dict:
     """Steps 1-2: receive the ground truth record and separate training / validation sets."""
     record = ground_truth.get_record(record_id)
     fd = load_definition()
@@ -169,7 +225,12 @@ def create_run(record_id: str, params: dict | None = None, user: str = "") -> di
     if unknown:
         raise BusinessRuleError(f"Unknown training parameters: {', '.join(sorted(unknown))}")
     p = {**DEFAULT_PARAMS, **{k: v for k, v in (params or {}).items() if v is not None}}
-    train_ids, val_ids = split_entries(record["entries"], float(p["validation_ratio"]), int(p["seed"]))
+    if validation_docs is not None or p.get("split_mode") == "manual":
+        p["split_mode"] = "manual"
+        train_ids, val_ids = manual_split(record["entries"], validation_docs or [])
+    else:
+        p["split_mode"] = "random"
+        train_ids, val_ids = split_entries(record["entries"], float(p["validation_ratio"]), int(p["seed"]))
     layouts = defaultdict(lambda: {"train": 0, "validation": 0})
     by_id = {e["entry_id"]: e for e in record["entries"]}
     for i in train_ids:
@@ -194,7 +255,8 @@ def create_run(record_id: str, params: dict | None = None, user: str = "") -> di
         "released": False,
     }
     _save(run)
-    _log(run_id, f"Split {len(train_ids)} training / {len(val_ids)} validation pages from {record_id}")
+    how = "manual selection" if p["split_mode"] == "manual" else f"random, seed {p['seed']}"
+    _log(run_id, f"Split {len(train_ids)} training / {len(val_ids)} validation pages from {record_id} ({how})")
     return run
 
 

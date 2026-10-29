@@ -31,7 +31,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 16px; display: block; }
 label { display: flex; flex-direction: column; gap: 4px; font-weight: 500; font-size: 13px; }
 label small { color: var(--muted); font-weight: 400; } label.check { flex-direction: row; align-items: center; }
 input, select, textarea { font: inherit; color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 7px; padding: 7px 9px; width: 100%; }
-input[type=checkbox] { width: auto; } input[type=file] { padding: 5px; }
+input[type=checkbox], input[type=radio] { width: auto; margin: 0 6px 0 0; } input[type=file] { padding: 5px; }
 textarea { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px; }
 button { font: inherit; border: 1px solid var(--line); background: var(--surface-2); color: var(--text); border-radius: 7px; padding: 7px 12px; cursor: pointer; white-space: nowrap; }
 button.primary { background: var(--primary); color: var(--primary-ink); border-color: var(--primary); font-weight: 600; }
@@ -71,3 +71,10 @@ button.danger { color: var(--danger); border-color: var(--danger); background: t
 button.danger:not(:disabled):hover { background: var(--danger-bg); }
 .sample input.pick { width: 18px; height: 18px; margin: 0 4px 0 0; }
 .sample.picked { border-color: var(--danger); background: var(--danger-bg); }
+fieldset.split { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px 12px; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+fieldset.split legend { font-weight: 600; font-size: 13px; padding: 0 4px; }
+.indent { margin-left: 24px; }
+.doclist { max-height: 340px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; }
+.doclist table td, .doclist table th { padding: 4px 8px; }
+.doclist tr.val { background: var(--warn-bg); }
+.doclist th { position: sticky; top: 0; background: var(--surface); }

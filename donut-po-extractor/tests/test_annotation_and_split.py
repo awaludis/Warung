@@ -120,3 +120,52 @@ def test_split_details_name_the_documents():
     assert sorted(r["set"] for r in rows) == ["training", "validation"]
     assert {r["source_file"] for r in rows} == {"Toko Maju-1.png", "Toko Maju-2.png"}
     assert all(r["page"] == 1 for r in rows)
+
+
+def test_manual_split_by_document(tmp_path):
+    from fastapi.testclient import TestClient
+
+    from app.main import app
+
+    from .conftest import pdf_bytes
+
+    _annotated("Toko Maju", 3)
+    _annotated("PT Sinar", 2, start=10)
+    two_page = ground_truth.create_sample("long.pdf", pdf_bytes([["p1"], ["p2"]]), "PT Sinar")
+    for pg in two_page["pages"]:
+        ground_truth.save_entry(pg["entry_id"], {"po_number": "9", "items": [{"description": "x", "quantity": "1"}]}, True)
+    rec = ground_truth.file_record()
+    c = TestClient(app)
+
+    docs = c.get(f"/api/gt-records/{rec['record_id']}/documents").json()
+    assert len(docs) == 6 and {d["pages"] for d in docs} == {1, 2}
+    assert any(d["suggested"] == "validation" for d in docs)
+    by_name = {d["source_file"]: d for d in docs}
+    img = c.get(f"/api/gt-records/{rec['record_id']}/images/{docs[0]['entry_ids'][0]}.png")
+    assert img.status_code == 200 and img.headers["content-type"] == "image/png"
+
+    # every layout needs at least one training and one validation document
+    r = c.post("/api/runs", json={"record_id": rec["record_id"], "start": False,
+                                  "validation_docs": [by_name["Toko Maju-1.png"]["doc_id"]]})
+    assert r.status_code == 422 and "PT Sinar" in r.json()["detail"]
+    all_maju = [d["doc_id"] for d in docs if d["customer_layout"] == "Toko Maju"]
+    r = c.post("/api/runs", json={"record_id": rec["record_id"], "start": False,
+                                  "validation_docs": all_maju + [two_page["sample_id"]]})
+    assert r.status_code == 422 and "Toko Maju" in r.json()["detail"]
+    assert c.post("/api/runs", json={"record_id": rec["record_id"], "start": False,
+                                     "validation_docs": ["SMP-nope"]}).status_code == 422
+
+    # valid: the 2-page PO goes to validation as a whole
+    r = c.post("/api/runs", json={"record_id": rec["record_id"], "start": False,
+                                  "validation_docs": [by_name["Toko Maju-2.png"]["doc_id"], two_page["sample_id"]]})
+    assert r.status_code == 200, r.text
+    run = r.json()
+    assert run["params"]["split_mode"] == "manual"
+    assert sorted(run["split"]["validation"]) == sorted([by_name["Toko Maju-2.png"]["entry_ids"][0]] + [p["entry_id"] for p in two_page["pages"]])
+    assert not set(run["split"]["train"]) & set(run["split"]["validation"])
+    assert run["layouts"] == {"Toko Maju": {"train": 2, "validation": 1}, "PT Sinar": {"train": 2, "validation": 2}}
+
+    # random mode still works and respects the seed
+    a = c.post("/api/runs", json={"record_id": rec["record_id"], "start": False, "params": {"seed": 1}}).json()
+    b = c.post("/api/runs", json={"record_id": rec["record_id"], "start": False, "params": {"seed": 1}}).json()
+    assert a["params"]["split_mode"] == "random" and a["split"] == b["split"]
