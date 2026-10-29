@@ -189,12 +189,23 @@ def file_record(user: str = "", note: str = "") -> dict:
     rdir = p["gt_records"] / record_id
     (rdir / "images").mkdir(parents=True)
     completed = list_entries(COMPLETED)
+    sample_names = {}
+    for f in p["samples"].glob("*/sample.json"):
+        smp = read_json(f)
+        sample_names[smp["sample_id"]] = smp["filename"]
     entries, lines = [], []
     for e in completed:
         name = f"{e['entry_id']}.png"
         shutil.copy2(image_path(e["image"]), rdir / "images" / name)
         entries.append(
-            {"entry_id": e["entry_id"], "image": f"images/{name}", "customer_layout": e["customer_layout"], "values": e["values"]}
+            {
+                "entry_id": e["entry_id"],
+                "image": f"images/{name}",
+                "customer_layout": e["customer_layout"],
+                "source_file": sample_names.get(e["sample_id"], ""),
+                "page": e["page"],
+                "values": e["values"],
+            }
         )
         # Hugging Face / Donut dataset format, so the record can also be used with standard Donut scripts.
         lines.append(json.dumps({"file_name": name, "ground_truth": json.dumps({"gt_parse": e["values"]}, ensure_ascii=False)}, ensure_ascii=False))

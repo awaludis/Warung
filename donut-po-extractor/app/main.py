@@ -151,7 +151,7 @@ def create_run(body: dict = Body(...), x_user: str | None = Header(None)):
 @app.get("/api/runs/{run_id}")
 def run(run_id: str):
     r = training.get_run(run_id)
-    return {**r, "log": training.read_log(run_id)}
+    return {**r, "log": training.read_log(run_id), "split_details": training.split_details(r)}
 
 
 @app.post("/api/runs/{run_id}/train")

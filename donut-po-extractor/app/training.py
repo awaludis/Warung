@@ -92,6 +92,35 @@ def _log(run_id: str, msg: str) -> None:
         f.write(f"[{now_iso()}] {msg}\n")
 
 
+def _sample_name(sample_id: str) -> str:
+    """Filename of a sample (records filed before source_file existed); the id if it was deleted."""
+    try:
+        return ground_truth.get_sample(sample_id)["filename"]
+    except NotFoundError:
+        return f"{sample_id} (sampel sudah dihapus)"
+
+
+def split_details(run: dict) -> list[dict]:
+    """Which document / page went to the training set and which to the validation set."""
+    try:
+        record = ground_truth.get_record(run["record_id"])
+    except NotFoundError:
+        return []
+    by_id = {e["entry_id"]: e for e in record["entries"]}
+    rows = []
+    for which, label in (("train", "training"), ("validation", "validation")):
+        for eid in run.get("split", {}).get(which, []):
+            e = by_id.get(eid, {})
+            rows.append({
+                "set": label,
+                "entry_id": eid,
+                "customer_layout": e.get("customer_layout", ""),
+                "source_file": e.get("source_file") or _sample_name(eid.rsplit("-P", 1)[0]),
+                "page": e.get("page") or int(eid.rsplit("-P", 1)[-1]) if "-P" in eid else e.get("page"),
+            })
+    return sorted(rows, key=lambda r: (r["customer_layout"], r["set"] != "validation", r["source_file"], r["page"] or 0))
+
+
 def read_log(run_id: str, tail: int = 200) -> str:
     p = run_dir(run_id) / "train.log"
     return "\n".join(p.read_text(encoding="utf-8").splitlines()[-tail:]) if p.exists() else ""

@@ -302,6 +302,9 @@ async function showRun(runId, scroll = true) {
       </div></div>
     <p class="muted">Record ${esc(run.record_id)} · ${layouts}<br>Parameter: ${esc(JSON.stringify(run.params))}</p>
     ${run.error ? `<p class="badge bad">${esc(run.error)}</p>` : ""}
+    ${run.split_details?.length ? `<details style="margin:8px 0"><summary>Pembagian data: ${run.split.train.length} halaman training · ${run.split.validation.length} halaman validasi (dokumen mana dipakai untuk apa)</summary>
+      <div class="scroll"><table><tr><th>Set</th><th>Customer layout</th><th>Dokumen</th><th class="num">Hal.</th></tr>${run.split_details.map((d) => `<tr><td><span class="badge ${d.set === "validation" ? "warn" : ""}">${d.set === "validation" ? "validasi (uji)" : "training"}</span></td><td>${esc(d.customer_layout)}</td><td>${esc(d.source_file)}</td><td class="num">${d.page ?? ""}</td></tr>`).join("")}</table></div>
+      <p class="muted">Pembagian dilakukan acak per customer layout (seed ${esc(run.params.seed)}); halaman validasi tidak pernah dipakai untuk training.</p></details>` : ""}
     ${sheet ? sheetHtml(sheet) : ""}
     ${sheet && !run.released ? `<div class="row wrap end"><input id="relNote" placeholder="Catatan rilis"><input id="relMin" type="number" step="0.01" min="0" max="1" placeholder="Min. akurasi (opsional, 0–1)" style="max-width:220px"><button class="primary" data-act="release">Rilis model</button></div>` : ""}
     <h2 style="margin-top:14px">Log</h2><pre class="log">${esc(run.log || "")}</pre>`;

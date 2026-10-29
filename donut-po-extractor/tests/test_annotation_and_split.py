@@ -110,3 +110,13 @@ def test_bulk_delete_samples_keeps_filed_records():
     assert c.post("/api/samples/delete", json={"all": True}).json() == {"deleted": 1}
     assert ground_truth.list_samples() == [] and ground_truth.list_entries() == []
     assert ground_truth.get_record(rec["record_id"])["entry_count"] == 3  # filed record untouched
+
+
+def test_split_details_name_the_documents():
+    _annotated("Toko Maju", 2)
+    rec = ground_truth.file_record()
+    run = training.create_run(rec["record_id"])
+    rows = training.split_details(run)
+    assert sorted(r["set"] for r in rows) == ["training", "validation"]
+    assert {r["source_file"] for r in rows} == {"Toko Maju-1.png", "Toko Maju-2.png"}
+    assert all(r["page"] == 1 for r in rows)
