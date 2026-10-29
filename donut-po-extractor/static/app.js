@@ -251,10 +251,12 @@ $("#fileRecordBtn").onclick = (e) => guard(e.target, async () => {
 const STATUS_BADGE = { created: "", training: "warn", trained: "", validating: "warn", validated: "ok", failed: "bad", cancelled: "bad" };
 async function loadTrain() {
   const [records, runs, releases] = await Promise.all([api("/gt-records"), api("/runs"), api("/releases")]);
+  state.records = records;
   const keepRecord = $("#recordSelect").value;
   $("#recordSelect").innerHTML = records.length ? records.map((r) => `<option value="${esc(r.record_id)}">${esc(r.record_id)} · ${r.entry_count} halaman · ${Object.keys(r.layouts).length} layout</option>`).join("")
     : '<option value="">Belum ada record — selesaikan BUC 1</option>';
   if (keepRecord && records.some((r) => r.record_id === keepRecord)) $("#recordSelect").value = keepRecord;
+  updateStepHint();
   $("#runs").innerHTML = runs.length ? `<div class="scroll"><table><tr><th>Run</th><th>Record</th><th>Status</th><th>Progres</th><th class="num">Akurasi field</th><th class="num">Exact match</th><th></th></tr>${runs.map((r) => `
     <tr><td>${esc(r.run_id)}<br><small class="muted">${esc(r.created_by)}</small></td><td>${esc(r.record_id)}</td>
     <td><span class="badge ${STATUS_BADGE[r.status] || ""}">${esc(r.status)}</span>${r.released ? ' <span class="badge ok">released</span>' : ""}</td>
@@ -270,6 +272,26 @@ async function loadTrain() {
     state.pollTimer = setTimeout(() => { if (!$("#tab-train").classList.contains("hidden")) { loadTrain(); if (state.runId) showRun(state.runId, false); } }, 3000);
   }
 }
+// ---------- estimated optimizer steps ----------
+function updateStepHint() {
+  const f = $("#runForm"), rec = (state.records || []).find((r) => r.record_id === f.record_id.value);
+  if (!rec) { $("#stepHint").textContent = ""; return; }
+  let trainPages;
+  if (f.querySelector("[name=split_mode]:checked").value === "manual" && state.manual.recordId === rec.record_id) {
+    trainPages = Object.values(manualCounts()).reduce((n, c) => n + c.train, 0);
+  } else {
+    trainPages = Math.max(1, Math.round(rec.entry_count * (1 - (parseFloat(f.validation_ratio.value) || 0.2))));
+  }
+  const epochs = parseInt(f.epochs.value, 10) || 0, bs = parseInt(f.batch_size.value, 10) || 1;
+  const steps = Math.ceil(trainPages / bs) * epochs;
+  const el = $("#stepHint");
+  el.innerHTML = `Perkiraan: ±${trainPages} halaman training × ${epochs} epoch = <b>±${steps} langkah training</b>. ` +
+    (steps < 3000 ? `<span style="color:var(--warn)">Kurang dari ±3.000 langkah: model kemungkinan belum sempat belajar — tambah halaman atau epoch.</span>`
+      : trainPages < 50 ? `<span style="color:var(--warn)">Jumlah langkah cukup, tetapi halaman training sedikit: model bisa hafal contoh namun kurang akurat untuk dokumen baru.</span>`
+      : "Jumlah langkah dan data cukup untuk mulai.");
+}
+["input", "change"].forEach((ev) => $("#runForm").addEventListener(ev, updateStepHint));
+
 // ---------- manual train / validation split ----------
 state.manual = { recordId: null, docs: [], val: new Set() };
 const splitMode = () => $("#runForm").querySelector("[name=split_mode]:checked").value;
@@ -292,6 +314,7 @@ function manualCounts() {
   return by;
 }
 function renderManual() {
+  setTimeout(updateStepHint);
   const m = state.manual, q = ($("#manualFilter").value || "").toLowerCase();
   const by = manualCounts();
   $("#manualSummary").innerHTML = Object.entries(by).map(([l, c]) => {
